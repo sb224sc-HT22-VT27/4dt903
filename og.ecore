@@ -1,0 +1,51 @@
+<ecore:EPackage xmi:version="2.0" name="og" nsURI="http://se.lnu.mde/og" nsPrefix="og">
+<eClassifiers xsi:type="ecore:EClass" name="Og">
+<eOperations name="addInvitedCommittee">
+<eParameters name="theCommittee" eType="#//InvitedCommittee"/>
+</eOperations>
+<eOperations name="addDiscipline">
+<eParameters name="theDiscipline" eType="#//Discipline"/>
+</eOperations>
+<eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="discipline" upperBound="-1" eType="#//Discipline" containment="true"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="invitedcommittee" upperBound="-1" eType="#//InvitedCommittee" containment="true"/>
+</eClassifiers>
+<eClassifiers xsi:type="ecore:EClass" name="Discipline">
+<eOperations name="AddEvent">
+<eParameters name="theEvent" eType="#//Event"/>
+</eOperations>
+<eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="event" upperBound="-1" eType="#//Event" containment="true"/>
+</eClassifiers>
+<eClassifiers xsi:type="ecore:EClass" name="InvitedCommittee">
+<eOperations name="addAthlete">
+<eParameters name="theAthlete" eType="#//Athlete"/>
+</eOperations>
+<eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="athlete" upperBound="-1" eType="#//Athlete" containment="true" eOpposite="#//Athlete/invitedcommittee"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="team" upperBound="-1" eType="#//Team" containment="true"/>
+<eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfGoldMedals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+</eClassifiers>
+<eClassifiers xsi:type="ecore:EClass" name="Event" abstract="true">
+</eClassifiers>
+<eClassifiers xsi:type="ecore:EClass" name="IndividualEvent" eSuperTypes="#//Event">
+<eStructuralFeatures xsi:type="ecore:EReference" name="gold" eType="#//Athlete"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="silver" eType="#//Athlete"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="bronze" eType="#//Athlete"/>
+</eClassifiers>
+<eClassifiers xsi:type="ecore:EClass" name="TeamEvent" eSuperTypes="#//Event">
+<eStructuralFeatures xsi:type="ecore:EReference" name="gold" eType="#//Team"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="silver" eType="#//Team"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="bronce" eType="#//Team"/>
+</eClassifiers>
+<eClassifiers xsi:type="ecore:EClass" name="Athlete">
+<eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+<eStructuralFeatures xsi:type="ecore:EAttribute" name="age" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="teamMembershipo" upperBound="-1" eType="#//Team" eOpposite="#//Team/teamMembers"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="invitedcommittee" eType="#//InvitedCommittee" eOpposite="#//InvitedCommittee/athlete"/>
+</eClassifiers>
+<eClassifiers xsi:type="ecore:EClass" name="Team">
+<eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+<eStructuralFeatures xsi:type="ecore:EReference" name="teamMembers" lowerBound="2" upperBound="-1" eType="#//Athlete" eOpposite="#//Athlete/teamMembershipo"/>
+</eClassifiers>
+</ecore:EPackage>
