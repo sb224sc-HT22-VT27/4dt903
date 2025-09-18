@@ -96,13 +96,14 @@ public abstract class EventImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public void addParticipant(Medalable theParticipiant) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		getParticipants().add(theParticipiant);
+		//throw new UnsupportedOperationException();
 	}
 
 	/**

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ASCII"?>
+<olympics:OlympicGames xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:olympics="http://se.lnu.mde/olympics/clean" name="Milan- Cortina d&#x2019;Ampezzo 2026">
+  <invitedcommittees name="Sweden" numberOfGoldMedals="2">
+    <athletes name="Maria" winnerOf="//@disciplines.0/@events.2" age="26" weight="63.354137834459664" teamMembership="//@invitedcommittees.0/@teams.0"/>
+    <athletes name="Per" age="20" weight="53.76421217944253"/>
+    <athletes name="Johan" age="27" weight="51.47049983562662"/>
+    <athletes name="Sven" winnerOf="//@disciplines.0/@events.0 //@disciplines.0/@events.2" age="28" weight="73.13085911916535" teamMembership="//@invitedcommittees.0/@teams.0"/>
+    <teams name="Swedish biathlon team" winnerOf="//@disciplines.0/@events.2" teamMembers="//@invitedcommittees.0/@athletes.0 //@invitedcommittees.0/@athletes.3"/>
+  </invitedcommittees>
+  <invitedcommittees name="Spain">
+    <athletes name="Conchita" age="35" weight="78.76679333493696" teamMembership="//@invitedcommittees.1/@teams.0"/>
+    <athletes name="Pedro" age="23" weight="72.54016875048806" teamMembership="//@invitedcommittees.1/@teams.0"/>
+    <athletes name="Juan" age="30" weight="63.49153116972761"/>
+    <teams name="Spanish biathlon team" teamMembers="//@invitedcommittees.1/@athletes.1 //@invitedcommittees.1/@athletes.0"/>
+  </invitedcommittees>
+  <invitedcommittees name="Norway" numberOfGoldMedals="1">
+    <athletes name="Jakob" age="20" weight="59.69127763080186" teamMembership="//@invitedcommittees.2/@teams.0"/>
+    <athletes name="Emma" age="26" weight="56.966013332475626"/>
+    <athletes name="Nora" winnerOf="//@disciplines.0/@events.1" age="26" weight="76.80006752130575" teamMembership="//@invitedcommittees.2/@teams.0"/>
+    <teams name="Norwegian biathlon team" teamMembers="//@invitedcommittees.2/@athletes.0 //@invitedcommittees.2/@athletes.2"/>
+  </invitedcommittees>
+  <disciplines name="Biathlon">
+    <events xsi:type="olympics:IndividualEvent" name="Biathlon Men 10K" goldMedal="//@invitedcommittees.0/@athletes.3" BronzeMedal="//@invitedcommittees.0/@athletes.1" silverMedal="//@invitedcommittees.1/@athletes.1" participants="//@invitedcommittees.1/@athletes.1 //@invitedcommittees.1/@athletes.2 //@invitedcommittees.0/@athletes.1 //@invitedcommittees.0/@athletes.2 //@invitedcommittees.0/@athletes.3 //@invitedcommittees.2/@athletes.0"/>
+    <events xsi:type="olympics:IndividualEvent" name="Biathlon Women 15K" goldMedal="//@invitedcommittees.2/@athletes.2" BronzeMedal="//@invitedcommittees.0/@athletes.0" silverMedal="//@invitedcommittees.2/@athletes.1" participants="//@invitedcommittees.1/@athletes.0 //@invitedcommittees.0/@athletes.0 //@invitedcommittees.2/@athletes.2 //@invitedcommittees.2/@athletes.1"/>
+    <events xsi:type="olympics:TeamEvent" name="Biathlon Mixed relay 4x6K" goldMedal="//@invitedcommittees.0/@teams.0" bronzeMedal="//@invitedcommittees.2/@teams.0" silverMedal="//@invitedcommittees.1/@teams.0" participants="//@invitedcommittees.1/@teams.0 //@invitedcommittees.0/@teams.0 //@invitedcommittees.2/@teams.0"/>
+  </disciplines>
+</olympics:OlympicGames>
