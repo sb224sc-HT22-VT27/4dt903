@@ -4,10 +4,12 @@ import og.Athlete;
 import og.Discipline;
 import og.IndividualEvent;
 import og.InvitedCommittee;
+import og.Medalable;
 import og.Og;
 import og.OgFactory;
 import og.OgPackage;
 import og.Team;
+import og.TeamEvent;
 
 public class MainMilan2026 {
 
