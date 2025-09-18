@@ -1,10 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/og/src-gen" creationIcons="false" editDirectory="/og.edit/src-gen"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/og/src-gen" creationIcons="false" editDirectory="/og.edit/src-gen"
     editorDirectory="/og.editor/src-gen" modelPluginID="og" modelName="Og" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="21.0"
     copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>og.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
-  <genPackages prefix="Og" disposableProviderFactory="true" ecorePackage="og.ecore#/"/>
+  <genPackages prefix="Og" disposableProviderFactory="true" ecorePackage="og.ecore#/">
+    <genClasses ecoreClass="og.ecore#//Og">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//Og/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference og.ecore#//Og/disciplines"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference og.ecore#//Og/invitedCommittees"/>
+      <genOperations ecoreOperation="og.ecore#//Og/addCommittee">
+        <genParameters ecoreParameter="og.ecore#//Og/addCommittee/theCommittee"/>
+      </genOperations>
+      <genOperations ecoreOperation="og.ecore#//Og/addDiscipline">
+        <genParameters ecoreParameter="og.ecore#//Og/addDiscipline/theDiscipline"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="og.ecore#//Discipline">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//Discipline/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference og.ecore#//Discipline/events"/>
+      <genOperations ecoreOperation="og.ecore#//Discipline/addEvent">
+        <genParameters ecoreParameter="og.ecore#//Discipline/addEvent/theEvent"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="og.ecore#//InvitedCommittee">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//InvitedCommittee/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//InvitedCommittee/pathToFlagImage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//InvitedCommittee/numberOfGoldMedals"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference og.ecore#//InvitedCommittee/team"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference og.ecore#//InvitedCommittee/athletes"/>
+      <genOperations ecoreOperation="og.ecore#//InvitedCommittee/addTeam">
+        <genParameters ecoreParameter="og.ecore#//InvitedCommittee/addTeam/theTeam"/>
+      </genOperations>
+      <genOperations ecoreOperation="og.ecore#//InvitedCommittee/addAthlete">
+        <genParameters ecoreParameter="og.ecore#//InvitedCommittee/addAthlete/theAthlete"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="og.ecore#//Event">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//Event/name"/>
+      <genOperations ecoreOperation="og.ecore#//Event/addParticipant">
+        <genParameters ecoreParameter="og.ecore#//Event/addParticipant/theParticipant"/>
+      </genOperations>
+      <genOperations ecoreOperation="og.ecore#//Event/getParticipants"/>
+    </genClasses>
+    <genClasses ecoreClass="og.ecore#//TeamEvent">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//TeamEvent/goldMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//TeamEvent/silverMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//TeamEvent/bronzeMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//TeamEvent/participants"/>
+      <genOperations ecoreOperation="og.ecore#//TeamEvent/setGold">
+        <genParameters ecoreParameter="og.ecore#//TeamEvent/setGold/theGold"/>
+      </genOperations>
+      <genOperations ecoreOperation="og.ecore#//TeamEvent/setSilver">
+        <genParameters ecoreParameter="og.ecore#//TeamEvent/setSilver/theSilver"/>
+      </genOperations>
+      <genOperations ecoreOperation="og.ecore#//TeamEvent/setBronze">
+        <genParameters ecoreParameter="og.ecore#//TeamEvent/setBronze/theBronze"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="og.ecore#//IndividualEvent">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//IndividualEvent/participants"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//IndividualEvent/goldMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//IndividualEvent/silverMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//IndividualEvent/bronzeMedal"/>
+      <genOperations ecoreOperation="og.ecore#//IndividualEvent/setBronze">
+        <genParameters ecoreParameter="og.ecore#//IndividualEvent/setBronze/theBronze"/>
+      </genOperations>
+      <genOperations ecoreOperation="og.ecore#//IndividualEvent/setSilver">
+        <genParameters ecoreParameter="og.ecore#//IndividualEvent/setSilver/theSilver"/>
+      </genOperations>
+      <genOperations ecoreOperation="og.ecore#//IndividualEvent/setGold">
+        <genParameters ecoreParameter="og.ecore#//IndividualEvent/setGold/theGold"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="og.ecore#//Athlete">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//Athlete/invitedCommittee"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//Athlete/age"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//Athlete/weight"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//Athlete/teamMembership"/>
+      <genOperations ecoreOperation="og.ecore#//Athlete/getInvitedCommitte"/>
+    </genClasses>
+    <genClasses ecoreClass="og.ecore#//Team">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//Team/teamMembers"/>
+      <genOperations ecoreOperation="og.ecore#//Team/addMember">
+        <genParameters ecoreParameter="og.ecore#//Team/addMember/theAthlete"/>
+      </genOperations>
+      <genOperations ecoreOperation="og.ecore#//Team/getInvitedCommitte"/>
+    </genClasses>
+    <genClasses ecoreClass="og.ecore#//Medalable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute og.ecore#//Medalable/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference og.ecore#//Medalable/winnerOf"/>
+    </genClasses>
+  </genPackages>
 </genmodel:GenModel>
