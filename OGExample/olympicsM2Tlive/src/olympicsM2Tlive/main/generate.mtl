@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module generate('http://se.lnu.mde/olympics/clean')]
+
+
+[template public generateElement(anOlympicGames : OlympicGames)]
+[comment @main/]
+[file (anOlympicGames.name+'medal-table-committee', false, 'UTF-8')]
+Hello, World!
+[/file]
+[/template]
