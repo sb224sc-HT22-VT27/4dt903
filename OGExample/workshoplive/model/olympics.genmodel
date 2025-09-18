@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/workshoplive/src-gen" modelPluginID="workshoplive"
+    modelName="Olympics" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="21.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>olympics.ecore</foreignModel>
+  <genPackages prefix="Olympics" disposableProviderFactory="true" ecorePackage="olympics.ecore#/">
+    <genClasses ecoreClass="olympics.ecore#//OlympicGames">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//OlympicGames/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference olympics.ecore#//OlympicGames/invitedcommittees"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference olympics.ecore#//OlympicGames/disciplines"/>
+      <genOperations ecoreOperation="olympics.ecore#//OlympicGames/addCommittee">
+        <genParameters ecoreParameter="olympics.ecore#//OlympicGames/addCommittee/theCommittee"/>
+      </genOperations>
+      <genOperations ecoreOperation="olympics.ecore#//OlympicGames/addDiscipline">
+        <genParameters ecoreParameter="olympics.ecore#//OlympicGames/addDiscipline/theDiscipline"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="olympics.ecore#//InvitedCommittee">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//InvitedCommittee/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//InvitedCommittee/pathToFlag"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//InvitedCommittee/numberOfGoldMedals"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference olympics.ecore#//InvitedCommittee/athletes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference olympics.ecore#//InvitedCommittee/teams"/>
+      <genOperations ecoreOperation="olympics.ecore#//InvitedCommittee/addTeam">
+        <genParameters ecoreParameter="olympics.ecore#//InvitedCommittee/addTeam/theTeam"/>
+      </genOperations>
+      <genOperations ecoreOperation="olympics.ecore#//InvitedCommittee/addAthlete">
+        <genParameters ecoreParameter="olympics.ecore#//InvitedCommittee/addAthlete/theAthlete"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="olympics.ecore#//Discipline">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//Discipline/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference olympics.ecore#//Discipline/events"/>
+      <genOperations ecoreOperation="olympics.ecore#//Discipline/addEvent">
+        <genParameters ecoreParameter="olympics.ecore#//Discipline/addEvent/theEvent"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="olympics.ecore#//Medalable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//Medalable/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//Medalable/winnerOf"/>
+    </genClasses>
+    <genClasses ecoreClass="olympics.ecore#//Team">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//Team/teamMembers"/>
+      <genOperations ecoreOperation="olympics.ecore#//Team/addMember">
+        <genParameters ecoreParameter="olympics.ecore#//Team/addMember/theAthlete"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="olympics.ecore#//Athlete">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//Athlete/age"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//Athlete/weight"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//Athlete/teamMembership"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference olympics.ecore#//Athlete/invitedcommittee"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="olympics.ecore#//Event">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute olympics.ecore#//Event/name"/>
+      <genOperations ecoreOperation="olympics.ecore#//Event/addParticipant">
+        <genParameters ecoreParameter="olympics.ecore#//Event/addParticipant/theParticipiant"/>
+      </genOperations>
+      <genOperations ecoreOperation="olympics.ecore#//Event/getParticipants"/>
+    </genClasses>
+    <genClasses ecoreClass="olympics.ecore#//TeamEvent">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//TeamEvent/goldMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//TeamEvent/bronzeMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//TeamEvent/silverMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//TeamEvent/participants"/>
+    </genClasses>
+    <genClasses ecoreClass="olympics.ecore#//IndividualEvent">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//IndividualEvent/goldMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//IndividualEvent/BronzeMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//IndividualEvent/silverMedal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference olympics.ecore#//IndividualEvent/participants"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
