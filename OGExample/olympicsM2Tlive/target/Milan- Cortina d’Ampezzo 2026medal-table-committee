@@ -1,1 +1,14 @@
-Hello, World!
+Committee		|	Number of medals
+===============   ==================
+Sweden                    2
+Norway                    1
+Spain                     0
+
+Name			|	Number of medals	|	Committee
+===============   =====================   =================
+Sven                      2                     Sweden
+Maria                     1                     Sweden
+Nora                      1                     Norway
+
+
+

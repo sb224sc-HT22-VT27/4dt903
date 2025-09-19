@@ -5,6 +5,32 @@
 [template public generateElement(anOlympicGames : OlympicGames)]
 [comment @main/]
 [file (anOlympicGames.name+'medal-table-committee', false, 'UTF-8')]
-Hello, World!
+Committee		|	Number of medals
+===============   ==================
+[for (i : InvitedCommittee | anOlympicGames.invitedcommittees->sortedBy(-numberOfGoldMedals))]
+[if (i.numberOfGoldMedals > -1)]
+[i.name/][addBlanks(25 - i.name.size())/][i.numberOfGoldMedals/]
+[/if]
+[/for]
+
+Name			|	Number of medals	|	Committee
+===============   =====================   =================
+[for (ath : Athlete | anOlympicGames.invitedcommittees->collect(athletes)->sortedBy(-winnerOf->size()))]
+[if (ath.winnerOf->size() > 0)]
+[ath.name/][addBlanks(25 - ath.name.size())/][ath.winnerOf->size()/][addBlanks(20)/][ath.invitedcommittee.name/]
+[/if]
+[/for]
+
+
+
 [/file]
 [/template]
+
+[template public addBlanks(spaces : Integer)]
+[for (i: Integer | Sequence{0..spaces})] [/for]
+[/template]
+
+
+[comment][query public myReverse(list : Sequence(OclAny)) : Sequence(OclAny) =
+   invoke('olympicsM2Tlive.utils.', method(java.utils.), Sequence(OclAny))
+/][/comment]
