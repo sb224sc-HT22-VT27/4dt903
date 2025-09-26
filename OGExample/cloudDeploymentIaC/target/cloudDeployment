@@ -1,0 +1,7 @@
+- resource create "MyDatabase"
+	- setup Test from https://github.com/SamuelFredricBerg
+- resource create "MyServer"
+	- install ubuntu
+	- install tomcat
+	- install java
+	- setup webApp from https://github.com/SamuelFredricBerg

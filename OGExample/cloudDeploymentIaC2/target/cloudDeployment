@@ -1,0 +1,15 @@
+- resource create "database"
+	- install ubuntu
+	- install mongoDB
+	- setup configmongo from  https://github.com/SamuelFredricBerg
+- resource create "MyServer"
+	- install ubuntu
+	- install tomcat
+	- install java
+	- setup webApp from https://github.com/SamuelFredricBerg
+- DNS update:
+	- servername: www.lnu.se
+	- ip: 194.47.1.45
+			
+
+

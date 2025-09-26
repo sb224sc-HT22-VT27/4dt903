@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:networkinfo="http:///schemas/networkinfo/_NcweYJoMEfC5LI6E0GmTnw/0" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/networkinfo/_NcweYJoMEfC5LI6E0GmTnw/0 profile/networkinfo.profile.uml#_Ncy6oJoMEfC5LI6E0GmTnw">
+  <uml:Model xmi:id="_G7spUJoFEfC5LI6E0GmTnw" name="cloudDeployment">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_HAmXcJoFEfC5LI6E0GmTnw">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Device" xmi:id="_OZJSUJoFEfC5LI6E0GmTnw" name="MyServer">
+      <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_1tv6IJoFEfC5LI6E0GmTnw" name="ubuntu">
+        <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_EtEZIJoGEfC5LI6E0GmTnw" name="tomcat">
+          <nestedClassifier xmi:type="uml:Artifact" xmi:id="_LaX-oJoGEfC5LI6E0GmTnw" name="webApp" fileName="https://github.com/SamuelFredricBerg"/>
+        </nestedClassifier>
+        <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_IBq9cJoGEfC5LI6E0GmTnw" name="java"/>
+      </nestedClassifier>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Device" xmi:id="_2EHo8JqYEfC4eYLQAQbgdA" name="database">
+      <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_6I1bkJqYEfC4eYLQAQbgdA" name="ubuntu">
+        <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_80UxcJqYEfC4eYLQAQbgdA" name="mongoDB">
+          <nestedClassifier xmi:type="uml:Artifact" xmi:id="__53mEJqYEfC4eYLQAQbgdA" name="configmongo" fileName=" https://github.com/SamuelFredricBerg"/>
+        </nestedClassifier>
+      </nestedClassifier>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Z9uEkJoMEfC5LI6E0GmTnw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jaWXEJoMEfC5LI6E0GmTnw" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jaWXEZoMEfC5LI6E0GmTnw" key="Version" value="0.0.1"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jaWXEpoMEfC5LI6E0GmTnw" key="Comment" value="A stereotype for public access"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jaWXE5oMEfC5LI6E0GmTnw" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jaWXFJoMEfC5LI6E0GmTnw" key="Date" value="2025-09-25"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jaWXFZoMEfC5LI6E0GmTnw" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jaVwAJoMEfC5LI6E0GmTnw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="profile/networkinfo.profile.uml#_Ncy6oJoMEfC5LI6E0GmTnw"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="profile/networkinfo.profile.uml#_tEgaIJoKEfC5LI6E0GmTnw"/>
+    </profileApplication>
+  </uml:Model>
+  <networkinfo:PublicAccess xmi:id="_kosZgJoMEfC5LI6E0GmTnw" nameURL="www.lnu.se" IPaddress="194.47.1.45" base_Device="_OZJSUJoFEfC5LI6E0GmTnw"/>
+</xmi:XMI>
