@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<studyProgram:StudyProgram
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:studyProgram="http://www.example.org/studyProgram"
+    xsi:schemaLocation="http://www.example.org/studyProgram ../model/studyProgram.ecore"
+    name="Software Technology">
+  <courses code="4DV651"
+      title="Project in Model-Based Development"
+      credits="10"
+      hasOralExam="true"
+      numOfAssignments="1"/>
+  <courses code="4DV650"
+      title="Systems Modeling and Simulation"
+      hasWrittenExam="true"
+      numOfAssignments="2"/>
+  <courses code="4DV660"
+      title="Machine Learning"
+      hasOralExam="true"
+      numOfAssignments="3"/>
+  <courses code="4DV661"
+      title="Deep Machine Learning"
+      hasOralExam="true"
+      numOfAssignments="2"
+      prerequisites="//@courses.2"/>
+  <courses code="4DV000"
+      title="Final Examination"
+      credits="15"
+      hasWrittenExam="true"
+      hasOralExam="true"
+      prerequisites="//@courses.0 //@courses.1 //@courses.2 //@courses.3"/>
+</studyProgram:StudyProgram>
