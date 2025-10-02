@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<universityActivities:UniversityActivities xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:universityActivities="http://www.example.org/universityActivities" xsi:schemaLocation="http://www.example.org/universityActivities ../model/universityActivities.ecore" studyProgram="Software Technology">
+  <lectures courseCode="4DV651" courseName="Project in Model-Based Development" totalHours="125"/>
+  <lectures courseCode="4DV650" courseName="Systems Modeling and Simulation" totalHours="62"/>
+  <lectures courseCode="4DV660" courseName="Machine Learning" totalHours="62"/>
+  <lectures courseCode="4DV661" courseName="Deep Machine Learning" totalHours="62" requiredExams="//@exams.3"/>
+  <lectures courseCode="4DV000" courseName="Final Examination" totalHours="375" requiredExams="//@exams.2 //@exams.0 //@exams.3 //@exams.4"/>
+  <assignments courseCode="4DV651" assignmentNumber="1" expectedWorkloadInHours="125"/>
+  <assignments courseCode="4DV650" assignmentNumber="1" expectedWorkloadInHours="31"/>
+  <assignments courseCode="4DV650" assignmentNumber="2" expectedWorkloadInHours="31"/>
+  <assignments courseCode="4DV660" assignmentNumber="1" expectedWorkloadInHours="20"/>
+  <assignments courseCode="4DV660" assignmentNumber="2" expectedWorkloadInHours="20"/>
+  <assignments courseCode="4DV660" assignmentNumber="3" expectedWorkloadInHours="20"/>
+  <assignments courseCode="4DV661" assignmentNumber="1" expectedWorkloadInHours="31"/>
+  <assignments courseCode="4DV661" assignmentNumber="2" expectedWorkloadInHours="31"/>
+  <exams courseCode="4DV650" credits="5"/>
+  <exams courseCode="4DV000" credits="8"/>
+  <exams courseCode="4DV651" credits="10" type="oralExam"/>
+  <exams courseCode="4DV660" credits="5" type="oralExam"/>
+  <exams courseCode="4DV661" credits="5" type="oralExam"/>
+  <exams courseCode="4DV000" credits="7" type="oralExam"/>
+</universityActivities:UniversityActivities>

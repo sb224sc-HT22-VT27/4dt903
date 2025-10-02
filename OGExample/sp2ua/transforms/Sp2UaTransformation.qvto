@@ -1,0 +1,52 @@
+modeltype StudyProgramMM uses "http://www.example.org/studyProgram";
+modeltype UniversityActivitiesMM uses "http://www.example.org/universityActivities";
+
+transformation Sp2UaTransformation(in srcModel : StudyProgramMM, out targetModel : UniversityActivitiesMM);
+
+property HOURS_PER_CREDIT : Integer = 25;
+
+main() {
+	// [MetaModel::Attribute]
+	srcModel.rootObjects()[StudyProgramMM::StudyProgram] -> map toUniversityActivities();
+	log("Transformation Done!");
+}
+
+mapping StudyProgramMM::StudyProgram::toUniversityActivities() : UniversityActivitiesMM::UniversityActivities {
+	result.studyProgram := self.name;
+	result.lectures := self.courses -> map toLectures();
+	result.assignments := self.courses -> map toAssigns() -> flatten();
+	result.exams := self.courses -> select(c | c.hasWrittenExam) -> map toExams(UniversityActivitiesMM::ExamType::writtenExam);
+	result.exams += self.courses -> select(c | c.hasOralExam) -> map toExams(UniversityActivitiesMM::ExamType::oralExam);
+}
+
+mapping StudyProgramMM::Course::toLectures() : UniversityActivitiesMM::Lecture {
+	result.courseCode := self.code;
+	result.courseName := self.title;
+	result.totalHours := if self.numOfAssignments = 0 then self.credits * HOURS_PER_CREDIT else (self.credits * HOURS_PER_CREDIT).div(2) endif;
+	result.requiredExams := self.prerequisites -> late resolve(UniversityActivitiesMM::Exam);
+}
+
+helper StudyProgramMM::Course::toAssigns() : OrderedSet(UniversityActivitiesMM::Assignment) {
+	return Sequence{1..self.numOfAssignments} -> collect(i | self.map toAssign(i)) -> asOrderedSet();
+}
+
+mapping StudyProgramMM::Course::toAssign(assignNum : Integer) : UniversityActivitiesMM::Assignment {
+	result.courseCode := self.code;
+	result.assignmentNumber := assignNum;
+	result.expectedWorkloadInHours := (self.credits * HOURS_PER_CREDIT).div(2 * self.numOfAssignments);
+}
+
+mapping StudyProgramMM::Course::toExams(examType : UniversityActivitiesMM::ExamType) : UniversityActivitiesMM::Exam {
+	init {
+		var numOfCredits : Integer;
+		if (self.hasWrittenExam and self.hasOralExam) then {
+			if examType = UniversityActivitiesMM::ExamType::writtenExam then numOfCredits := self.credits - self.credits.div(2) else numOfCredits := self.credits.div(2) endif;
+		} else {
+			numOfCredits := self.credits;
+		} endif
+	}
+	result.courseCode := self.code;
+	result.credits := numOfCredits;
+	result.type := examType;
+}
+
