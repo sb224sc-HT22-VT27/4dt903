@@ -1,0 +1,11 @@
+# LaTeX ignores
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.bbl
+*.blg
