@@ -1,0 +1,189 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+citecolor=black]{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage[nottoc]{tocbibind}
+\usepackage[english]{babel}
+
+\tolerance=1413
+\hfuzz=1.5pt
+
+\title{4DT903 Project Proposal \\
+\large{Automated Test Case Generation from User Stories }}
+\author{Samuel Berg (sb224sc)}
+\date{October 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+\section{Objective}
+\subsection{Domain and Problem}
+This project addresses the challenge of bridging requirements engineering and software testing by automating the generation of test cases from natural language user stories.\cite{allala2023transforming}
+
+In agile software development, user stories serve as the primary format for capturing functional requirements~\cite{wang2024automated}. However, translating these stories into comprehensive test cases remains a manual, time consuming, complex and error prone process. Teams often struggle with:
+
+\begin{itemize}
+  \item Inconsistent test coverage across different user stories.
+  \item Manual effort required to maintain traceability between requirements and tests.
+  \item Delayed test creation that pushes testing to later development phases.
+  \item Difficulty ensuring all acceptance criteria are properly tested.
+\end{itemize}
+\noindent
+The project will use Model-Driven Engineering (MDE) to automatically transform structured user stories into executable test case specifications~\cite{allala2023transforming, dias2015model} that can be exported to popular testing frameworks (such as JUnit for Java, pytest for Python or testing for Go), thereby improving consistency, traceability, and development velocity.
+
+\newpage
+\section{Models}
+\subsection{Metamodels and Domains}
+The project involves three distinct domains, each requiring its own metamodel:
+
+\begin{enumerate}
+  \item User Story Metamodel (Source Domain):
+
+    This metamodel captures the structure of user stories following the standard format~\cite{wang2024automated, nlp2024userstory}:
+    \begin{itemize}
+      \item UserStory: Container element with ID, title, priority, and status.
+      \item Actor: The role performing the action (``As a [role]'').
+      \item Goal: The desired functionality (``I want to [action]'').
+      \item Benefit: The business value (``So that [outcome]'').
+      \item AcceptanceCriteria: Testable conditions using ``Given When Then'' format:
+        \begin{itemize}
+          \item Precondition (Given): Initial state.
+          \item Action (When): Trigger event.
+          \item ExpectedResult (Then): Expected outcome.
+        \end{itemize}
+    \end{itemize}
+  \item Test Specification Metamodel (Intermediate Domain):
+
+    This platform-independent metamodel represents test cases abstractly~\cite{allala2023transforming, dias2015model}:
+    \begin{itemize}
+      \item TestSuite: Groups related test cases.
+      \item TestCase: Individual test with name, description, and priority.
+      \item TestStep: Atomic test actions (Setup, Execute, Assert, Teardown).
+      \item TestData: Input values and expected outputs.
+      \item Assertion: Verification statements with comparison operators.
+      \item Traceability: Links back to source user story elements.
+    \end{itemize}
+  \item Testing Framework Metamodel (Target Domain):
+
+    This metamodel represents the structure of popular testing frameworks:
+    \begin{itemize}
+      \item TestClass: Container for test methods.
+      \item TestMethod: Individual test function with annotations/decorators.
+      \item SetupMethod / TeardownMethod: Fixture management.
+      \item AssertStatement: Framework-specific assertion syntax.
+      \item TestAnnotation: Metadata (e.g. @Test, @DisplayName, @Tag).
+    \end{itemize}
+
+\end{enumerate}
+
+\subsection{Metamodel Relations}
+The metamodels are connected through the transformation pipeline~\cite{brambilla2017model}:
+\begin{itemize}
+  \item User Story $\rightarrow$ Test Specification: M2M transformation mapping acceptance criteria to abstract test cases.
+  \item Test Specification $\rightarrow$ Testing Framework: M2M transformation adapting abstract tests to framework-specific structure.
+  \item Testing Framework $\rightarrow$ Code: M2T transformation generating executable test code.
+\end{itemize}
+
+\subsection{Tool Integration}
+\subsubsection*{Model Creation:}
+\begin{itemize}
+  \item User stories will be created using a custom Eclipse-based editor built with EMF, providing a structured form interface for entering user story components~\cite{brambilla2017model}.
+  \item Models will be stored in XMI format for compatibility with EMF-based tools.
+\end{itemize}
+
+\subsubsection*{Model Consumption:}
+\begin{itemize}
+  \item Generated test code files (.java,~.py,~.go) will be consumed by JUnit 5 (for Java), pytest (for Python) or testing (for Go).
+  \item Test frameworks will execute the generated tests within standard development environments (Eclipse, IntelliJ IDEA, VS Code).
+\end{itemize}
+
+\subsubsection*{Model Updates:}
+\begin{itemize}
+  \item When user stories are modified, the transformation pipeline can be re-executed to regenerate affected test cases.
+  \item A traceability model will track which test cases are derived from which user stories, enabling selective regeneration~\cite{allala2023transforming}.
+\end{itemize}
+
+\newpage
+\section{Transformations}
+\subsection{Transformation Pipeline}
+\begin{enumerate}
+  \item M2M Transformation: User Story to Test Specification (QVTo)~\cite{serebrennikova2015assessing, qvto2024}
+
+    This transformation will:
+    \begin{itemize}
+      \item Create one TestSuite per UserStory (or group related stories).
+      \item Generate one TestCase per AcceptanceCriteria.
+      \item Map ``Given When Then'' structure to TestStep sequences:
+        \begin{itemize}
+          \item Given $\rightarrow$ Setup steps.
+          \item When $\rightarrow$ Execute steps.
+          \item Then $\rightarrow$ Assert steps.
+        \end{itemize}
+      \item Extract test data from acceptance criteria descriptions using pattern matching~\cite{nlp2024userstory}.
+      \item Establish traceability links between test elements and story elements.
+      \item Assign test priorities based on user story priority.
+    \end{itemize}
+
+  \item M2M Transformation: Test Specification to Testing Framework (QVTo)~\cite{serebrennikova2015assessing, qvto2024}
+
+    This transformation adapts the platform-independent test model to a specific framework:
+    \begin{itemize}
+      \item Map TestSuite to TestClass with appropriate naming conventions.
+      \item Transform TestCase to TestMethod with framework annotations.
+      \item Convert generic Assertions to framework-specific assertion methods (e.g., assertEquals, assertThat).
+      \item Generate Setup/Teardown methods for shared test fixtures.
+      \item Add framework-specific metadata (tags, display names, test order).
+      \item Handle multiple target frameworks using transformation parameters.
+    \end{itemize}
+
+  \item M2T Transformation: Testing Framework to Code (Acceleo)~\cite{acceleo2024}
+
+    This transformation generates executable code:
+    \begin{itemize}
+      \item Produce Java files with JUnit 5, Python files with pytest or Go files with testing syntax.
+      \item Generate properly formatted, readable code with comments linking to source user stories.
+      \item Include necessary imports and class/module structure.
+      \item Apply coding conventions (naming, indentation, documentation)
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Combining Transformations}
+The transformations will be orchestrated using an Eclipse workflow script~\cite{brambilla2017model} that:
+\begin{enumerate}
+  \item Loads the user story model (XMI file).
+  \item Executes the first M2M transformation (Story $\rightarrow$ Test Spec)
+  \item Saves the intermediate test specification model
+  \item Executes the second M2M transformation (Test Spec $\rightarrow$ Framework)
+  \item Executes the M2T transformation to generate code files
+  \item Outputs test files to a designated directory
+\end{enumerate}
+Parameterization: The workflow will accept parameters for:
+\begin{itemize}
+  \item Target testing framework (JUnit/pytest/testing).
+  \item Output directory.
+  \item Naming conventions.
+  \item Test organization preferences.
+\end{itemize}
+Batch Processing: Multiple user story models can be processed in sequence, with all generated tests consolidated into a single test suite structure.
+
+Validation: Each transformation will include validation steps to ensure model compliance with metamodels and report any inconsistencies in the source user stories (e.g.~missing acceptance criteria, ambiguous conditions)~\cite{serebrennikova2015assessing}.
+
+This MDE approach ensures consistency, maintainability, and traceability while significantly reducing the manual effort required to create comprehensive test suites from requirements~\cite{allala2023transforming, dias2015model}.
+
+\newpage
+\bibliographystyle{ieeetr}
+\bibliography{ref}
+
+\end{document}

@@ -1,0 +1,613 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+citecolor=black]{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage[nottoc]{tocbibind}
+\usepackage[english]{babel}
+
+\tolerance=1413
+\hfuzz=1.1pt
+
+\title{4DT903 Project Proposal \\
+\large{Automated Data Analysis Pipeline Generator from Dataset Metadata}}
+\author{Samuel Berg (sb224sc)}
+\date{October 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+\section{Objective}
+\subsection{Domain and Problem}
+This project addresses the challenge of automatically generating executable Jupyter notebook data analysis pipelines from dataset metadata and analysis requirements.~\cite{ex}
+
+Data scientists and analysts often perform repetitive exploratory data analysis (EDA) tasks when working with new datasets: loading data, checking data quality, generating descriptive statistics, creating visualizations, and applying standard preprocessing steps.
+This manual process involves:
+\begin{itemize}
+  \item Writing boilerplate code for data loading, cleaning, and initial exploration.
+  \item Repeatedly implementing similar visualization patterns (distributions, correlations, time series).
+  \item Manually selecting appropriate statistical tests and machine learning models based on data characteristics.
+  \item Creating inconsistent analysis workflows across different projects.
+  \item Difficulty reproducing analyses when datasets are updated or extended.
+  \item Lack of standardized documentation and reporting formats.
+\end{itemize}
+
+The project will use Model-Driven Engineering (MDE) to automatically transform dataset metadata and analysis specifications into complete, executable Jupyter notebooks with data loading, quality checks, exploratory analysis, visualizations, statistical tests, and preliminary modeling, ensuring reproducibility and best practices.
+
+\newpage
+\section{Models}
+\subsection{Metamodels and Domains}
+The project involves three distinct domains, each requiring its own metamodel:
+\begin{enumerate}
+  \item Dataset Metadata Metamodel (Source Domain)
+
+    This metamodel captures the structure and characteristics of datasets:
+    \begin{itemize}
+      \item Dataset: Root element with name, source, format (CSV, Excel, JSON, SQL, Parquet).
+      \item Column: Individual data field:
+        \begin{itemize}
+          \item Name: Column identifier.
+          \item DataType: Categorical, numerical (continuous/discrete), temporal, text, boolean.
+          \item Constraints: Unique, not-null, primary key, foreign key.
+          \item Statistics: Min, max, mean, median, mode, missing percentage.
+          \item Distribution: Normal, skewed, uniform, bimodal.
+        \end{itemize}
+
+      \item Relationship: Connections between columns:
+        \begin{itemize}
+          \item ForeignKey: References to other tables/datasets.
+          \item Correlation: Statistical relationships between numerical columns.
+          \item Hierarchy: Parent-child relationships (e.g. Country $\rightarrow$ State $\rightarrow$ City).
+        \end{itemize}
+
+      \item TemporalInfo: Time related properties:
+        \begin{itemize}
+          \item TimeColumn: Timestamp or date field.
+          \item Granularity: Second, minute, hour, day, month, year.
+          \item Seasonality: Detected patterns.
+        \end{itemize}
+
+      \item DataQuality: Issues and anomalies:
+        \begin{itemize}
+          \item MissingValues: Percentage and pattern (MCAR, MAR, MNAR).
+          \item Outliers: Statistical outliers with detection method.
+          \item Duplicates: Duplicate row information.
+          \item Inconsistencies: Format issues, value ranges.
+        \end{itemize}
+    \end{itemize}
+
+  \item Analysis Specification Metamodel (Source Domain \textendash~Secondary)
+
+    This metamodel defines what analysis to perform:
+    \begin{itemize}
+      \item AnalysisGoal: Overall objective (exploration, prediction, clustering, comparison).
+      \item Question: Specific research questions to answer.
+      \item TargetVariable: Column of primary interest (for supervised learning).
+      \item FeatureSet: Columns to include in analysis.
+      \item AnalysisTask: Specific analyses to perform:
+        \begin{itemize}
+          \item DescriptiveAnalysis: Summary statistics, distributions.
+          \item VisualAnalysis: Plots and charts to generate.
+          \item StatisticalTest: Hypothesis tests (t-test, chi-square, ANOVA, correlation).
+          \item ModelingTask: ML algorithms to apply (regression, classification, clustering).
+        \end{itemize}
+
+      \item Constraint: Requirements and limitations:
+        \begin{itemize}
+          \item ComputationalBudget: Time/memory constraints.
+          \item InterpretabilityRequirement: Need for explainable models.
+          \item Preprocessing: Required data transformations.
+        \end{itemize}
+    \end{itemize}
+
+  \item Notebook Structure Metamodel (Intermediate Domain)
+
+    This platform-independent metamodel represents Jupyter notebook organization:
+    \begin{itemize}
+      \item Notebook: Container with title, author, description.
+      \item Section: Logical grouping with heading and markdown description:
+        \begin{itemize}
+          \item ImportSection: Library imports and configuration.
+          \item DataLoadingSection: Data ingestion code.
+          \item DataQualitySection: Quality checks and profiling.
+          \item ExploratorySection: EDA with statistics and visualizations.
+          \item PreprocessingSection: Data cleaning and transformation.
+          \item AnalysisSection: Statistical tests or modeling.
+          \item ResultsSection: Findings and interpretation.
+          \item ConclusionSection: Summary and recommendations.
+        \end{itemize}
+
+      \item Cell: Individual notebook cell:
+        \begin{itemize}
+          \item CodeCell: Executable Python code.
+          \item MarkdownCell: Documentation and explanations.
+          \item OutputCell: Expected output (figure, table, text).
+        \end{itemize}
+
+      \item CodeBlock: Python code structures:
+        \begin{itemize}
+          \item ImportStatement: Library imports.
+          \item Function: Reusable code blocks.
+          \item DataOperation: Pandas/NumPy operations.
+          \item Visualization: Matplotlib/Seaborn/Plotly code.
+          \item Model: Scikit-learn/TensorFlow model definitions.
+        \end{itemize}
+
+      \item Documentation: Markdown content:
+        \begin{itemize}
+          \item Explanation: Interpretive text.
+          \item Warning: Data quality notes.
+          \item Insight: Key findings.
+        \end{itemize}
+    \end{itemize}
+
+  \item Python/Jupyter Implementation Metamodel (Target Domain)
+
+    This metamodel represents executable Jupyter notebook elements:
+    \begin{itemize}
+      \item NotebookFile:~.ipynb JSON structure.
+      \item CellMetadata: Execution order, cell type, tags.
+      \item PythonCode: Executable Python with proper syntax.
+      \item Library: Specific library usage:
+        \begin{itemize}
+          \item Pandas: DataFrame operations (\texttt{read\_csv}, \texttt{groupby}, \texttt{merge}, \texttt{pivot}).
+          \item NumPy: Array operations and mathematical functions.
+          \item Matplotlib/Seaborn/Plotly: Visualization code.
+          \item Scikit-learn: Preprocessing, models, metrics.
+          \item Scipy: Statistical test.
+          \item Statsmodels: Advanced statistical modeling.
+        \end{itemize}
+
+      \item PlotConfiguration: Figure size, style, colors, labels, legends.
+      \item DataFrameOperation: Specific pandas operations with parameters.
+      \item MarkdownFormatting: Headers, lists, code blocks, LaTeX equations, tables.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Metamodel Relations}
+The metamodels are connected through the transformation pipeline:
+\begin{itemize}
+  \item Dataset Metadata $+$ Analysis Specification $\rightarrow$ Notebook Structure: M2M transformation that infers appropriate analysis workflow based on data characteristics and goals.
+  \item Notebook Structure $\rightarrow$ Python/Jupyter Implementation: M2M transformation adapting abstract analysis steps to specific library calls and notebook structure.
+  \item Python/Jupyter Implementation $\rightarrow$~.ipynb File: M2T transformation generating executable Jupyter notebook.
+\end{itemize}
+\subsection{Tool Integration}
+\subsubsection*{Model Creation:}
+
+\textbf{Dataset Metadata Generation:}
+\begin{itemize}
+  \item Automatically extract metadata from existing datasets using pandas-profiling or custom profiler.
+  \item Import schema definitions from database metadata (SQL DDL, MongoDB schemas).
+  \item Parse data dictionaries (Excel/CSV files with column descriptions).
+  \item Support Great Expectations validation suites as metadata source.
+  \item Accept manual metadata definition through EMF-based form editor.
+  \item Store metadata in XMI format or JSON schema.
+\end{itemize}
+
+\noindent
+\textbf{Analysis Specification:}
+\begin{itemize}
+  \item Create through custom Eclipse editor with wizard-style interface.
+  \item Import from template library for common analysis patterns (customer segmentation, time series forecasting, A/B testing).
+  \item Convert from natural language descriptions using simple NLP parsing.
+  \item Integration with MLflow or DVC for experiment tracking metadata.
+\end{itemize}
+
+\subsubsection*{Model Consumption:}
+\begin{itemize}
+  \item Generated Jupyter notebooks (.ipynb) are consumed by:
+    \begin{itemize}
+      \item JupyterLab / Jupyter Notebook environments.
+      \item Google Colab (with minor adaptations).
+      \item VS Code with Jupyter extension.
+      \item Databricks notebooks (with Spark adaptations).
+    \end{itemize}
+
+  \item Notebooks are immediately executable with proper environment setup.
+  \item Can be version controlled in Git repositories.
+  \item Convertible to Python scripts (.py) for production pipelines.
+\end{itemize}
+
+\subsubsection*{Model Updates:}
+\begin{itemize}
+  \item When dataset changes (new columns, data refreshes), metadata can be regenerated.
+  \item Incremental regeneration updates only affected analysis sections.
+  \item Custom code cells marked with special tags are preserved during regeneration.
+  \item Diff tool shows changes between generated versions.
+  \item Support for parameterized notebooks using papermill for automatic re-execution with different parameters.
+\end{itemize}
+
+\newpage
+\section{Transformations}
+\subsection{Transformation Pipeline}
+\begin{enumerate}
+  \item M2M Transformation: Dataset Metadata + Analysis Specification to Notebook Structure (QVTo)
+
+    This transformation implements intelligent analysis workflow generation:
+
+    Structure Generation:
+    \begin{itemize}
+      \item Create notebook sections based on analysis goals:
+        \begin{itemize}
+          \item Always include: Imports, Data Loading, Data Quality Check.
+          \item Add preprocessing section if data quality issues detected.
+          \item Include EDA section with visualizations appropriate for data types.
+          \item Add statistical testing section if comparison/hypothesis testing specified.
+          \item Include modeling section if prediction/classification goal specified.
+          \item Generate results interpretation and visualization.
+        \end{itemize}
+    \end{itemize}
+    Data Type-Driven Analysis:
+    \begin{itemize}
+      \item Numerical columns:
+        \begin{itemize}
+          \item Generate histogram, box plot, QQ plot for distribution analysis.
+          \item Calculate descriptive statistics (mean, median, std, quartiles).
+          \item Check for outliers using IQR or z-score methods.
+          \item Create correlation heatmaps if multiple numerical columns exist.
+        \end{itemize}
+
+      \item Categorical columns:
+        \begin{itemize}
+          \item Generate bar charts showing value distributions.
+          \item Calculate frequency tables and percentages.
+          \item Create cross-tabulations with target variable.
+          \item Suggest chi-square tests for independence.
+        \end{itemize}
+
+      \item Temporal columns:
+        \begin{itemize}
+          \item Generate time series plots.
+          \item Calculate trend and seasonality components.
+          \item Create autocorrelation plots.
+          \item Suggest appropriate time series models (ARIMA, Prophet).
+        \end{itemize}
+
+      \item Text columns:
+        \begin{itemize}
+          \item Generate word clouds and frequency distributions.
+          \item Calculate basic text statistics (length, unique values).
+          \item Suggest sentiment analysis or topic modeling if appropriate.
+        \end{itemize}
+    \end{itemize}
+
+    Relationship-Based Analysis:
+    \begin{itemize}
+      \item For correlated columns, generate scatter plots and correlation coefficients.
+      \item For foreign key relationships, suggest merge operations and relationship visualizations.
+      \item For hierarchical data, create aggregation analyses at different levels.
+    \end{itemize}
+
+    Quality-Driven Preprocessing:
+    \begin{itemize}
+      \item If missing values $> 5\%$, generate multiple imputation strategies to compare.
+      \item If outliers detected, create both outlier-inclusive and outlier-excluded analyses.
+      \item If duplicates found, generate deduplication code with explanation.
+      \item If class imbalance detected (categorical target), suggest resampling techniques.
+    \end{itemize}
+
+    Goal-Driven Modeling:
+    \begin{itemize}
+      \item Prediction goal with numerical target:
+        \begin{itemize}
+          \item Split data into train/test sets.
+          \item Generate linear regression, random forest, gradient boosting models.
+          \item Create feature importance visualizations.
+          \item Calculate regression metrics (RMSE, MAE, R²).
+        \end{itemize}
+
+      \item Classification goal:
+        \begin{itemize}
+          \item Generate logistic regression, decision tree, random forest models.
+          \item Create confusion matrices and ROC curves.
+          \item Calculate classification metrics (accuracy, precision, recall, F1).
+          \item Include cross-validation code.
+        \end{itemize}
+
+      \item Clustering goal:
+        \begin{itemize}
+          \item Generate K-means, hierarchical clustering, DBSCAN\@.
+          \item Create elbow plots for optimal cluster selection.
+          \item Visualize clusters with PCA/t-SNE dimensionality reduction.
+          \item Calculate silhouette scores.
+        \end{itemize}
+    \end{itemize}
+
+    Documentation Generation:
+    \begin{itemize}
+      \item Create markdown cells explaining each analysis step.
+      \item Add interpretive comments for statistical results.
+      \item Generate data quality warnings and recommendations.
+      \item Include best practice notes (e.g. ``Consider feature engineering'', ``Check for multicollinearity'').
+    \end{itemize}
+
+  \item M2M Transformation: Notebook Structure to Python/Jupyter Implementation (QVTo)
+
+    This transformation adapts abstract analysis to concrete Python code:
+
+    Library Selection and Optimization:
+    \begin{itemize}
+      \item Choose visualization library based on complexity:
+        \begin{itemize}
+          \item Matplotlib for simple plots.
+          \item Seaborn for statistical visualizations.
+          \item Plotly for interactive dashboards.
+        \end{itemize}
+
+      \item Select appropriate pandas operations for efficiency (vectorized operations over loops).
+      \item Choose between scikit-learn and statsmodels based on analysis needs.
+    \end{itemize}
+
+    Code Pattern Implementation:
+    \begin{itemize}
+      \item Data Loading:
+      \begin{verbatim}
+# Generate appropriate read function based on format
+# CSV → pd.read_csv() with dtype inference
+# Excel → pd.read_excel() with sheet handling
+# SQL → pd.read_sql() with connection management
+# JSON → pd.read_json() with normalization
+      \end{verbatim}
+
+      \item Visualization:
+        \begin{itemize}
+          \item Apply consistent styling (figure size, color schemes, fonts).
+          \item Add proper titles, axis labels, legends.
+          \item Include grid lines and annotations where helpful.
+          \item Make plots publication-ready.
+        \end{itemize}
+
+      \item Statistical Tests:
+        \begin{itemize}
+          \item Select appropriate test based on data characteristics.
+          \item Check assumptions before applying tests.
+          \item Include effect size calculations, not just p-values.
+          \item Generate clear interpretation of results.
+        \end{itemize}
+
+      \item Machine Learning Pipeline:
+        \begin{itemize}
+          \item Create proper train/test splits with stratification if needed.
+          \item Include feature scaling where appropriate.
+          \item Implement cross-validation.
+          \item Add hyperparameter tuning (GridSearchCV) for important models.
+          \item Include model persistence code (pickle/joblib).
+        \end{itemize}
+    \end{itemize}
+
+    Error Handling:
+    \begin{itemize}
+      \item Add try-except blocks for data loading.
+      \item Include data validation checks.
+      \item Generate informative error messages.
+      \item Add assertions for data shape and type expectations.
+    \end{itemize}
+
+    Performance Optimization:
+    \begin{itemize}
+      \item Use vectorized operations instead of loops.
+      \item Suggest chunking for large datasets.
+      \item Include memory profiling hints.
+      \item Add progress bars for long-running operations (tqdm).
+    \end{itemize}
+
+  \item M2T Transformation: Python/Jupyter Implementation to~.ipynb File (Acceleo)
+
+    This transformation generates executable Jupyter notebooks:
+
+    Notebook Structure Generation:
+    \begin{verbatim}
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": ["# Analysis Title\n",
+        "## Overview\n", "Description..."]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": ["import pandas as pd\n",
+        "import numpy as np\n", ...],
+      "outputs": []
+    },
+    ...
+  ],
+  "metadata": {
+    "kernelspec": {...},
+    "language_info": {...}
+  },
+  "nbformat": 4,
+  "nbformat_minor": 4
+}
+    \end{verbatim}
+
+    Code Quality:
+    \begin{itemize}
+      \item Generate PEP 8 compliant Python code.
+      \item Include type hints where beneficial.
+      \item Add docstrings for custom functions.
+      \item Use meaningful variable names (df, not d; fig, ax for matplotlib).
+      \item Apply consistent formatting (indentation, spacing).
+    \end{itemize}
+
+    Documentation Quality:
+    \begin{itemize}
+      \item Generate markdown with proper heading hierarchy.
+      \item Include LaTeX equations for statistical formulas: $\bar{x} = \tfrac{1}{n}\sum_{i=1}^{n}x_i$.
+      \item Create formatted tables for results.
+      \item Add inline code formatting for variable names.
+      \item Include hyperlinks to documentation.
+    \end{itemize}
+
+    Reproducibility Features:
+    \begin{itemize}
+      \item Set random seeds for reproducible results.
+      \item Include \texttt{requirements.txt} or \texttt{environment.yml}.
+      \item Add data source information and download instructions.
+      \item Include dataset versioning information.
+      \item Generate timestamp in notebook header.
+    \end{itemize}
+
+    Interactive Elements:
+    \begin{itemize}
+      \item Add ipywidgets for parameter exploration where beneficial.
+      \item Include table of contents for navigation.
+      \item Add collapsible sections for lengthy outputs.
+      \item Generate summary visualizations at the top for quick insights.
+    \end{itemize}
+
+    Output Management:
+    \begin{itemize}
+      \item Pre-populate expected outputs (optional, for demonstration).
+      \item Add cell execution timing metadata.
+      \item Include memory usage profiling for large datasets.
+      \item Generate figure exports (PNG/SVG) for presentations.
+    \end{itemize}
+
+\end{enumerate}
+
+\subsection{Combining Transformations}
+The transformations will be orchestrated through a comprehensive workflow system:
+
+\subsubsection*{Main Workflow:}
+\begin{enumerate}
+  \item Metadata Extraction Phase:
+    \begin{itemize}
+      \item Load dataset and automatically profile it.
+      \item Extract statistical properties, data types, relationships.
+      \item Detect data quality issues.
+      \item Save metadata model.
+    \end{itemize}
+
+  \item Specification Phase:
+    \begin{itemize}
+      \item User defines analysis goals through GUI wizard.
+      \item Select analysis type (EDA, prediction, comparison, clustering).
+      \item Specify target variables and features.
+      \item Set constraints (interpretability, computational budget).
+      \item Choose visualization preferences.
+    \end{itemize}
+
+  \item Notebook Generation Phase:
+    \begin{itemize}
+      \item Execute Metadata $+$ Specification $\rightarrow$ Notebook Structure transformation.
+      \item Preview notebook outline with section descriptions.
+      \item Allow user to enable/disable sections.
+      \item Execute Notebook Structure $\rightarrow$ Python Implementation transformation.
+      \item Execute Python Implementation $\rightarrow$~.ipynb file transformation.
+    \end{itemize}
+
+  \item Output Phase:
+    \begin{itemize}
+      \item Generate executable~.ipynb file.
+      \item Create requirements.txt with all dependencies.
+      \item Generate README with setup instructions.
+      \item Optionally execute notebook and save with outputs.
+      \item Package as downloadable ZIP or push to Git.
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection*{Advanced Features:}
+Template Library:
+\begin{itemize}
+  \item Pre-built analysis templates for common scenarios:
+    \begin{itemize}
+      \item Customer churn analysis.
+      \item A/B test statistical analysis.
+      \item Time series forecasting.
+      \item Image classification with CNN\@.
+      \item NLP sentiment analysis.
+      \item Market basket analysis
+    \end{itemize}
+
+  \item Users can create custom templates and save them.
+\end{itemize}
+
+Multi-Dataset Analysis:
+\begin{itemize}
+  \item Generate notebooks that analyze multiple related datasets.
+  \item Create comparison analyses across datasets.
+  \item Handle dataset merging and relationship visualization.
+\end{itemize}
+
+Parameterized Execution:
+\begin{itemize}
+  \item Generate notebooks with parameters using papermill.
+  \item Allow batch execution with different parameter sets.
+  \item Create automated reporting pipelines.
+\end{itemize}
+
+Progressive Disclosure:
+\begin{itemize}
+  \item Generate basic notebook first, then enhance with advanced features.
+  \item Beginner mode: simpler code, more explanations.
+  \item Advanced mode: optimized code, less commentary.
+  \item Expert mode: compact code, minimal documentation.
+\end{itemize}
+
+Integration Capabilities:
+\begin{itemize}
+  \item MLflow integration: Generate experiment tracking code.
+  \item Great Expectations integration: Add data validation checkpoints.
+  \item Airflow/Prefect integration: Generate workflow orchestration code.
+  \item Dashboard generation: Create Streamlit/Dash apps from notebooks.
+  \item Report generation: Convert to HTML/PDF with executive summaries.
+\end{itemize}
+
+Incremental Updates:
+\begin{itemize}
+  \item When dataset is updated with new records:
+    \begin{itemize}
+      \item Regenerate only data loading and profiling sections.
+      \item Preserve custom analysis code.
+      \item Re-execute statistical tests with new data.
+      \item Update visualizations automatically.
+    \end{itemize}
+
+  \item When new columns are added:
+    \begin{itemize}
+      \item Add analysis for new columns.
+      \item Update correlation analyses.
+      \item Suggest new features for existing models.
+    \end{itemize}
+\end{itemize}
+
+Quality Assurance:
+\begin{itemize}
+  \item Validate generated code syntax before output.
+  \item Include unit tests for custom functions.
+  \item Add data validation assertions.
+  \item Generate code quality report (complexity, documentation coverage).
+  \item Include performance profiling suggestions.
+\end{itemize}
+
+Collaboration Features:
+\begin{itemize}
+  \item Generate notebooks with clear section ownership.
+  \item Include review checklists in markdown.
+  \item Add version control-friendly cell IDs.
+  \item Generate diff-friendly outputs (exclude execution counts and output in Git).
+\end{itemize}
+
+\noindent
+This MDE approach dramatically reduces the time required to start analyzing new datasets, ensures analysis best practices are followed consistently, improves reproducibility across projects, and allows data scientists to focus on domain-specific insights rather than boilerplate code. The generated notebooks serve as both executable analysis and comprehensive documentation, making knowledge transfer and collaboration significantly easier.
+
+\newpage
+\bibliographystyle{ieeetr}
+\bibliography{ref}
+
+\end{document}
