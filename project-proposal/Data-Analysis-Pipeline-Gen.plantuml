@@ -1,0 +1,31 @@
+@startuml Data-Analysis-Pipeline-Gen
+skinparam classFontSize 15
+skinparam classFontStyle bold
+skinparam roundCorner 10
+skinparam nodesep 20
+skinparam ranksep 30
+
+' Metamodel
+rectangle "Dataset Metadata\nSource Metamodel" as metamodelA0 #lightblue
+rectangle "Analysis Specification\nSource Metamodel" as metamodelA1 #lightblue
+rectangle "Notebook Structure\nIntermediate Metamodel " as metamodelB #lightblue
+rectangle "Python/Jupyter Implementation\nTarget Metamodel" as metamodelC #lightblue
+
+' Model
+rectangle "Source Model" as modelA #lightgreen
+rectangle "Notebook Structure\nIntermediate Model" as modelB #lightgreen
+rectangle "Python/Jupyter Implementation\nTarget Model" as modelC #lightgreen
+
+' Output/Result
+file ".ipynb File" as output #orange
+
+' Define relationships
+metamodelA0 ...> modelA
+metamodelA1 ...> modelA
+metamodelB ...> modelB
+metamodelC ...> modelC
+
+modelA -right-> modelB : M2M\nTransformation
+modelB -right-> modelC : M2M\nTransformation
+modelC -right-> output : M2T\nTransformation
+@enduml

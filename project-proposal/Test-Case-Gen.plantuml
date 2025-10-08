@@ -1,0 +1,29 @@
+@startuml Test-Case-Gen
+skinparam classFontSize 15
+skinparam classFontStyle bold
+skinparam roundCorner 10
+skinparam nodesep 20
+skinparam ranksep 30
+
+' Metamodel
+rectangle "User Story\nSource Metamodel" as metamodelA #lightblue
+rectangle "Test Specification\nIntermediate Metamodel " as metamodelB #lightblue
+rectangle "Testing Framework\nTarget Metamodel" as metamodelC #lightblue
+
+' Model
+rectangle "User Story\nSource Model" as modelA #lightgreen
+rectangle "Test Specificaion\nIntermediate Model" as modelB #lightgreen
+rectangle "Testing Framework\nTarget Model" as modelC #lightgreen
+
+' Output/Result
+file ".go Test File" as output #orange
+
+' Define relationships
+metamodelA ...> modelA
+metamodelB ...> modelB
+metamodelC ...> modelC
+
+modelA -right-> modelB : M2M\nTransformation
+modelB -right-> modelC : M2M\nTransformation
+modelC -right-> output : M2T\nTransformation
+@enduml
