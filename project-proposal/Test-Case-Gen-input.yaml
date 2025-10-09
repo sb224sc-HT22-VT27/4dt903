@@ -1,0 +1,29 @@
+# AI - Generated test input
+
+userStory:
+    id: US-001
+    title: User Login Authentication
+    priority: High
+    status: In Progress
+
+    actor: registered user
+
+    goal: log in to my account using email and password
+
+    benefit: I can access my personalized dashboard and saved preferences
+
+    acceptanceCriteria:
+        - id: AC-001-1
+          precondition: the user is on the login page
+          action: the user enters valid credentials and clicks login
+          expectedResult: the user is redirected to their dashboard
+
+        - id: AC-001-2
+          precondition: the user is on the login page
+          action: the user enters invalid credentials
+          expectedResult: an error message is displayed and the user remains on the login page
+
+        - id: AC-001-3
+          precondition: the user has entered credentials
+          action: the user fails to login three times consecutively
+          expectedResult: the account is temporarily locked for 15 minutes

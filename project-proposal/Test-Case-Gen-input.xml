@@ -1,0 +1,73 @@
+<!-- AI - Generated test input -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.5">
+  <uml:Model xmi:id="model_1" name="UserStoryModel">
+    <packagedElement xmi:type="uml:Class" xmi:id="us_001" name="UserStory">
+      <ownedAttribute xmi:id="us_001_id" name="id" type="String">
+        <defaultValue xmi:type="uml:LiteralString" value="US-001"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="us_001_title" name="title" type="String">
+        <defaultValue xmi:type="uml:LiteralString" value="User Login Authentication"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="us_001_priority" name="priority" type="String">
+        <defaultValue xmi:type="uml:LiteralString" value="High"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="us_001_status" name="status" type="String">
+        <defaultValue xmi:type="uml:LiteralString" value="In Progress"/>
+      </ownedAttribute>
+
+      <!-- Actor -->
+      <ownedAttribute xmi:id="us_001_actor" name="actor" type="String">
+        <defaultValue xmi:type="uml:LiteralString" value="registered user"/>
+      </ownedAttribute>
+
+      <!-- Goal -->
+      <ownedAttribute xmi:id="us_001_goal" name="goal" type="String">
+        <defaultValue xmi:type="uml:LiteralString" value="log in to my account using email and password"/>
+      </ownedAttribute>
+
+      <!-- Benefit -->
+      <ownedAttribute xmi:id="us_001_benefit" name="benefit" type="String">
+        <defaultValue xmi:type="uml:LiteralString" value="I can access my personalized dashboard and saved preferences"/>
+      </ownedAttribute>
+
+      <!-- Acceptance Criteria -->
+      <nestedClassifier xmi:type="uml:Class" xmi:id="ac_001_1" name="AcceptanceCriteria_1">
+        <ownedAttribute xmi:id="ac_001_1_given" name="precondition" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="the user is on the login page"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ac_001_1_when" name="action" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="the user enters valid credentials and clicks login"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ac_001_1_then" name="expectedResult" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="the user is redirected to their dashboard"/>
+        </ownedAttribute>
+      </nestedClassifier>
+
+      <nestedClassifier xmi:type="uml:Class" xmi:id="ac_001_2" name="AcceptanceCriteria_2">
+        <ownedAttribute xmi:id="ac_001_2_given" name="precondition" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="the user is on the login page"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ac_001_2_when" name="action" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="the user enters invalid credentials"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ac_001_2_then" name="expectedResult" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="an error message is displayed and the user remains on the login page"/>
+        </ownedAttribute>
+      </nestedClassifier>
+
+      <nestedClassifier xmi:type="uml:Class" xmi:id="ac_001_3" name="AcceptanceCriteria_3">
+        <ownedAttribute xmi:id="ac_001_3_given" name="precondition" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="the user has entered credentials"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ac_001_3_when" name="action" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="the user fails to login three times consecutively"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ac_001_3_then" name="expectedResult" type="String">
+          <defaultValue xmi:type="uml:LiteralString" value="the account is temporarily locked for 15 minutes"/>
+        </ownedAttribute>
+      </nestedClassifier>
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>
