@@ -177,6 +177,7 @@ Parameterization: The workflow will accept parameters for:
   \item Test organization preferences.
 \end{itemize}
 
+\noindent
 Batch Processing: Multiple user story models can be processed in sequence, with all generated tests consolidated into a single test suite structure.
 
 Validation: Each transformation will include validation steps to ensure model compliance with metamodels and report any inconsistencies in the source user stories (e.g.~missing acceptance criteria, ambiguous conditions)~\cite{serebrennikova2015assessing}.
@@ -197,5 +198,77 @@ This MDE approach ensures consistency, maintainability, and traceability while s
   \includegraphics[width=\textwidth]{img/Test-Case-Gen.jpeg}
   \caption{Overview of the Transformations to be implemented in this project}\label{fig:flow-diagram}
 \end{figure}
+
+\newpage
+\section{Example of Input files \& structure}
+\textbf{Note:} The following example input files have been generated with the help of AI/LLMs\@.
+\subsection{YAML Format}
+\begin{verbatim}
+userStory:
+    id: US-001
+    title: User Login Authentication
+    priority: High
+    status: In Progress
+
+    actor: registered user
+
+    goal: log in to my account using email and password
+
+    benefit: I can access my personalized dashboard and saved preferences
+
+    acceptanceCriteria:
+        - id: AC-001-1
+          precondition: the user is on the login page
+          action: the user enters valid credentials and clicks login
+          expectedResult: the user is redirected to their dashboard
+
+        - id: AC-001-2
+          precondition: the user is on the login page
+          action: the user enters invalid credentials
+          expectedResult: an error message is displayed and
+            the user remains on the login page
+
+        - id: AC-001-3
+          precondition: the user has entered credentials
+          action: the user fails to login three times consecutively
+          expectedResult: the account is temporarily locked for 15 minutes
+\end{verbatim}
+
+\newpage
+\subsection{JSON Format}
+\begin{verbatim}
+{
+    "userStory": {
+        "id": "US-001",
+        "title": "User Login Authentication",
+        "priority": "High",
+        "status": "In Progress",
+        "actor": "registered user",
+        "goal": "log in to my account using email and password",
+        "benefit": "I can access my personalized dashboard and saved preferences",
+        "acceptanceCriteria": [
+            {
+                "id": "AC-001-1",
+                "precondition": "the user is on the login page",
+                "action": "the user enters valid credentials and clicks login",
+                "expectedResult": "the user is redirected to their dashboard"
+            },
+            {
+                "id": "AC-001-2",
+                "precondition": "the user is on the login page",
+                "action": "the user enters invalid credentials",
+                "expectedResult": "an error message is displayed and
+                    the user remains on the login page"
+            },
+            {
+                "id": "AC-001-3",
+                "precondition": "the user has entered credentials",
+                "action": "the user fails to login three times consecutively",
+                "expectedResult": "the account is temporarily locked for 15 minutes"
+            }
+        ]
+    }
+}
+\end{verbatim}
 
 \end{document}
