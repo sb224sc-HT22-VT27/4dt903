@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated notebookMM -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="notebookMM.presentation.NotebookMMModelWizardID"
+            name="%_UI_NotebookMMModelWizard_label"
+            class="notebookMM.presentation.NotebookMMModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/NotebookMMModelFile.gif">
+         <description>%_UI_NotebookMMModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated notebookMM -->
+      <editor
+            id="notebookMM.presentation.NotebookMMEditorID"
+            name="%_UI_NotebookMMEditor_label"
+            icon="icons/full/obj16/NotebookMMModelFile.gif"
+            extensions="notebookmm"
+            class="notebookMM.presentation.NotebookMMEditor"
+            contributorClass="notebookMM.presentation.NotebookMMActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
