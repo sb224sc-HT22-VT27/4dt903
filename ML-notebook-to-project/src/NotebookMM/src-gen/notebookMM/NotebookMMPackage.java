@@ -5,6 +5,7 @@ package notebookMM;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -104,13 +105,58 @@ public interface NotebookMMPackage extends EPackage {
 	int NOTEBOOK_MODEL_FEATURE_COUNT = 3;
 
 	/**
+	 * The operation id for the '<em>Get Code Cells</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTEBOOK_MODEL___GET_CODE_CELLS = 0;
+
+	/**
+	 * The operation id for the '<em>Get Markdown Cells</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTEBOOK_MODEL___GET_MARKDOWN_CELLS = 1;
+
+	/**
+	 * The operation id for the '<em>Get All Imports</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTEBOOK_MODEL___GET_ALL_IMPORTS = 2;
+
+	/**
+	 * The operation id for the '<em>Get Cells By Type</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTEBOOK_MODEL___GET_CELLS_BY_TYPE__CELLTYPE = 3;
+
+	/**
+	 * The operation id for the '<em>Validate</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTEBOOK_MODEL___VALIDATE = 4;
+
+	/**
 	 * The number of operations of the '<em>Notebook Model</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NOTEBOOK_MODEL_OPERATION_COUNT = 0;
+	int NOTEBOOK_MODEL_OPERATION_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link notebookMM.impl.NotebookMetadataImpl <em>Notebook Metadata</em>}' class.
@@ -168,13 +214,22 @@ public interface NotebookMMPackage extends EPackage {
 	int NOTEBOOK_METADATA_FEATURE_COUNT = 4;
 
 	/**
+	 * The operation id for the '<em>Is Python Kernel</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTEBOOK_METADATA___IS_PYTHON_KERNEL = 0;
+
+	/**
 	 * The number of operations of the '<em>Notebook Metadata</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NOTEBOOK_METADATA_OPERATION_COUNT = 0;
+	int NOTEBOOK_METADATA_OPERATION_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link notebookMM.impl.CellImpl <em>Cell</em>}' class.
@@ -205,13 +260,40 @@ public interface NotebookMMPackage extends EPackage {
 	int CELL__EXECUTION_ORDER = 1;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CELL__ID = 2;
+
+	/**
 	 * The number of structural features of the '<em>Cell</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CELL_FEATURE_COUNT = 2;
+	int CELL_FEATURE_COUNT = 3;
+
+	/**
+	 * The operation id for the '<em>Is Empty</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CELL___IS_EMPTY = 0;
+
+	/**
+	 * The operation id for the '<em>Get Content Length</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CELL___GET_CONTENT_LENGTH = 1;
 
 	/**
 	 * The number of operations of the '<em>Cell</em>' class.
@@ -220,7 +302,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CELL_OPERATION_COUNT = 0;
+	int CELL_OPERATION_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link notebookMM.impl.CodeCellImpl <em>Code Cell</em>}' class.
@@ -251,6 +333,15 @@ public interface NotebookMMPackage extends EPackage {
 	int CODE_CELL__EXECUTION_ORDER = CELL__EXECUTION_ORDER;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL__ID = CELL__ID;
+
+	/**
 	 * The feature id for the '<em><b>Source</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -260,13 +351,112 @@ public interface NotebookMMPackage extends EPackage {
 	int CODE_CELL__SOURCE = CELL_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Imports</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL__IMPORTS = CELL_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Outputs</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL__OUTPUTS = CELL_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Code Cell</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL_FEATURE_COUNT = CELL_FEATURE_COUNT + 1;
+	int CODE_CELL_FEATURE_COUNT = CELL_FEATURE_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Is Empty</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___IS_EMPTY = CELL___IS_EMPTY;
+
+	/**
+	 * The operation id for the '<em>Get Content Length</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___GET_CONTENT_LENGTH = CELL___GET_CONTENT_LENGTH;
+
+	/**
+	 * The operation id for the '<em>Extract Imports</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___EXTRACT_IMPORTS = CELL_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Has Imports</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___HAS_IMPORTS = CELL_OPERATION_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Training Code</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___IS_TRAINING_CODE = CELL_OPERATION_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Is Data Preprocessing</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___IS_DATA_PREPROCESSING = CELL_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Is Prediction Code</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___IS_PREDICTION_CODE = CELL_OPERATION_COUNT + 4;
+
+	/**
+	 * The operation id for the '<em>Get Source Lines</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___GET_SOURCE_LINES = CELL_OPERATION_COUNT + 5;
+
+	/**
+	 * The operation id for the '<em>Contains Keyword</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___CONTAINS_KEYWORD__STRING = CELL_OPERATION_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Code Cell</em>' class.
@@ -275,7 +465,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL_OPERATION_COUNT = CELL_OPERATION_COUNT + 0;
+	int CODE_CELL_OPERATION_COUNT = CELL_OPERATION_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link notebookMM.impl.MarkdownCellImpl <em>Markdown Cell</em>}' class.
@@ -306,6 +496,15 @@ public interface NotebookMMPackage extends EPackage {
 	int MARKDOWN_CELL__EXECUTION_ORDER = CELL__EXECUTION_ORDER;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MARKDOWN_CELL__ID = CELL__ID;
+
+	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -324,13 +523,58 @@ public interface NotebookMMPackage extends EPackage {
 	int MARKDOWN_CELL_FEATURE_COUNT = CELL_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Is Empty</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MARKDOWN_CELL___IS_EMPTY = CELL___IS_EMPTY;
+
+	/**
+	 * The operation id for the '<em>Get Content Length</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MARKDOWN_CELL___GET_CONTENT_LENGTH = CELL___GET_CONTENT_LENGTH;
+
+	/**
+	 * The operation id for the '<em>Is Header</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MARKDOWN_CELL___IS_HEADER = CELL_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Get Header Level</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MARKDOWN_CELL___GET_HEADER_LEVEL = CELL_OPERATION_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Extract Title</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MARKDOWN_CELL___EXTRACT_TITLE = CELL_OPERATION_COUNT + 2;
+
+	/**
 	 * The number of operations of the '<em>Markdown Cell</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MARKDOWN_CELL_OPERATION_COUNT = CELL_OPERATION_COUNT + 0;
+	int MARKDOWN_CELL_OPERATION_COUNT = CELL_OPERATION_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link notebookMM.CellType <em>Cell Type</em>}' enum.
@@ -384,6 +628,56 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getNotebookModel_Metadata();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.NotebookModel#getCodeCells() <em>Get Code Cells</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Code Cells</em>' operation.
+	 * @see notebookMM.NotebookModel#getCodeCells()
+	 * @generated
+	 */
+	EOperation getNotebookModel__GetCodeCells();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.NotebookModel#getMarkdownCells() <em>Get Markdown Cells</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Markdown Cells</em>' operation.
+	 * @see notebookMM.NotebookModel#getMarkdownCells()
+	 * @generated
+	 */
+	EOperation getNotebookModel__GetMarkdownCells();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.NotebookModel#getAllImports() <em>Get All Imports</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get All Imports</em>' operation.
+	 * @see notebookMM.NotebookModel#getAllImports()
+	 * @generated
+	 */
+	EOperation getNotebookModel__GetAllImports();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.NotebookModel#getCellsByType(notebookMM.CellType) <em>Get Cells By Type</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Cells By Type</em>' operation.
+	 * @see notebookMM.NotebookModel#getCellsByType(notebookMM.CellType)
+	 * @generated
+	 */
+	EOperation getNotebookModel__GetCellsByType__CellType();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.NotebookModel#validate() <em>Validate</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Validate</em>' operation.
+	 * @see notebookMM.NotebookModel#validate()
+	 * @generated
+	 */
+	EOperation getNotebookModel__Validate();
 
 	/**
 	 * Returns the meta object for class '{@link notebookMM.NotebookMetadata <em>Notebook Metadata</em>}'.
@@ -440,6 +734,16 @@ public interface NotebookMMPackage extends EPackage {
 	EAttribute getNotebookMetadata_NbformatMinor();
 
 	/**
+	 * Returns the meta object for the '{@link notebookMM.NotebookMetadata#isPythonKernel() <em>Is Python Kernel</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Python Kernel</em>' operation.
+	 * @see notebookMM.NotebookMetadata#isPythonKernel()
+	 * @generated
+	 */
+	EOperation getNotebookMetadata__IsPythonKernel();
+
+	/**
 	 * Returns the meta object for class '{@link notebookMM.Cell <em>Cell</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -472,6 +776,37 @@ public interface NotebookMMPackage extends EPackage {
 	EAttribute getCell_ExecutionOrder();
 
 	/**
+	 * Returns the meta object for the attribute '{@link notebookMM.Cell#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see notebookMM.Cell#getId()
+	 * @see #getCell()
+	 * @generated
+	 */
+	EAttribute getCell_Id();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.Cell#isEmpty() <em>Is Empty</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Empty</em>' operation.
+	 * @see notebookMM.Cell#isEmpty()
+	 * @generated
+	 */
+	EOperation getCell__IsEmpty();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.Cell#getContentLength() <em>Get Content Length</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Content Length</em>' operation.
+	 * @see notebookMM.Cell#getContentLength()
+	 * @generated
+	 */
+	EOperation getCell__GetContentLength();
+
+	/**
 	 * Returns the meta object for class '{@link notebookMM.CodeCell <em>Code Cell</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -493,6 +828,98 @@ public interface NotebookMMPackage extends EPackage {
 	EAttribute getCodeCell_Source();
 
 	/**
+	 * Returns the meta object for the attribute list '{@link notebookMM.CodeCell#getImports <em>Imports</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Imports</em>'.
+	 * @see notebookMM.CodeCell#getImports()
+	 * @see #getCodeCell()
+	 * @generated
+	 */
+	EAttribute getCodeCell_Imports();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link notebookMM.CodeCell#getOutputs <em>Outputs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Outputs</em>'.
+	 * @see notebookMM.CodeCell#getOutputs()
+	 * @see #getCodeCell()
+	 * @generated
+	 */
+	EAttribute getCodeCell_Outputs();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#extractImports() <em>Extract Imports</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Extract Imports</em>' operation.
+	 * @see notebookMM.CodeCell#extractImports()
+	 * @generated
+	 */
+	EOperation getCodeCell__ExtractImports();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#hasImports() <em>Has Imports</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Has Imports</em>' operation.
+	 * @see notebookMM.CodeCell#hasImports()
+	 * @generated
+	 */
+	EOperation getCodeCell__HasImports();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#isTrainingCode() <em>Is Training Code</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Training Code</em>' operation.
+	 * @see notebookMM.CodeCell#isTrainingCode()
+	 * @generated
+	 */
+	EOperation getCodeCell__IsTrainingCode();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#isDataPreprocessing() <em>Is Data Preprocessing</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Data Preprocessing</em>' operation.
+	 * @see notebookMM.CodeCell#isDataPreprocessing()
+	 * @generated
+	 */
+	EOperation getCodeCell__IsDataPreprocessing();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#isPredictionCode() <em>Is Prediction Code</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Prediction Code</em>' operation.
+	 * @see notebookMM.CodeCell#isPredictionCode()
+	 * @generated
+	 */
+	EOperation getCodeCell__IsPredictionCode();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#getSourceLines() <em>Get Source Lines</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Source Lines</em>' operation.
+	 * @see notebookMM.CodeCell#getSourceLines()
+	 * @generated
+	 */
+	EOperation getCodeCell__GetSourceLines();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#containsKeyword(java.lang.String) <em>Contains Keyword</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Contains Keyword</em>' operation.
+	 * @see notebookMM.CodeCell#containsKeyword(java.lang.String)
+	 * @generated
+	 */
+	EOperation getCodeCell__ContainsKeyword__String();
+
+	/**
 	 * Returns the meta object for class '{@link notebookMM.MarkdownCell <em>Markdown Cell</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -512,6 +939,36 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getMarkdownCell_Content();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.MarkdownCell#isHeader() <em>Is Header</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Header</em>' operation.
+	 * @see notebookMM.MarkdownCell#isHeader()
+	 * @generated
+	 */
+	EOperation getMarkdownCell__IsHeader();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.MarkdownCell#getHeaderLevel() <em>Get Header Level</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Header Level</em>' operation.
+	 * @see notebookMM.MarkdownCell#getHeaderLevel()
+	 * @generated
+	 */
+	EOperation getMarkdownCell__GetHeaderLevel();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.MarkdownCell#extractTitle() <em>Extract Title</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Extract Title</em>' operation.
+	 * @see notebookMM.MarkdownCell#extractTitle()
+	 * @generated
+	 */
+	EOperation getMarkdownCell__ExtractTitle();
 
 	/**
 	 * Returns the meta object for enum '{@link notebookMM.CellType <em>Cell Type</em>}'.
@@ -581,6 +1038,47 @@ public interface NotebookMMPackage extends EPackage {
 		EReference NOTEBOOK_MODEL__METADATA = eINSTANCE.getNotebookModel_Metadata();
 
 		/**
+		 * The meta object literal for the '<em><b>Get Code Cells</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation NOTEBOOK_MODEL___GET_CODE_CELLS = eINSTANCE.getNotebookModel__GetCodeCells();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Markdown Cells</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation NOTEBOOK_MODEL___GET_MARKDOWN_CELLS = eINSTANCE.getNotebookModel__GetMarkdownCells();
+
+		/**
+		 * The meta object literal for the '<em><b>Get All Imports</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation NOTEBOOK_MODEL___GET_ALL_IMPORTS = eINSTANCE.getNotebookModel__GetAllImports();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Cells By Type</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation NOTEBOOK_MODEL___GET_CELLS_BY_TYPE__CELLTYPE = eINSTANCE
+				.getNotebookModel__GetCellsByType__CellType();
+
+		/**
+		 * The meta object literal for the '<em><b>Validate</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation NOTEBOOK_MODEL___VALIDATE = eINSTANCE.getNotebookModel__Validate();
+
+		/**
 		 * The meta object literal for the '{@link notebookMM.impl.NotebookMetadataImpl <em>Notebook Metadata</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -623,6 +1121,14 @@ public interface NotebookMMPackage extends EPackage {
 		EAttribute NOTEBOOK_METADATA__NBFORMAT_MINOR = eINSTANCE.getNotebookMetadata_NbformatMinor();
 
 		/**
+		 * The meta object literal for the '<em><b>Is Python Kernel</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation NOTEBOOK_METADATA___IS_PYTHON_KERNEL = eINSTANCE.getNotebookMetadata__IsPythonKernel();
+
+		/**
 		 * The meta object literal for the '{@link notebookMM.impl.CellImpl <em>Cell</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -649,6 +1155,30 @@ public interface NotebookMMPackage extends EPackage {
 		EAttribute CELL__EXECUTION_ORDER = eINSTANCE.getCell_ExecutionOrder();
 
 		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CELL__ID = eINSTANCE.getCell_Id();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Empty</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CELL___IS_EMPTY = eINSTANCE.getCell__IsEmpty();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Content Length</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CELL___GET_CONTENT_LENGTH = eINSTANCE.getCell__GetContentLength();
+
+		/**
 		 * The meta object literal for the '{@link notebookMM.impl.CodeCellImpl <em>Code Cell</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -667,6 +1197,78 @@ public interface NotebookMMPackage extends EPackage {
 		EAttribute CODE_CELL__SOURCE = eINSTANCE.getCodeCell_Source();
 
 		/**
+		 * The meta object literal for the '<em><b>Imports</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CODE_CELL__IMPORTS = eINSTANCE.getCodeCell_Imports();
+
+		/**
+		 * The meta object literal for the '<em><b>Outputs</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CODE_CELL__OUTPUTS = eINSTANCE.getCodeCell_Outputs();
+
+		/**
+		 * The meta object literal for the '<em><b>Extract Imports</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___EXTRACT_IMPORTS = eINSTANCE.getCodeCell__ExtractImports();
+
+		/**
+		 * The meta object literal for the '<em><b>Has Imports</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___HAS_IMPORTS = eINSTANCE.getCodeCell__HasImports();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Training Code</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___IS_TRAINING_CODE = eINSTANCE.getCodeCell__IsTrainingCode();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Data Preprocessing</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___IS_DATA_PREPROCESSING = eINSTANCE.getCodeCell__IsDataPreprocessing();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Prediction Code</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___IS_PREDICTION_CODE = eINSTANCE.getCodeCell__IsPredictionCode();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Source Lines</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___GET_SOURCE_LINES = eINSTANCE.getCodeCell__GetSourceLines();
+
+		/**
+		 * The meta object literal for the '<em><b>Contains Keyword</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___CONTAINS_KEYWORD__STRING = eINSTANCE.getCodeCell__ContainsKeyword__String();
+
+		/**
 		 * The meta object literal for the '{@link notebookMM.impl.MarkdownCellImpl <em>Markdown Cell</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -683,6 +1285,30 @@ public interface NotebookMMPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute MARKDOWN_CELL__CONTENT = eINSTANCE.getMarkdownCell_Content();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Header</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation MARKDOWN_CELL___IS_HEADER = eINSTANCE.getMarkdownCell__IsHeader();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Header Level</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation MARKDOWN_CELL___GET_HEADER_LEVEL = eINSTANCE.getMarkdownCell__GetHeaderLevel();
+
+		/**
+		 * The meta object literal for the '<em><b>Extract Title</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation MARKDOWN_CELL___EXTRACT_TITLE = eINSTANCE.getMarkdownCell__ExtractTitle();
 
 		/**
 		 * The meta object literal for the '{@link notebookMM.CellType <em>Cell Type</em>}' enum.

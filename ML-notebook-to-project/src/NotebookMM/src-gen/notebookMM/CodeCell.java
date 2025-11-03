@@ -2,6 +2,8 @@
  */
 package notebookMM;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Code Cell</b></em>'.
@@ -12,6 +14,8 @@ package notebookMM;
  * </p>
  * <ul>
  *   <li>{@link notebookMM.CodeCell#getSource <em>Source</em>}</li>
+ *   <li>{@link notebookMM.CodeCell#getImports <em>Imports</em>}</li>
+ *   <li>{@link notebookMM.CodeCell#getOutputs <em>Outputs</em>}</li>
  * </ul>
  *
  * @see notebookMM.NotebookMMPackage#getCodeCell()
@@ -40,5 +44,94 @@ public interface CodeCell extends Cell {
 	 * @generated
 	 */
 	void setSource(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Imports</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Imports</em>' attribute list.
+	 * @see notebookMM.NotebookMMPackage#getCodeCell_Imports()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getImports();
+
+	/**
+	 * Returns the value of the '<em><b>Outputs</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Outputs</em>' attribute list.
+	 * @see notebookMM.NotebookMMPackage#getCodeCell_Outputs()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getOutputs();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Extracts import statements from source code
+	 * <!-- end-model-doc -->
+	 * @model
+	 * @generated
+	 */
+	EList<String> extractImports();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasImports();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Heuristic to detect if this cell contains model training code
+	 * <!-- end-model-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isTrainingCode();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isDataPreprocessing();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isPredictionCode();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Returns source code split into lines
+	 * <!-- end-model-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	EList<String> getSourceLines();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean containsKeyword(String keyword);
 
 } // CodeCell

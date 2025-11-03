@@ -54,7 +54,7 @@ public interface NotebookModel extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cells</em>' containment reference list.
 	 * @see notebookMM.NotebookMMPackage#getNotebookModel_Cells()
-	 * @model containment="true" required="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<Cell> getCells();
@@ -66,7 +66,7 @@ public interface NotebookModel extends EObject {
 	 * @return the value of the '<em>Metadata</em>' containment reference.
 	 * @see #setMetadata(NotebookMetadata)
 	 * @see notebookMM.NotebookMMPackage#getNotebookModel_Metadata()
-	 * @model containment="true" required="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	NotebookMetadata getMetadata();
@@ -80,5 +80,57 @@ public interface NotebookModel extends EObject {
 	 * @generated
 	 */
 	void setMetadata(NotebookMetadata value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Returns all code cells in the notebook
+	 * <!-- end-model-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	EList<CodeCell> getCodeCells();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Returns all markdown cells in the notebook
+	 * <!-- end-model-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	EList<MarkdownCell> getMarkdownCells();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Returns all unique imports from all code cells
+	 * <!-- end-model-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	EList<String> getAllImports();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	EList<Cell> getCellsByType(CellType type);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Validates the notebook structure
+	 * <!-- end-model-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean validate();
 
 } // NotebookModel

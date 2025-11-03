@@ -1,32 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="notebookMM" nsURI="http://www.g7.org/notebookMM" nsPrefix="notebookMM">
+<ecore:EPackage xmi:version="2.0" 
+	xmlns:xmi="http://www.omg.org/XMI" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" 
+    name="notebookMM" 
+    nsURI="http://www.g7.org/notebookMM" 
+    nsPrefix="notebookMM">
+  
+  <!-- Root Class: NotebookModel -->
   <eClassifiers xsi:type="ecore:EClass" name="NotebookModel">
+    <eOperations name="getCodeCells" upperBound="-1" eType="#//CodeCell">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns all code cells in the notebook"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getMarkdownCells" upperBound="-1" eType="#//MarkdownCell">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns all markdown cells in the notebook"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getAllImports" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns all unique imports from all code cells"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getCellsByType" upperBound="-1" eType="#//Cell">
+      <eParameters name="type" eType="#//CellType"/>
+    </eOperations>
+    <eOperations name="validate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Validates the notebook structure"/>
+      </eAnnotations>
+    </eOperations>
+    
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="cells" lowerBound="1" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cells" upperBound="-1" 
         eType="#//Cell" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="metadata" lowerBound="1"
-        eType="#//NotebookMetadata" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metadata" eType="#//NotebookMetadata" 
+        containment="true"/>
   </eClassifiers>
+
+  <!-- NotebookMetadata Class -->
   <eClassifiers xsi:type="ecore:EClass" name="NotebookMetadata">
+    <eOperations name="isPythonKernel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kernelspec" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="language" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nbformat" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nbformatMinor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
+
+  <!-- Abstract Cell Class -->
   <eClassifiers xsi:type="ecore:EClass" name="Cell" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cellType" eType="#//CellType"
-        defaultValueLiteral="CODE"/>
+    <eOperations name="isEmpty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getContentLength" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cellType" eType="#//CellType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="executionOrder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+
+  <!-- CodeCell Class -->
   <eClassifiers xsi:type="ecore:EClass" name="CodeCell" eSuperTypes="#//Cell">
+    <eOperations name="extractImports" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Extracts import statements from source code"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="hasImports" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isTrainingCode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Heuristic to detect if this cell contains model training code"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="isDataPreprocessing" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="isPredictionCode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getSourceLines" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns source code split into lines"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="containsKeyword" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="keyword" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="source" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imports" upperBound="-1" 
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputs" upperBound="-1" 
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+
+  <!-- MarkdownCell Class -->
   <eClassifiers xsi:type="ecore:EClass" name="MarkdownCell" eSuperTypes="#//Cell">
+    <eOperations name="isHeader" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getHeaderLevel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="extractTitle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="content" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+
+  <!-- CellType Enumeration -->
   <eClassifiers xsi:type="ecore:EEnum" name="CellType">
-    <eLiterals name="CODE"/>
+    <eLiterals name="CODE" value="0"/>
     <eLiterals name="MARKDOWN" value="1"/>
   </eClassifiers>
+  
 </ecore:EPackage>

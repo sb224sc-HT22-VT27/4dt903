@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import notebookMM.Cell;
-import notebookMM.CellType;
 import notebookMM.NotebookMMPackage;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -56,6 +55,7 @@ public class CellItemProvider extends ItemProviderAdapter implements IEditingDom
 
 			addCellTypePropertyDescriptor(object);
 			addExecutionOrderPropertyDescriptor(object);
+			addIdPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -92,6 +92,21 @@ public class CellItemProvider extends ItemProviderAdapter implements IEditingDom
 	}
 
 	/**
+	 * This adds a property descriptor for the Id feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addIdPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Cell_id_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Cell_id_feature", "_UI_Cell_type"),
+						NotebookMMPackage.Literals.CELL__ID, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -109,8 +124,7 @@ public class CellItemProvider extends ItemProviderAdapter implements IEditingDom
 	 */
 	@Override
 	public String getText(Object object) {
-		CellType labelValue = ((Cell) object).getCellType();
-		String label = labelValue == null ? null : labelValue.toString();
+		String label = ((Cell) object).getId();
 		return label == null || label.length() == 0 ? getString("_UI_Cell_type")
 				: getString("_UI_Cell_type") + " " + label;
 	}
@@ -129,6 +143,7 @@ public class CellItemProvider extends ItemProviderAdapter implements IEditingDom
 		switch (notification.getFeatureID(Cell.class)) {
 		case NotebookMMPackage.CELL__CELL_TYPE:
 		case NotebookMMPackage.CELL__EXECUTION_ORDER:
+		case NotebookMMPackage.CELL__ID:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}

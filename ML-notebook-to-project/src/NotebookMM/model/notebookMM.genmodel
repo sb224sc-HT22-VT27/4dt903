@@ -17,22 +17,47 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookModel/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference notebookMM.ecore#//NotebookModel/cells"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference notebookMM.ecore#//NotebookModel/metadata"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//NotebookModel/getCodeCells"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//NotebookModel/getMarkdownCells"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//NotebookModel/getAllImports"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//NotebookModel/getCellsByType">
+        <genParameters ecoreParameter="notebookMM.ecore#//NotebookModel/getCellsByType/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="notebookMM.ecore#//NotebookModel/validate"/>
     </genClasses>
     <genClasses ecoreClass="notebookMM.ecore#//NotebookMetadata">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/kernelspec"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/language"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/nbformat"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/nbformatMinor"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//NotebookMetadata/isPythonKernel"/>
     </genClasses>
     <genClasses image="false" ecoreClass="notebookMM.ecore#//Cell">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//Cell/cellType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//Cell/executionOrder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//Cell/id"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//Cell/isEmpty"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//Cell/getContentLength"/>
     </genClasses>
     <genClasses ecoreClass="notebookMM.ecore#//CodeCell">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//CodeCell/source"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//CodeCell/imports"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//CodeCell/outputs"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/extractImports"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/hasImports"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/isTrainingCode"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/isDataPreprocessing"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/isPredictionCode"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/getSourceLines"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/containsKeyword">
+        <genParameters ecoreParameter="notebookMM.ecore#//CodeCell/containsKeyword/keyword"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="notebookMM.ecore#//MarkdownCell">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//MarkdownCell/content"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//MarkdownCell/isHeader"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//MarkdownCell/getHeaderLevel"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//MarkdownCell/extractTitle"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link notebookMM.Cell#getCellType <em>Cell Type</em>}</li>
  *   <li>{@link notebookMM.Cell#getExecutionOrder <em>Execution Order</em>}</li>
+ *   <li>{@link notebookMM.Cell#getId <em>Id</em>}</li>
  * </ul>
  *
  * @see notebookMM.NotebookMMPackage#getCell()
@@ -24,7 +25,6 @@ import org.eclipse.emf.ecore.EObject;
 public interface Cell extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Cell Type</b></em>' attribute.
-	 * The default value is <code>"CODE"</code>.
 	 * The literals are from the enumeration {@link notebookMM.CellType}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -32,7 +32,7 @@ public interface Cell extends EObject {
 	 * @see notebookMM.CellType
 	 * @see #setCellType(CellType)
 	 * @see notebookMM.NotebookMMPackage#getCell_CellType()
-	 * @model default="CODE"
+	 * @model
 	 * @generated
 	 */
 	CellType getCellType();
@@ -69,5 +69,43 @@ public interface Cell extends EObject {
 	 * @generated
 	 */
 	void setExecutionOrder(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see notebookMM.NotebookMMPackage#getCell_Id()
+	 * @model
+	 * @generated
+	 */
+	String getId();
+
+	/**
+	 * Sets the value of the '{@link notebookMM.Cell#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
+	void setId(String value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isEmpty();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	int getContentLength();
 
 } // Cell

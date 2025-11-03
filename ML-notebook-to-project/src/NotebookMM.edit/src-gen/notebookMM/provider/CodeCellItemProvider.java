@@ -4,8 +4,6 @@ package notebookMM.provider;
 
 import java.util.Collection;
 import java.util.List;
-
-import notebookMM.CellType;
 import notebookMM.CodeCell;
 import notebookMM.NotebookMMPackage;
 
@@ -46,6 +44,8 @@ public class CodeCellItemProvider extends CellItemProvider {
 			super.getPropertyDescriptors(object);
 
 			addSourcePropertyDescriptor(object);
+			addImportsPropertyDescriptor(object);
+			addOutputsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -63,6 +63,38 @@ public class CodeCellItemProvider extends CellItemProvider {
 						getString("_UI_PropertyDescriptor_description", "_UI_CodeCell_source_feature",
 								"_UI_CodeCell_type"),
 						NotebookMMPackage.Literals.CODE_CELL__SOURCE, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Imports feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addImportsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_CodeCell_imports_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_CodeCell_imports_feature",
+								"_UI_CodeCell_type"),
+						NotebookMMPackage.Literals.CODE_CELL__IMPORTS, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Outputs feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addOutputsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_CodeCell_outputs_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_CodeCell_outputs_feature",
+								"_UI_CodeCell_type"),
+						NotebookMMPackage.Literals.CODE_CELL__OUTPUTS, true, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -95,8 +127,7 @@ public class CodeCellItemProvider extends CellItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		CellType labelValue = ((CodeCell) object).getCellType();
-		String label = labelValue == null ? null : labelValue.toString();
+		String label = ((CodeCell) object).getId();
 		return label == null || label.length() == 0 ? getString("_UI_CodeCell_type")
 				: getString("_UI_CodeCell_type") + " " + label;
 	}
@@ -114,6 +145,8 @@ public class CodeCellItemProvider extends CellItemProvider {
 
 		switch (notification.getFeatureID(CodeCell.class)) {
 		case NotebookMMPackage.CODE_CELL__SOURCE:
+		case NotebookMMPackage.CODE_CELL__IMPORTS:
+		case NotebookMMPackage.CODE_CELL__OUTPUTS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}

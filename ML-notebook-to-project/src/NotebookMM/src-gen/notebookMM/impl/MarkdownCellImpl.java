@@ -2,11 +2,13 @@
  */
 package notebookMM.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import notebookMM.MarkdownCell;
 import notebookMM.NotebookMMPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -94,6 +96,42 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 	 * @generated
 	 */
 	@Override
+	public boolean isHeader() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int getHeaderLevel() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String extractTitle() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case NotebookMMPackage.MARKDOWN_CELL__CONTENT:
@@ -144,6 +182,24 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 			return CONTENT_EDEFAULT == null ? content != null : !CONTENT_EDEFAULT.equals(content);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+		case NotebookMMPackage.MARKDOWN_CELL___IS_HEADER:
+			return isHeader();
+		case NotebookMMPackage.MARKDOWN_CELL___GET_HEADER_LEVEL:
+			return getHeaderLevel();
+		case NotebookMMPackage.MARKDOWN_CELL___EXTRACT_TITLE:
+			return extractTitle();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

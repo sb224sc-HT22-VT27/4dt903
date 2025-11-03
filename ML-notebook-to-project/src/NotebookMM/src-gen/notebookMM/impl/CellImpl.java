@@ -2,12 +2,14 @@
  */
 package notebookMM.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import notebookMM.Cell;
 import notebookMM.CellType;
 import notebookMM.NotebookMMPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -23,6 +25,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link notebookMM.impl.CellImpl#getCellType <em>Cell Type</em>}</li>
  *   <li>{@link notebookMM.impl.CellImpl#getExecutionOrder <em>Execution Order</em>}</li>
+ *   <li>{@link notebookMM.impl.CellImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
@@ -67,6 +70,26 @@ public abstract class CellImpl extends MinimalEObjectImpl.Container implements C
 	 * @ordered
 	 */
 	protected int executionOrder = EXECUTION_ORDER_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected String id = ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -141,12 +164,61 @@ public abstract class CellImpl extends MinimalEObjectImpl.Container implements C
 	 * @generated
 	 */
 	@Override
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setId(String newId) {
+		String oldId = id;
+		id = newId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, NotebookMMPackage.CELL__ID, oldId, id));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isEmpty() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int getContentLength() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case NotebookMMPackage.CELL__CELL_TYPE:
 			return getCellType();
 		case NotebookMMPackage.CELL__EXECUTION_ORDER:
 			return getExecutionOrder();
+		case NotebookMMPackage.CELL__ID:
+			return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -164,6 +236,9 @@ public abstract class CellImpl extends MinimalEObjectImpl.Container implements C
 			return;
 		case NotebookMMPackage.CELL__EXECUTION_ORDER:
 			setExecutionOrder((Integer) newValue);
+			return;
+		case NotebookMMPackage.CELL__ID:
+			setId((String) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -183,6 +258,9 @@ public abstract class CellImpl extends MinimalEObjectImpl.Container implements C
 		case NotebookMMPackage.CELL__EXECUTION_ORDER:
 			setExecutionOrder(EXECUTION_ORDER_EDEFAULT);
 			return;
+		case NotebookMMPackage.CELL__ID:
+			setId(ID_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -199,8 +277,26 @@ public abstract class CellImpl extends MinimalEObjectImpl.Container implements C
 			return cellType != CELL_TYPE_EDEFAULT;
 		case NotebookMMPackage.CELL__EXECUTION_ORDER:
 			return executionOrder != EXECUTION_ORDER_EDEFAULT;
+		case NotebookMMPackage.CELL__ID:
+			return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+		case NotebookMMPackage.CELL___IS_EMPTY:
+			return isEmpty();
+		case NotebookMMPackage.CELL___GET_CONTENT_LENGTH:
+			return getContentLength();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**
@@ -218,6 +314,8 @@ public abstract class CellImpl extends MinimalEObjectImpl.Container implements C
 		result.append(cellType);
 		result.append(", executionOrder: ");
 		result.append(executionOrder);
+		result.append(", id: ");
+		result.append(id);
 		result.append(')');
 		return result.toString();
 	}

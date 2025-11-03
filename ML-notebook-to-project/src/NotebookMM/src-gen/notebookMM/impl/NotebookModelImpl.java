@@ -2,9 +2,13 @@
  */
 package notebookMM.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import notebookMM.Cell;
+import notebookMM.CellType;
+import notebookMM.CodeCell;
+import notebookMM.MarkdownCell;
 import notebookMM.NotebookMMPackage;
 import notebookMM.NotebookMetadata;
 import notebookMM.NotebookModel;
@@ -193,6 +197,66 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	 * @generated
 	 */
 	@Override
+	public EList<CodeCell> getCodeCells() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EList<MarkdownCell> getMarkdownCells() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EList<String> getAllImports() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EList<Cell> getCellsByType(CellType type) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean validate() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 		case NotebookMMPackage.NOTEBOOK_MODEL__CELLS:
@@ -281,6 +345,28 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 			return metadata != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+		case NotebookMMPackage.NOTEBOOK_MODEL___GET_CODE_CELLS:
+			return getCodeCells();
+		case NotebookMMPackage.NOTEBOOK_MODEL___GET_MARKDOWN_CELLS:
+			return getMarkdownCells();
+		case NotebookMMPackage.NOTEBOOK_MODEL___GET_ALL_IMPORTS:
+			return getAllImports();
+		case NotebookMMPackage.NOTEBOOK_MODEL___GET_CELLS_BY_TYPE__CELLTYPE:
+			return getCellsByType((CellType) arguments.get(0));
+		case NotebookMMPackage.NOTEBOOK_MODEL___VALIDATE:
+			return validate();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

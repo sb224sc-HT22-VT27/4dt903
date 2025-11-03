@@ -2,11 +2,13 @@
  */
 package notebookMM.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import notebookMM.NotebookMMPackage;
 import notebookMM.NotebookMetadata;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -230,6 +232,18 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	@Override
+	public boolean isPythonKernel() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case NotebookMMPackage.NOTEBOOK_METADATA__KERNELSPEC:
@@ -310,6 +324,20 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 			return nbformatMinor != NBFORMAT_MINOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+		case NotebookMMPackage.NOTEBOOK_METADATA___IS_PYTHON_KERNEL:
+			return isPythonKernel();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

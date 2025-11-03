@@ -4,8 +4,6 @@ package notebookMM.provider;
 
 import java.util.Collection;
 import java.util.List;
-
-import notebookMM.CellType;
 import notebookMM.MarkdownCell;
 import notebookMM.NotebookMMPackage;
 
@@ -95,8 +93,7 @@ public class MarkdownCellItemProvider extends CellItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		CellType labelValue = ((MarkdownCell) object).getCellType();
-		String label = labelValue == null ? null : labelValue.toString();
+		String label = ((MarkdownCell) object).getId();
 		return label == null || label.length() == 0 ? getString("_UI_MarkdownCell_type")
 				: getString("_UI_MarkdownCell_type") + " " + label;
 	}

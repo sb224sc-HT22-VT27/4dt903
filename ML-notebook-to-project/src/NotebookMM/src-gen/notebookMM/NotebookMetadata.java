@@ -112,4 +112,12 @@ public interface NotebookMetadata extends EObject {
 	 */
 	void setNbformatMinor(int value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isPythonKernel();
+
 } // NotebookMetadata
