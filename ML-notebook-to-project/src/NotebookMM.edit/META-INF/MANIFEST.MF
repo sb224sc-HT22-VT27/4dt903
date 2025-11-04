@@ -4,7 +4,8 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: NotebookMM.edit;singleton:=true
 Automatic-Module-Name: NotebookMM.edit
 Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/json.jar
 Bundle-Activator: notebookMM.provider.NotebookMMEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

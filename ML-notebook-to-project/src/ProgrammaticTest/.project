@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>NotebookMM.editor</name>
+	<name>ProgrammaticTest</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -22,12 +22,12 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1762249954731</id>
+			<id>1762249954733</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

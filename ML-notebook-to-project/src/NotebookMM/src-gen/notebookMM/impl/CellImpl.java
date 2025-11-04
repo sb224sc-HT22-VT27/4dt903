@@ -3,6 +3,7 @@
 package notebookMM.impl;
 
 import java.lang.reflect.InvocationTargetException;
+
 import notebookMM.Cell;
 import notebookMM.CellType;
 import notebookMM.NotebookMMPackage;
@@ -10,6 +11,7 @@ import notebookMM.NotebookMMPackage;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
