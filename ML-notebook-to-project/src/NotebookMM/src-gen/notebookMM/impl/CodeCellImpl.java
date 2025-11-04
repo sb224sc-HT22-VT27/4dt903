@@ -182,13 +182,16 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public boolean hasImports() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		return !extractImports().isEmpty();
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -257,25 +260,40 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public EList<String> getSourceLines() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		EList<String> lines = new BasicEList<>();
+		if (getSource() != null && !getSource().isEmpty()) {
+			String[] lineArray = getSource().split("\\r?\\n");
+			for (String line : lineArray) {
+				lines.add(line);
+			}
+		}
+		return lines;
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public boolean containsKeyword(String keyword) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		if (getSource() == null || keyword == null)
+			return false;
+		return getSource().toLowerCase().contains(keyword.toLowerCase());
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**

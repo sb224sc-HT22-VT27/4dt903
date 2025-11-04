@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import notebookMM.*;
 
 public class NotebookJSONParser {
-	private NotebookMMFactory factory = CustomNotebookMMFactory.eINSTANCE;
+	private NotebookMMFactory factory = NotebookMMFactory.eINSTANCE;
 	private String name;
 
 	/**

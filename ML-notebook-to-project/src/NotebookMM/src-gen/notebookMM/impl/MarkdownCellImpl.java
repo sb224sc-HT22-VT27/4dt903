@@ -97,7 +97,7 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public boolean isHeader() {

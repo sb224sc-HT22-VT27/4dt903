@@ -258,13 +258,22 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public EList<Cell> getCellsByType(CellType type) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		EList<Cell> result = new BasicEList<>();
+		for (Cell cell : getCells()) {
+			if (cell.getCellType() == type) {
+				result.add(cell);
+			}
+		}
+		return result;
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
