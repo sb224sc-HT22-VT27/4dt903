@@ -12,10 +12,9 @@ public class NotebookAnalyzer {
 
         try {
             // Parse .ipynb file
-            //NotebookModel notebook = parser.parseNotebook(inputDir + "Customer-Churn-Prediction/simple_classification.ipynb");
+            NotebookModel notebook = parser.parseNotebook(inputDir + "Customer-Churn-Prediction/simple_classification.ipynb");
             
-            NotebookModel notebook = parser
-                    .parseNotebook(inputDir + "CNN-Image-Classifier/image_classification_cnn.ipynb");
+            //NotebookModel notebook = parser.parseNotebook(inputDir + "CNN-Image-Classifier/image_classification_cnn.ipynb");
             
             // Validate
             if (!notebook.validate()) {
