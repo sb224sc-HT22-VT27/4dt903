@@ -4,6 +4,7 @@ package notebookMM.provider;
 
 import java.util.Collection;
 import java.util.List;
+
 import notebookMM.MarkdownCell;
 import notebookMM.NotebookMMPackage;
 
