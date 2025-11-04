@@ -1,5 +1,7 @@
 package notebookMM.util;
 
+//import org.eclipse.emf.common.util.EList;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,16 +9,12 @@ import java.nio.file.Paths;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import notebookMM.Cell;
-import notebookMM.CellType;
-import notebookMM.CodeCell;
-import notebookMM.MarkdownCell;
-import notebookMM.NotebookMMFactory;
-import notebookMM.NotebookMetadata;
-import notebookMM.NotebookModel;
+import notebookMM.impl.*;
+import notebookMM.*;
 
 public class NotebookJSONParser {
-	private NotebookMMFactory factory = NotebookMMFactory.eINSTANCE;
+	private NotebookMMFactory factory = CustomNotebookMMFactory.eINSTANCE;
+	private NotebookMMPackage justForinit = NotebookMMPackage.eINSTANCE;
 
 	/**
 	 * Parse a .ipynb file and create a NotebookModel instance
@@ -34,7 +32,7 @@ public class NotebookJSONParser {
 
 		NotebookModel notebook = factory.createNotebookModel();
 
-		// Extract notebook name from file or use default
+		// Extract notebook name from file or use default (TODO)
 		notebook.setName("notebook");
 
 		// Parse metadata
@@ -42,6 +40,8 @@ public class NotebookJSONParser {
 			NotebookMetadata metadata = parseMetadata(json.getJSONObject("metadata"));
 			notebook.setMetadata(metadata);
 		}
+		
+		System.out.println(json.toString());
 
 		// Parse cells
 		if (json.has("cells")) {

@@ -1,17 +1,19 @@
 package main;
 
 import notebookMM.*;
-import notebookMM.impl.*;
 import notebookMM.util.NotebookJSONParser;
+import java.nio.file.Paths;
 
 public class NotebookAnalyzer {
     public static void main(String[] args) {
         NotebookJSONParser parser = new NotebookJSONParser();
+        
+        //System.out.println(Paths.get("").toAbsolutePath());
 
         try {
             // Parse .ipynb file
             NotebookModel notebook = parser
-                    .parseNotebook("simple_classification.ipynb");
+                    .parseNotebook("./src/main/simple_classification.ipynb");
 
             // Validate
             if (!notebook.validate()) {
