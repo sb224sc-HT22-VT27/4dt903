@@ -2,19 +2,21 @@ package main;
 
 import notebookMM.*;
 import notebookMM.util.NotebookJSONParser;
-import java.nio.file.Paths;
 
 public class NotebookAnalyzer {
+	private static final String inputDir = "../../input/";
+	
     public static void main(String[] args) {
         NotebookJSONParser parser = new NotebookJSONParser();
         
-        //System.out.println(Paths.get("").toAbsolutePath());
 
         try {
             // Parse .ipynb file
+            //NotebookModel notebook = parser.parseNotebook(inputDir + "Customer-Churn-Prediction/simple_classification.ipynb");
+            
             NotebookModel notebook = parser
-                    .parseNotebook("./src/main/simple_classification.ipynb");
-
+                    .parseNotebook(inputDir + "CNN-Image-Classifier/image_classification_cnn.ipynb");
+            
             // Validate
             if (!notebook.validate()) {
                 System.err.println("Invalid notebook structure!");
@@ -26,6 +28,11 @@ public class NotebookAnalyzer {
                 System.err.println("Only Python notebooks supported!");
                 return;
             }
+            
+            // Model Name / Project Name
+            System.out.println("=== Name ===");
+            if (notebook.getName() != null)
+            	System.out.println(notebook.getName() + "\n");
 
             // Analyze imports
             System.out.println("=== All Imports ===");

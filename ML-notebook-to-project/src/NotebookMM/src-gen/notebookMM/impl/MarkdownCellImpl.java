@@ -3,6 +3,8 @@
 package notebookMM.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import notebookMM.MarkdownCell;
 import notebookMM.NotebookMMPackage;
@@ -101,31 +103,58 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 	public boolean isHeader() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		if (getContent() == null)
+			return false;
+		return getContent().trim().startsWith("#");
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public int getHeaderLevel() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		if (!isHeader())
+			return 0;
+
+		Pattern pattern = Pattern.compile("^(#{1,6})\\s+");
+		Matcher matcher = pattern.matcher(getContent().trim());
+		if (matcher.find()) {
+			return matcher.group(1).length();
+		}
+		return 0;
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String extractTitle() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		if (!isHeader())
+			return "";
+
+		Pattern pattern = Pattern.compile("^#{1,6}\\s+(.+)$", Pattern.MULTILINE);
+		Matcher matcher = pattern.matcher(getContent().trim());
+		if (matcher.find()) {
+			return matcher.group(1).trim();
+		}
+		return "";
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
