@@ -231,13 +231,25 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public boolean isPythonKernel() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		String kernel = getKernelspec();
+		String lang = getLanguage();
+
+		if (kernel != null && kernel.toLowerCase().contains("python")) {
+			return true;
+		}
+		if (lang != null && lang.toLowerCase().contains("python")) {
+			return true;
+		}
+		return false;
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**

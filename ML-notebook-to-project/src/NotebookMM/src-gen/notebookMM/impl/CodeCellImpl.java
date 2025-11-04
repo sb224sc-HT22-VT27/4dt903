@@ -5,12 +5,14 @@ package notebookMM.impl;
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import notebookMM.CodeCell;
 import notebookMM.NotebookMMPackage;
 
 import org.eclipse.emf.common.notify.Notification;
-
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -147,13 +149,34 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public EList<String> extractImports() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		EList<String> imports = new BasicEList<>();
+		if (getSource() == null || getSource().isEmpty()) {
+			return imports;
+		}
+
+		// Regex patterns for Python imports
+		Pattern importPattern = Pattern.compile(
+				"^\\s*(import\\s+[\\w.]+(?:\\s+as\\s+\\w+)?|from\\s+[\\w.]+\\s+import\\s+.+)\\s*$", Pattern.MULTILINE);
+
+		Matcher matcher = importPattern.matcher(getSource());
+		while (matcher.find()) {
+			imports.add(matcher.group(0).trim());
+		}
+
+		// Update the imports attribute
+		getImports().clear();
+		getImports().addAll(imports);
+
+		return imports;
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -171,37 +194,64 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public boolean isTrainingCode() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		if (getSource() == null)
+			return false;
+		String source = getSource().toLowerCase();
+
+		// Heuristics for training code
+		return source.contains("model.fit") || source.contains("model.train") || source.contains("trainer.train")
+				|| source.contains("fit_transform") || source.contains("cross_val_score")
+				|| source.matches(".*\\bfit\\s*\\(.*");
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public boolean isDataPreprocessing() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		if (getSource() == null)
+			return false;
+		String source = getSource().toLowerCase();
+
+		return source.contains("preprocess") || source.contains("clean") || source.contains("transform")
+				|| source.contains("scaler") || source.contains("encoder") || source.contains("fillna")
+				|| source.contains("dropna") || source.contains("feature_engineer");
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public boolean isPredictionCode() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		if (getSource() == null)
+			return false;
+		String source = getSource().toLowerCase();
+
+		return source.contains("predict") || source.contains("inference") || source.contains("model.eval")
+				|| source.contains("predict_proba");
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**

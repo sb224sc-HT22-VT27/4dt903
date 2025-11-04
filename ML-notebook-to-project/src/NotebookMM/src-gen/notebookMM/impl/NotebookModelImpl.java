@@ -5,6 +5,8 @@ package notebookMM.impl;
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import notebookMM.Cell;
 import notebookMM.CellType;
@@ -16,7 +18,7 @@ import notebookMM.NotebookModel;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -195,37 +197,62 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public EList<CodeCell> getCodeCells() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		EList<CodeCell> codeCells = new BasicEList<>();
+		for (Cell cell : getCells()) {
+			if (cell instanceof CodeCell) {
+				codeCells.add((CodeCell) cell);
+			}
+		}
+		return codeCells;
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public EList<MarkdownCell> getMarkdownCells() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		EList<MarkdownCell> markdownCells = new BasicEList<>();
+		for (Cell cell : getCells()) {
+			if (cell instanceof MarkdownCell) {
+				markdownCells.add((MarkdownCell) cell);
+			}
+		}
+		return markdownCells;
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public EList<String> getAllImports() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		Set<String> allImports = new LinkedHashSet<>();
+		for (CodeCell codeCell : getCodeCells()) {
+			allImports.addAll(codeCell.extractImports());
+		}
+		return new BasicEList<>(allImports);
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -243,13 +270,26 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public boolean validate() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		
+		// Basic validation logic
+		if (getName() == null || getName().isEmpty()) {
+			return false;
+		}
+		if (getCells() == null || getCells().isEmpty()) {
+			return false;
+		}
+		if (getMetadata() == null) {
+			return false;
+		}
+		return true;
+		
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
