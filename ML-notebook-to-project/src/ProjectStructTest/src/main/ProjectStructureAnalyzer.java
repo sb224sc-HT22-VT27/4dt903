@@ -25,8 +25,8 @@ public class ProjectStructureAnalyzer {
         ResourceSet resourceSet = new ResourceSetImpl();
         
         try {
-            // Load the model
-            String modelPath = "../ProjectStructM2T/models/sample-project.xmi";
+            // Load the model - use command line argument if provided
+            String modelPath = args.length > 0 ? args[0] : "../ProjectStructM2T/models/sample-project.xmi";
             URI uri = URI.createFileURI(modelPath);
             Resource resource = resourceSet.getResource(uri, true);
             
@@ -55,7 +55,8 @@ public class ProjectStructureAnalyzer {
             for (File file : project.getFiles()) {
                 System.out.println("- " + file.getName() + " (" + file.getFileType() + ")");
                 if (file.getContent() != null && !file.getContent().isEmpty()) {
-                    int lineCount = file.getContent().split("\n").length;
+                    int lineCount = file.getContent().split("\n", -1).length - 1;
+                    if (lineCount < 1) lineCount = 1; // Minimum 1 line for non-empty content
                     System.out.println("  Content: " + lineCount + " lines");
                 }
             }
@@ -82,10 +83,10 @@ public class ProjectStructureAnalyzer {
         String indent = "  ".repeat(level);
         System.out.println(indent + "📁 " + folder.getName() + "/");
         
-        // Display files in this folder
-        for (File file : folder.getFiles()) {
-            System.out.println(indent + "  📄 " + file.getName());
-        }
+            // Display files in this folder
+            for (File file : folder.getFiles()) {
+                System.out.println(indent + "  📄 " + file.getName());
+            }
         
         // Recursively display subfolders
         for (Folder subfolder : folder.getSubfolders()) {
