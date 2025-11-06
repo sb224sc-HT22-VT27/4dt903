@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/ProjectStructMM/src-gen" creationIcons="false" editDirectory="/ProjectStructMM.edit/src-gen"
+    editorDirectory="/ProjectStructMM.editor/src-gen" modelPluginID="ProjectStructMM" modelName="ProjectStructMM"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="21.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>projectStructMM.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="ProjectStructMM" disposableProviderFactory="true" ecorePackage="projectStructMM.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="projectStructMM.ecore#//ModuleType">
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ModuleType/MAIN"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ModuleType/DATA_PROCESSING"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ModuleType/MODEL_TRAINING"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ModuleType/MODEL_PREDICTION"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ModuleType/UTILITIES"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ModuleType/CONFIGURATION"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ModuleType/TEST"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ModuleType/INIT"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="projectStructMM.ecore#//DependencyScope">
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//DependencyScope/RUNTIME"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//DependencyScope/DEVELOPMENT"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//DependencyScope/TEST"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//DependencyScope/BUILD"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="projectStructMM.ecore#//BuildSystem">
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//BuildSystem/SETUPTOOLS"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//BuildSystem/POETRY"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//BuildSystem/HATCH"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//BuildSystem/PIP"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="projectStructMM.ecore#//ConfigFormat">
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ConfigFormat/TOML"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ConfigFormat/YAML"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ConfigFormat/JSON"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ConfigFormat/INI"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//ConfigFormat/PY"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="projectStructMM.ecore#//DocFormat">
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//DocFormat/MARKDOWN"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//DocFormat/RST"/>
+      <genEnumLiterals ecoreEnumLiteral="projectStructMM.ecore#//DocFormat/TXT"/>
+    </genEnums>
+    <genClasses ecoreClass="projectStructMM.ecore#//Project">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Project/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Project/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Project/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Project/author"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Project/sourcePackage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Project/testPackage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Project/configuration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Project/dependencies"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Project/dataDirectory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Project/documentation"/>
+      <genOperations ecoreOperation="projectStructMM.ecore#//Project/validate"/>
+      <genOperations ecoreOperation="projectStructMM.ecore#//Project/getAllPythonModules"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//Package">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Package/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Package/modules"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Package/subPackages"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Package/initFile"/>
+      <genOperations ecoreOperation="projectStructMM.ecore#//Package/getModuleByName">
+        <genParameters ecoreParameter="projectStructMM.ecore#//Package/getModuleByName/name"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//PythonModule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//PythonModule/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//PythonModule/imports"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//PythonModule/docstring"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//PythonModule/classes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//PythonModule/functions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//PythonModule/moduleType"/>
+      <genOperations ecoreOperation="projectStructMM.ecore#//PythonModule/addImport">
+        <genParameters ecoreParameter="projectStructMM.ecore#//PythonModule/addImport/importStatement"/>
+      </genOperations>
+      <genOperations ecoreOperation="projectStructMM.ecore#//PythonModule/addClass">
+        <genParameters ecoreParameter="projectStructMM.ecore#//PythonModule/addClass/classDefinition"/>
+      </genOperations>
+      <genOperations ecoreOperation="projectStructMM.ecore#//PythonModule/addFunction">
+        <genParameters ecoreParameter="projectStructMM.ecore#//PythonModule/addFunction/functionDefinition"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//ClassDefinition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//ClassDefinition/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//ClassDefinition/docstring"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//ClassDefinition/baseClasses"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//ClassDefinition/methods"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//ClassDefinition/attributes"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//FunctionDefinition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//FunctionDefinition/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//FunctionDefinition/docstring"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//FunctionDefinition/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//FunctionDefinition/returnType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//FunctionDefinition/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//FunctionDefinition/isAsync"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//FunctionDefinition/decorators"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Parameter/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Parameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Parameter/defaultValue"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//Attribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Attribute/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Attribute/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Attribute/defaultValue"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//Dependency">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Dependency/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Dependency/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Dependency/optional"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Dependency/scope"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//ProjectConfiguration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//ProjectConfiguration/pythonVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//ProjectConfiguration/buildSystem"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//ProjectConfiguration/configFiles"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//ConfigurationFile">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//ConfigurationFile/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//ConfigurationFile/content"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//ConfigurationFile/format"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//Directory">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//Directory/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Directory/files"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference projectStructMM.ecore#//Directory/subdirectories"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//File">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//File/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//File/content"/>
+    </genClasses>
+    <genClasses ecoreClass="projectStructMM.ecore#//DocumentationFile">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute projectStructMM.ecore#//DocumentationFile/format"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

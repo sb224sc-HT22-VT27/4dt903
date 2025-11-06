@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" 
+	xmlns:xmi="http://www.omg.org/XMI" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" 
+    name="projectStructMM" 
+    nsURI="http://www.g7.org/projectStructMM" 
+    nsPrefix="projectStructMM">
+  
+  <!-- Root Class: Project -->
+  <eClassifiers xsi:type="ecore:EClass" name="Project">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents the root of a Python ML project structure"/>
+    </eAnnotations>
+    <eOperations name="validate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Validates the project structure"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getAllPythonModules" upperBound="-1" eType="#//PythonModule">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns all Python modules in the project"/>
+      </eAnnotations>
+    </eOperations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="author" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourcePackage" eType="#//Package" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="testPackage" eType="#//Package" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="configuration" eType="#//ProjectConfiguration" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1" eType="#//Dependency" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataDirectory" eType="#//Directory" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="documentation" upperBound="-1" eType="#//DocumentationFile" containment="true"/>
+  </eClassifiers>
+
+  <!-- Package Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="Package">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a Python package (directory with __init__.py)"/>
+    </eAnnotations>
+    <eOperations name="getModuleByName" eType="#//PythonModule">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modules" upperBound="-1" eType="#//PythonModule" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subPackages" upperBound="-1" eType="#//Package" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initFile" eType="#//PythonModule" containment="true"/>
+  </eClassifiers>
+
+  <!-- PythonModule Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="PythonModule">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a Python module (.py file)"/>
+    </eAnnotations>
+    <eOperations name="addImport">
+      <eParameters name="importStatement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="addClass">
+      <eParameters name="classDefinition" eType="#//ClassDefinition"/>
+    </eOperations>
+    <eOperations name="addFunction">
+      <eParameters name="functionDefinition" eType="#//FunctionDefinition"/>
+    </eOperations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imports" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="docstring" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" upperBound="-1" eType="#//ClassDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functions" upperBound="-1" eType="#//FunctionDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="moduleType" eType="#//ModuleType"/>
+  </eClassifiers>
+
+  <!-- ClassDefinition Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="ClassDefinition">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a Python class definition"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="docstring" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="baseClasses" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="methods" upperBound="-1" eType="#//FunctionDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1" eType="#//Attribute" containment="true"/>
+  </eClassifiers>
+
+  <!-- FunctionDefinition Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="FunctionDefinition">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a Python function or method definition"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="docstring" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1" eType="#//Parameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="returnType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAsync" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="decorators" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+
+  <!-- Parameter Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a function parameter"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+
+  <!-- Attribute Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="Attribute">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a class attribute"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+
+  <!-- Dependency Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="Dependency">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a project dependency"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scope" eType="#//DependencyScope"/>
+  </eClassifiers>
+
+  <!-- ProjectConfiguration Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectConfiguration">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents project configuration (pyproject.toml, setup.py, requirements.txt, etc.)"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pythonVersion" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="buildSystem" eType="#//BuildSystem"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="configFiles" upperBound="-1" eType="#//ConfigurationFile" containment="true"/>
+  </eClassifiers>
+
+  <!-- ConfigurationFile Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="ConfigurationFile">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a configuration file"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="#//ConfigFormat"/>
+  </eClassifiers>
+
+  <!-- Directory Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="Directory">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a directory in the project structure"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="files" upperBound="-1" eType="#//File" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subdirectories" upperBound="-1" eType="#//Directory" containment="true"/>
+  </eClassifiers>
+
+  <!-- File Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="File">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a generic file"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+
+  <!-- DocumentationFile Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentationFile" eSuperTypes="#//File">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a documentation file (README.md, etc.)"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="#//DocFormat"/>
+  </eClassifiers>
+
+  <!-- ModuleType Enumeration -->
+  <eClassifiers xsi:type="ecore:EEnum" name="ModuleType">
+    <eLiterals name="MAIN" value="0"/>
+    <eLiterals name="DATA_PROCESSING" value="1"/>
+    <eLiterals name="MODEL_TRAINING" value="2"/>
+    <eLiterals name="MODEL_PREDICTION" value="3"/>
+    <eLiterals name="UTILITIES" value="4"/>
+    <eLiterals name="CONFIGURATION" value="5"/>
+    <eLiterals name="TEST" value="6"/>
+    <eLiterals name="INIT" value="7"/>
+  </eClassifiers>
+
+  <!-- DependencyScope Enumeration -->
+  <eClassifiers xsi:type="ecore:EEnum" name="DependencyScope">
+    <eLiterals name="RUNTIME" value="0"/>
+    <eLiterals name="DEVELOPMENT" value="1"/>
+    <eLiterals name="TEST" value="2"/>
+    <eLiterals name="BUILD" value="3"/>
+  </eClassifiers>
+
+  <!-- BuildSystem Enumeration -->
+  <eClassifiers xsi:type="ecore:EEnum" name="BuildSystem">
+    <eLiterals name="SETUPTOOLS" value="0"/>
+    <eLiterals name="POETRY" value="1"/>
+    <eLiterals name="HATCH" value="2"/>
+    <eLiterals name="PIP" value="3"/>
+  </eClassifiers>
+
+  <!-- ConfigFormat Enumeration -->
+  <eClassifiers xsi:type="ecore:EEnum" name="ConfigFormat">
+    <eLiterals name="TOML" value="0"/>
+    <eLiterals name="YAML" value="1"/>
+    <eLiterals name="JSON" value="2"/>
+    <eLiterals name="INI" value="3"/>
+    <eLiterals name="PY" value="4"/>
+  </eClassifiers>
+
+  <!-- DocFormat Enumeration -->
+  <eClassifiers xsi:type="ecore:EEnum" name="DocFormat">
+    <eLiterals name="MARKDOWN" value="0"/>
+    <eLiterals name="RST" value="1"/>
+    <eLiterals name="TXT" value="2"/>
+  </eClassifiers>
+  
+</ecore:EPackage>
