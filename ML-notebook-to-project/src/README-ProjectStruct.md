@@ -32,6 +32,16 @@ The `ProjectStructM2T` folder contains the Acceleo templates for Model-to-Text t
 - `META-INF/MANIFEST.MF` - Eclipse plugin manifest
 - `build.properties` - Build configuration
 
+### 3. ProjectStructTest (Test Application)
+The `ProjectStructTest` folder contains a standalone Java application that demonstrates:
+
+- Loading ProjectStructMM models programmatically
+- Traversing the model hierarchy (Project → Folders → Files)
+- Extracting and displaying model information
+- Validating that the model is properly structured
+
+See `ProjectStructTest/README.md` for details on running the test application.
+
 ## Sample Model
 
 A sample model instance is provided in `ProjectStructM2T/models/sample-project.xmi` that demonstrates:
@@ -48,21 +58,29 @@ A sample model instance is provided in `ProjectStructM2T/models/sample-project.x
 
 ### Steps
 
-1. **Import Projects into Eclipse**
-   - Import both `ProjectStructMM` and `ProjectStructM2T` as existing Eclipse projects
+1. **Verify Model Structure (Optional but Recommended)**
+   - Import all three projects (ProjectStructMM, ProjectStructM2T, ProjectStructTest) into Eclipse
+   - Generate model code: Open `ProjectStructMM/model/projectStructMM.genmodel`
+     → Right-click on the root element → Generate Model Code
+   - Run the test: Right-click on `ProjectStructTest/src/main/ProjectStructureAnalyzer.java`
+     → Run As → Java Application
+   - This verifies the model loads correctly and can be traversed
 
-2. **Generate Model Code (if needed)**
+2. **Import Projects into Eclipse**
+   - Import both `ProjectStructMM` and `ProjectStructM2T` as existing Eclipse projects (if not already done in step 1)
+
+3. **Generate Model Code (if needed)**
    - Open `ProjectStructMM/model/projectStructMM.genmodel`
    - Right-click on the root element → Generate Model Code
-   - This generates the Java classes in `src-gen/`
+   - This generates the Java classes in `src-gen/` (if not already generated in step 1)
 
-3. **Run the Transformation**
+4. **Run the Transformation**
    - Open `ProjectStructM2T/models/sample-project.xmi`
    - Right-click on the file → Run As → Acceleo Application
    - Or configure a launch configuration to run the generate.mtl template
    - The generated project structure will be created in the specified output directory
 
-4. **Create Your Own Models**
+5. **Create Your Own Models**
    - Create a new XMI file using the ProjectStructMM metamodel
    - Define your desired project structure (folders, files, content)
    - Run the Acceleo transformation on your model
