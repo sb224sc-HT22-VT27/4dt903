@@ -59,8 +59,8 @@ setup(
     # Entry points for command-line scripts
     entry_points={
         "console_scripts": [
-            "{{project_name}}-train=src.{{project_name}}.models.train:main",
-            "{{project_name}}-predict=src.{{project_name}}.inference.predict:main",
+            "{{project_name}}-train={{project_name}}.models.train:main",
+            "{{project_name}}-predict={{project_name}}.inference.predict:main",
         ],
     },
     

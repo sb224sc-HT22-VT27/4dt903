@@ -1,9 +1,7 @@
-"""
-Template for pyproject.toml - Modern Python project metadata.
-
-This file defines build system requirements and project metadata
-following PEP 517/518 standards.
-"""
+# Template for pyproject.toml - Modern Python project metadata.
+#
+# This file defines build system requirements and project metadata
+# following PEP 517/518 standards.
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
