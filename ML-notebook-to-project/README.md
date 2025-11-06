@@ -19,6 +19,8 @@ The target output structure for generated Python ML projects is fully documented
 
 - **[PYTHON_ML_PROJECT_STRUCTURE.md](./PYTHON_ML_PROJECT_STRUCTURE.md)** - Complete specification with rationale, examples, and best practices
 - **[STRUCTURE_QUICK_REFERENCE.md](./STRUCTURE_QUICK_REFERENCE.md)** - Quick reference guide for the standard structure
+- **[FRAMEWORK_ADAPTATIONS.md](./FRAMEWORK_ADAPTATIONS.md)** - Framework-specific adaptations (scikit-learn, TensorFlow, PyTorch, etc.)
+- **[templates/](./templates/)** - Template files for code generation
 
 ### Why a Fixed Structure?
 
