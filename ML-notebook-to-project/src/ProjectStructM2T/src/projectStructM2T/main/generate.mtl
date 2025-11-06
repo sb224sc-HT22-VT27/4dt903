@@ -1,0 +1,101 @@
+[comment encoding = UTF-8 /]
+[module generate('http://www.g7.org/projectStructMM')]
+
+[**
+ * Main template to generate project structure from a Project model
+ * @param aProject The Project model to generate from
+ */]
+[template public generateProject(aProject : Project)]
+[comment @main/]
+[file (aProject.name + '/README.md', false, 'UTF-8')]
+# [aProject.name/]
+
+[if (aProject.description <> null and aProject.description <> '')]
+[aProject.description/]
+[/if]
+
+## Project Structure
+
+This project was generated from a ProjectStructMM model using Acceleo M2T transformation.
+
+### Folders
+[for (folder : Folder | aProject.folders)]
+- [folder.name/]/
+[/for]
+
+### Files
+[for (file : File | aProject.files)]
+- [file.name/]
+[/for]
+
+Generated on: [getCurrentDateTime()/]
+[/file]
+
+[comment Generate all root-level folders /]
+[for (folder : Folder | aProject.folders)]
+[aProject.generateFolder(folder, aProject.name)/]
+[/for]
+
+[comment Generate all root-level files /]
+[for (file : File | aProject.files)]
+[aProject.generateFile(file, aProject.name)/]
+[/for]
+[/template]
+
+[**
+ * Template to recursively generate folders and their contents
+ * @param aProject The parent Project
+ * @param aFolder The Folder to generate
+ * @param parentPath The path to the parent directory
+ */]
+[template public generateFolder(aProject : Project, aFolder : Folder, parentPath : String)]
+[comment Create a marker file to ensure the folder exists /]
+[file (parentPath + '/' + aFolder.name + '/.folder', false, 'UTF-8')]
+# Folder: [aFolder.name/]
+This folder contains:
+[if (aFolder.files->size() > 0)]
+- [aFolder.files->size()/] file(s)
+[/if]
+[if (aFolder.subfolders->size() > 0)]
+- [aFolder.subfolders->size()/] subfolder(s)
+[/if]
+[/file]
+
+[comment Generate all files in this folder /]
+[for (file : File | aFolder.files)]
+[aProject.generateFile(file, parentPath + '/' + aFolder.name)/]
+[/for]
+
+[comment Recursively generate subfolders /]
+[for (subfolder : Folder | aFolder.subfolders)]
+[aProject.generateFolder(subfolder, parentPath + '/' + aFolder.name)/]
+[/for]
+[/template]
+
+[**
+ * Template to generate a file with its content
+ * @param aProject The parent Project
+ * @param aFile The File to generate
+ * @param parentPath The path to the parent directory
+ */]
+[template public generateFile(aProject : Project, aFile : File, parentPath : String)]
+[file (parentPath + '/' + aFile.name, false, 'UTF-8')]
+[if (aFile.content <> null and aFile.content <> '')]
+[aFile.content/]
+[else]
+# [aFile.name/]
+
+This file was generated from the ProjectStructMM model.
+[if (aFile.fileType <> null and aFile.fileType <> '')]
+File type: [aFile.fileType/]
+[/if]
+[/if]
+[/file]
+[/template]
+
+[**
+ * Query to get the current date and time as a string
+ */]
+[query public getCurrentDateTime() : String = 
+	invoke('java.time.LocalDateTime', 'now()', Sequence{}).toString()
+/]

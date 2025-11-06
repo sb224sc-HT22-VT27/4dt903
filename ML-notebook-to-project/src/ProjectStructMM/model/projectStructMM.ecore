@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" 
+	xmlns:xmi="http://www.omg.org/XMI" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" 
+    name="projectStructMM" 
+    nsURI="http://www.g7.org/projectStructMM" 
+    nsPrefix="projectStructMM">
+  
+  <!-- Root Class: Project -->
+  <eClassifiers xsi:type="ecore:EClass" name="Project">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a software project with its folder and file structure"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The name of the project"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A description of the project"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    
+    <eStructuralFeatures xsi:type="ecore:EReference" name="folders" upperBound="-1" 
+        eType="#//Folder" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Root-level folders in the project"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    
+    <eStructuralFeatures xsi:type="ecore:EReference" name="files" upperBound="-1" 
+        eType="#//File" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Root-level files in the project"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <!-- Folder Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="Folder">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a folder in the project structure"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The name of the folder"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subfolders" upperBound="-1" 
+        eType="#//Folder" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Subfolders contained in this folder"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    
+    <eStructuralFeatures xsi:type="ecore:EReference" name="files" upperBound="-1" 
+        eType="#//File" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Files contained in this folder"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <!-- File Class -->
+  <eClassifiers xsi:type="ecore:EClass" name="File">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a file in the project structure"/>
+    </eAnnotations>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The name of the file (including extension)"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The content of the file"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileType"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The type/extension of the file (e.g., 'py', 'txt', 'md')"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  
+</ecore:EPackage>
