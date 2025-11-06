@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectStructMM:Project xmi:version="2.0" 
+    xmlns:xmi="http://www.omg.org/XMI" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:projectStructMM="http://www.g7.org/projectStructMM"
+    name="ml_classifier_project" 
+    version="1.0.0" 
+    description="Machine Learning Classifier Project generated from Jupyter Notebook">
+  
+  <!-- Project Configuration -->
+  <configuration 
+      pythonVersion="3.9" 
+      requirementsFile="requirements.txt" 
+      dockerSupport="true" 
+      testFramework="pytest"/>
+  
+  <!-- Dependencies -->
+  <dependencies name="pandas" version="1.5.0" type="RUNTIME"/>
+  <dependencies name="numpy" version="1.23.0" type="RUNTIME"/>
+  <dependencies name="scikit-learn" version="1.2.0" type="RUNTIME"/>
+  <dependencies name="matplotlib" version="3.6.0" type="RUNTIME"/>
+  <dependencies name="pytest" version="7.2.0" type="TEST"/>
+  <dependencies name="black" version="23.1.0" type="DEVELOPMENT"/>
+  
+  <!-- Main Package -->
+  <packages name="ml_classifier" path="src/ml_classifier">
+    
+    <!-- Data Preprocessing Module -->
+    <files xsi:type="projectStructMM:ModuleFile" 
+        name="preprocessing.py" 
+        path="src/ml_classifier/preprocessing.py" 
+        moduleType="PREPROCESSING"
+        docstring="Data preprocessing utilities for the ML classifier">
+      
+      <imports module="pandas" alias="pd"/>
+      <imports module="numpy" alias="np"/>
+      <imports module="sklearn.preprocessing">
+        <importedNames>StandardScaler</importedNames>
+        <importedNames>LabelEncoder</importedNames>
+      </imports>
+      
+      <functions name="load_data" 
+          docstring="Load data from CSV file" 
+          returnType="pandas.DataFrame">
+        <parameters name="file_path" type="str"/>
+      </functions>
+      
+      <functions name="preprocess_features" 
+          docstring="Preprocess features for model training" 
+          returnType="numpy.ndarray">
+        <parameters name="data" type="pandas.DataFrame"/>
+        <parameters name="scaler" type="StandardScaler" defaultValue="None"/>
+      </functions>
+      
+      <functions name="split_data" 
+          docstring="Split data into training and testing sets" 
+          returnType="tuple">
+        <parameters name="X" type="numpy.ndarray"/>
+        <parameters name="y" type="numpy.ndarray"/>
+        <parameters name="test_size" type="float" defaultValue="0.2"/>
+      </functions>
+    </files>
+    
+    <!-- Model Training Module -->
+    <files xsi:type="projectStructMM:ModuleFile" 
+        name="model.py" 
+        path="src/ml_classifier/model.py" 
+        moduleType="TRAINING"
+        docstring="Machine learning model definition and training">
+      
+      <imports module="sklearn.ensemble">
+        <importedNames>RandomForestClassifier</importedNames>
+      </imports>
+      <imports module="sklearn.metrics">
+        <importedNames>accuracy_score</importedNames>
+        <importedNames>classification_report</importedNames>
+      </imports>
+      <imports module="joblib"/>
+      
+      <classes name="MLClassifier" 
+          docstring="Wrapper class for the machine learning classifier">
+        
+        <attributes name="model" type="RandomForestClassifier" visibility="PRIVATE"/>
+        <attributes name="is_trained" type="bool" visibility="PRIVATE" defaultValue="False"/>
+        
+        <methods name="__init__" visibility="PUBLIC"
+            docstring="Initialize the classifier">
+          <parameters name="self"/>
+          <parameters name="n_estimators" type="int" defaultValue="100"/>
+          <parameters name="random_state" type="int" defaultValue="42"/>
+        </methods>
+        
+        <methods name="train" visibility="PUBLIC"
+            docstring="Train the classifier on provided data">
+          <parameters name="self"/>
+          <parameters name="X_train" type="numpy.ndarray"/>
+          <parameters name="y_train" type="numpy.ndarray"/>
+        </methods>
+        
+        <methods name="predict" visibility="PUBLIC"
+            docstring="Make predictions on new data"
+            returnType="numpy.ndarray">
+          <parameters name="self"/>
+          <parameters name="X" type="numpy.ndarray"/>
+        </methods>
+        
+        <methods name="evaluate" visibility="PUBLIC"
+            docstring="Evaluate model performance"
+            returnType="dict">
+          <parameters name="self"/>
+          <parameters name="X_test" type="numpy.ndarray"/>
+          <parameters name="y_test" type="numpy.ndarray"/>
+        </methods>
+        
+        <methods name="save_model" visibility="PUBLIC"
+            docstring="Save trained model to file">
+          <parameters name="self"/>
+          <parameters name="filepath" type="str"/>
+        </methods>
+        
+        <methods name="load_model" visibility="PUBLIC"
+            docstring="Load trained model from file">
+          <parameters name="self"/>
+          <parameters name="filepath" type="str"/>
+        </methods>
+      </classes>
+    </files>
+    
+    <!-- Inference Module -->
+    <files xsi:type="projectStructMM:ModuleFile" 
+        name="inference.py" 
+        path="src/ml_classifier/inference.py" 
+        moduleType="INFERENCE"
+        docstring="Inference utilities for making predictions">
+      
+      <imports module=".model">
+        <importedNames>MLClassifier</importedNames>
+      </imports>
+      <imports module=".preprocessing">
+        <importedNames>preprocess_features</importedNames>
+      </imports>
+      
+      <classes name="PredictionService" 
+          docstring="Service for making predictions with the trained model">
+        
+        <attributes name="classifier" type="MLClassifier" visibility="PRIVATE"/>
+        <attributes name="model_path" type="str" visibility="PRIVATE"/>
+        
+        <methods name="__init__" visibility="PUBLIC"
+            docstring="Initialize the prediction service">
+          <parameters name="self"/>
+          <parameters name="model_path" type="str"/>
+        </methods>
+        
+        <methods name="predict_single" visibility="PUBLIC"
+            docstring="Make prediction for a single instance"
+            returnType="int">
+          <parameters name="self"/>
+          <parameters name="features" type="dict"/>
+        </methods>
+        
+        <methods name="predict_batch" visibility="PUBLIC"
+            docstring="Make predictions for multiple instances"
+            returnType="list">
+          <parameters name="self"/>
+          <parameters name="features_list" type="list"/>
+        </methods>
+      </classes>
+    </files>
+    
+    <!-- Main Entry Point -->
+    <files xsi:type="projectStructMM:ModuleFile" 
+        name="main.py" 
+        path="src/ml_classifier/main.py" 
+        moduleType="MAIN"
+        docstring="Main entry point for the ML classifier application">
+      
+      <imports module="argparse"/>
+      <imports module=".preprocessing">
+        <importedNames>load_data</importedNames>
+        <importedNames>preprocess_features</importedNames>
+        <importedNames>split_data</importedNames>
+      </imports>
+      <imports module=".model">
+        <importedNames>MLClassifier</importedNames>
+      </imports>
+      
+      <functions name="parse_arguments" 
+          docstring="Parse command line arguments" 
+          returnType="argparse.Namespace"/>
+      
+      <functions name="train_pipeline" 
+          docstring="Execute the training pipeline">
+        <parameters name="data_path" type="str"/>
+        <parameters name="model_path" type="str"/>
+      </functions>
+      
+      <functions name="main" 
+          docstring="Main function to run the application"/>
+    </files>
+    
+    <!-- Utilities Module -->
+    <files xsi:type="projectStructMM:ModuleFile" 
+        name="utils.py" 
+        path="src/ml_classifier/utils.py" 
+        moduleType="UTILITY"
+        docstring="Utility functions for the ML classifier">
+      
+      <imports module="logging"/>
+      <imports module="json"/>
+      
+      <functions name="setup_logging" 
+          docstring="Configure logging for the application">
+        <parameters name="log_level" type="str" defaultValue="INFO"/>
+      </functions>
+      
+      <functions name="save_metrics" 
+          docstring="Save evaluation metrics to JSON file">
+        <parameters name="metrics" type="dict"/>
+        <parameters name="filepath" type="str"/>
+      </functions>
+      
+      <functions name="load_config" 
+          docstring="Load configuration from file" 
+          returnType="dict">
+        <parameters name="config_path" type="str"/>
+      </functions>
+    </files>
+  </packages>
+  
+  <!-- Tests Package -->
+  <packages name="tests" path="tests">
+    <files xsi:type="projectStructMM:ModuleFile" 
+        name="test_preprocessing.py" 
+        path="tests/test_preprocessing.py" 
+        moduleType="TEST"
+        docstring="Tests for preprocessing module">
+      
+      <imports module="pytest"/>
+      <imports module="numpy" alias="np"/>
+      <imports module="ml_classifier.preprocessing">
+        <importedNames>preprocess_features</importedNames>
+        <importedNames>split_data</importedNames>
+      </imports>
+      
+      <functions name="test_preprocess_features" 
+          docstring="Test feature preprocessing function"/>
+      
+      <functions name="test_split_data" 
+          docstring="Test data splitting function"/>
+    </files>
+    
+    <files xsi:type="projectStructMM:ModuleFile" 
+        name="test_model.py" 
+        path="tests/test_model.py" 
+        moduleType="TEST"
+        docstring="Tests for model module">
+      
+      <imports module="pytest"/>
+      <imports module="numpy" alias="np"/>
+      <imports module="ml_classifier.model">
+        <importedNames>MLClassifier</importedNames>
+      </imports>
+      
+      <functions name="test_model_initialization" 
+          docstring="Test model initialization"/>
+      
+      <functions name="test_model_training" 
+          docstring="Test model training"/>
+      
+      <functions name="test_model_prediction" 
+          docstring="Test model prediction"/>
+    </files>
+  </packages>
+</projectStructMM:Project>
