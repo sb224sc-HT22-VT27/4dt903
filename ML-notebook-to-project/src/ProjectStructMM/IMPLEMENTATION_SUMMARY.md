@@ -119,7 +119,7 @@ Python Project (code)
 
 ## Validation
 
-The model instance has been validated and confirms to the metamodel:
+The model instance has been validated and conforms to the metamodel:
 - XML well-formedness: ✓
 - Required attributes: ✓
 - Type constraints: ✓
