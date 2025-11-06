@@ -1,0 +1,89 @@
+project-name/
+│
+├── README.md
+├── LICENSE
+├── .gitignore
+├── requirements.txt
+├── requirements-dev.txt
+├── setup.py
+├── pyproject.toml
+├── Makefile
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   ├── interim/
+│   └── external/
+│
+├── models/
+│   ├── checkpoints/
+│   └── production/
+│
+├── notebooks/
+│   ├── exploratory/
+│   ├── experiments/
+│   └── reports/
+│
+├── src/
+│   └── <project_name>/
+│       ├── __init__.py
+│       ├── config.py
+│       ├── data/
+│       │   ├── __init__.py
+│       │   ├── loader.py
+│       │   ├── preprocessing.py
+│       │   └── validation.py
+│       ├── features/
+│       │   ├── __init__.py
+│       │   └── engineering.py
+│       ├── models/
+│       │   ├── __init__.py
+│       │   ├── model.py
+│       │   ├── train.py
+│       │   └── evaluate.py
+│       ├── inference/
+│       │   ├── __init__.py
+│       │   └── predict.py
+│       └── utils/
+│           ├── __init__.py
+│           ├── logging.py
+│           └── helpers.py
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_data/
+│   │   └── test_preprocessing.py
+│   ├── test_features/
+│   │   └── test_engineering.py
+│   ├── test_models/
+│   │   └── test_model.py
+│   └── conftest.py
+│
+├── configs/
+│   ├── config.yaml
+│   ├── model_config.yaml
+│   └── data_config.yaml
+│
+├── scripts/
+│   ├── train.py
+│   ├── evaluate.py
+│   ├── predict.py
+│   └── download_data.py
+│
+├── docs/
+│   ├── api.md
+│   ├── model.md
+│   └── deployment.md
+│
+├── deployment/
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── kubernetes/
+│   └── api/
+│       ├── main.py
+│       └── requirements.txt
+│
+└── outputs/
+    ├── logs/
+    ├── figures/
+    └── reports/

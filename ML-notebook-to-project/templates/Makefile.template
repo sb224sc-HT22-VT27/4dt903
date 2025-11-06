@@ -1,0 +1,138 @@
+# Template for Makefile - Common project commands
+
+.PHONY: help install install-dev test lint format clean train predict docs
+
+# Default target
+help:
+	@echo "Available commands:"
+	@echo "  make install       - Install production dependencies"
+	@echo "  make install-dev   - Install development dependencies"
+	@echo "  make test         - Run tests with coverage"
+	@echo "  make lint         - Run linters (flake8, mypy)"
+	@echo "  make format       - Format code (black, isort)"
+	@echo "  make clean        - Remove build artifacts and cache"
+	@echo "  make train        - Run training script"
+	@echo "  make predict      - Run prediction script"
+	@echo "  make docs         - Generate documentation"
+	@echo "  make all          - Install, lint, test"
+
+# Installation
+install:
+	pip install -e .
+
+install-dev:
+	pip install -e ".[dev]"
+	# Alternative:
+	# pip install -r requirements.txt
+	# pip install -r requirements-dev.txt
+
+# Testing
+test:
+	pytest tests/ -v --cov=src/{{project_name}} --cov-report=term-missing --cov-report=html
+
+test-fast:
+	pytest tests/ -v -x --ff
+
+test-unit:
+	pytest tests/ -v -m unit
+
+test-integration:
+	pytest tests/ -v -m integration
+
+# Code quality
+lint:
+	@echo "Running flake8..."
+	flake8 src/ tests/
+	@echo "Running mypy..."
+	mypy src/
+
+format:
+	@echo "Running black..."
+	black src/ tests/ scripts/
+	@echo "Running isort..."
+	isort src/ tests/ scripts/
+
+format-check:
+	black --check src/ tests/ scripts/
+	isort --check-only src/ tests/ scripts/
+
+# Cleaning
+clean:
+	@echo "Cleaning up..."
+	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	find . -type f -name "*.pyc" -delete
+	find . -type f -name "*.pyo" -delete
+	find . -type f -name "*.coverage" -delete
+	find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name ".mypy_cache" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name "htmlcov" -exec rm -rf {} + 2>/dev/null || true
+	rm -rf build/ dist/ .coverage coverage.xml
+
+# ML operations
+train:
+	python scripts/train.py --config configs/config.yaml
+
+train-debug:
+	python scripts/train.py --config configs/config.yaml --debug
+
+evaluate:
+	python scripts/evaluate.py --config configs/config.yaml
+
+predict:
+	python scripts/predict.py --config configs/config.yaml
+
+# Data operations
+download-data:
+	python scripts/download_data.py
+
+preprocess-data:
+	python scripts/preprocess_data.py
+
+# Documentation
+docs:
+	@echo "Generating documentation..."
+	# Add documentation generation command here
+	# e.g., sphinx-build -b html docs/ docs/_build/
+
+docs-serve:
+	@echo "Serving documentation..."
+	# Add documentation server command here
+	# e.g., python -m http.server --directory docs/_build/
+
+# Docker operations
+docker-build:
+	docker build -t {{project_name}}:latest -f deployment/Dockerfile .
+
+docker-run:
+	docker run -p 8000:8000 {{project_name}}:latest
+
+docker-compose-up:
+	docker-compose -f deployment/docker-compose.yml up
+
+docker-compose-down:
+	docker-compose -f deployment/docker-compose.yml down
+
+# Convenience targets
+all: install-dev lint test
+
+ci: format-check lint test
+
+# Project setup
+setup:
+	@echo "Setting up project..."
+	mkdir -p data/raw data/processed data/interim data/external
+	mkdir -p models/checkpoints models/production
+	mkdir -p outputs/logs outputs/figures outputs/reports
+	mkdir -p notebooks/exploratory notebooks/experiments notebooks/reports
+	@echo "Project structure created!"
+
+# Version bump (requires bump2version)
+bump-patch:
+	bump2version patch
+
+bump-minor:
+	bump2version minor
+
+bump-major:
+	bump2version major

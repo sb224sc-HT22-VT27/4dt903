@@ -1,0 +1,330 @@
+# {{project_name}}
+
+{{project_description}}
+
+## Overview
+
+[Provide a brief overview of the project, its purpose, and what problem it solves]
+
+This project was automatically generated from a Jupyter notebook using the ML-notebook-to-project transformation tool.
+
+## Features
+
+- Feature 1: [Description]
+- Feature 2: [Description]
+- Feature 3: [Description]
+
+## Project Structure
+
+```
+{{project_name}}/
+├── README.md                      # This file
+├── requirements.txt               # Production dependencies
+├── requirements-dev.txt           # Development dependencies
+├── setup.py                       # Package installation
+├── pyproject.toml                 # Project metadata
+├── Makefile                       # Common commands
+├── data/                          # Data directory (git-ignored)
+│   ├── raw/                       # Original data
+│   └── processed/                 # Preprocessed data
+├── models/                        # Trained models (git-ignored)
+├── notebooks/                     # Jupyter notebooks
+├── src/{{project_name}}/          # Source code
+│   ├── data/                      # Data loading and preprocessing
+│   ├── features/                  # Feature engineering
+│   ├── models/                    # Model definitions and training
+│   ├── inference/                 # Prediction/inference
+│   └── utils/                     # Utility functions
+├── tests/                         # Unit and integration tests
+├── configs/                       # Configuration files
+├── scripts/                       # Executable scripts
+└── docs/                          # Documentation
+```
+
+## Installation
+
+### Prerequisites
+
+- Python {{python_version}} or higher
+- pip or conda package manager
+
+### Setup
+
+1. Clone the repository:
+```bash
+git clone {{repo_url}}
+cd {{project_name}}
+```
+
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install the package:
+```bash
+# Install production dependencies
+pip install -e .
+
+# Or install with development dependencies
+pip install -e ".[dev]"
+
+# Or using requirements files
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+```
+
+4. Set up the project directories:
+```bash
+make setup
+```
+
+## Quick Start
+
+### Training a Model
+
+1. Place your data in the `data/raw/` directory
+
+2. Configure the training parameters in `configs/config.yaml`
+
+3. Run the training script:
+```bash
+python scripts/train.py --config configs/config.yaml
+```
+
+Or use the Makefile:
+```bash
+make train
+```
+
+### Making Predictions
+
+1. Ensure you have a trained model in `models/production/`
+
+2. Run the prediction script:
+```bash
+python scripts/predict.py --config configs/config.yaml --input data/raw/test_data.csv
+```
+
+Or use the Makefile:
+```bash
+make predict
+```
+
+## Usage
+
+### As a Python Package
+
+After installation, you can import and use the package in your Python code:
+
+```python
+from {{project_name}}.data.loader import load_data
+from {{project_name}}.models.model import Model
+from {{project_name}}.inference.predict import predict
+
+# Load data
+data = load_data("path/to/data.csv")
+
+# Load model
+model = Model.load("models/production/model.pkl")
+
+# Make predictions
+predictions = predict(model, data)
+```
+
+### Training Configuration
+
+Edit `configs/config.yaml` to customize:
+- Data paths and preprocessing options
+- Model hyperparameters
+- Training settings (batch size, epochs, learning rate)
+- Evaluation metrics
+
+Example configuration:
+```yaml
+data:
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+
+training:
+  batch_size: 32
+  epochs: 100
+  learning_rate: 0.001
+
+model:
+  type: "{{model_type}}"
+  hyperparameters:
+    # Model-specific parameters
+```
+
+## Development
+
+### Running Tests
+
+Run all tests:
+```bash
+make test
+```
+
+Run specific test types:
+```bash
+pytest tests/test_data/ -v           # Data tests only
+pytest tests/test_models/ -v         # Model tests only
+pytest -m unit                       # Unit tests only
+pytest -m integration                # Integration tests only
+```
+
+### Code Quality
+
+Format code:
+```bash
+make format
+```
+
+Run linters:
+```bash
+make lint
+```
+
+### Project Commands
+
+The `Makefile` provides convenient commands:
+
+```bash
+make help          # Show all available commands
+make install       # Install dependencies
+make test          # Run tests with coverage
+make lint          # Run code quality checks
+make format        # Format code
+make train         # Train the model
+make predict       # Run predictions
+make clean         # Clean build artifacts
+```
+
+## Model Information
+
+### Model Architecture
+
+[Describe the model architecture]
+
+### Performance Metrics
+
+| Metric | Value |
+|--------|-------|
+| Accuracy | {{accuracy}} |
+| Precision | {{precision}} |
+| Recall | {{recall}} |
+| F1 Score | {{f1_score}} |
+
+### Training Details
+
+- **Dataset**: {{dataset_name}}
+- **Training Time**: {{training_time}}
+- **Framework**: {{framework}} (e.g., scikit-learn, TensorFlow, PyTorch)
+- **Model Type**: {{model_type}}
+
+## API Reference
+
+For detailed API documentation, see [docs/api.md](docs/api.md)
+
+Key modules:
+- `{{project_name}}.data` - Data loading and preprocessing
+- `{{project_name}}.features` - Feature engineering
+- `{{project_name}}.models` - Model definitions and training
+- `{{project_name}}.inference` - Prediction and inference
+
+## Deployment
+
+### Docker
+
+Build the Docker image:
+```bash
+make docker-build
+```
+
+Run the container:
+```bash
+make docker-run
+```
+
+### API Service
+
+Start the API service:
+```bash
+cd deployment/api
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+The API will be available at `http://localhost:8000`
+
+API documentation: `http://localhost:8000/docs`
+
+## Configuration
+
+Configuration is managed through YAML files in the `configs/` directory:
+
+- `config.yaml` - Main configuration
+- `model_config.yaml` - Model-specific parameters
+- `data_config.yaml` - Data pipeline configuration
+
+You can also use environment variables by creating a `.env` file (see `.env.example`).
+
+## Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests and linters (`make test && make lint`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## Testing
+
+This project uses pytest for testing. Tests are organized in the `tests/` directory:
+
+- `tests/test_data/` - Data processing tests
+- `tests/test_features/` - Feature engineering tests
+- `tests/test_models/` - Model tests
+- `tests/test_inference/` - Inference tests
+
+## License
+
+This project is licensed under the {{license}} License - see the [LICENSE](LICENSE) file for details.
+
+## Authors
+
+- {{author_name}} - {{author_email}}
+
+## Acknowledgments
+
+- Generated using ML-notebook-to-project transformation tool
+- Based on the [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/) structure
+- [Additional acknowledgments]
+
+## References
+
+[List any relevant papers, articles, or resources]
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history and changes.
+
+## Support
+
+For questions, issues, or contributions:
+- Open an issue: {{repo_url}}/issues
+- Email: {{support_email}}
+- Documentation: {{docs_url}}
+
+## Project Status
+
+**Status**: {{project_status}} (e.g., Active Development, Beta, Production)
+
+**Version**: 0.1.0
+
+**Last Updated**: {{last_updated}}

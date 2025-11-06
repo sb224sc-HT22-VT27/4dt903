@@ -1,0 +1,96 @@
+"""
+Template for setup.py - Python package configuration file.
+
+This file enables the project to be installed as a Python package using pip.
+Replace placeholders with actual project information.
+"""
+
+from setuptools import setup, find_packages
+from pathlib import Path
+
+# Read the contents of README file
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text(encoding="utf-8")
+
+# Read requirements from requirements.txt
+requirements = []
+if (this_directory / "requirements.txt").exists():
+    with open("requirements.txt") as f:
+        requirements = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+
+# Read development requirements
+dev_requirements = []
+if (this_directory / "requirements-dev.txt").exists():
+    with open("requirements-dev.txt") as f:
+        dev_requirements = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+
+setup(
+    name="{{project_name}}",  # Replace with actual project name (e.g., "customer_churn_prediction")
+    version="0.1.0",
+    
+    # Package information
+    description="{{project_description}}",  # Short description
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    
+    # Author information
+    author="{{author_name}}",
+    author_email="{{author_email}}",
+    
+    # Project URLs
+    url="{{project_url}}",
+    
+    # Package discovery
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    
+    # Python version requirement
+    python_requires=">=3.8",
+    
+    # Dependencies
+    install_requires=requirements,
+    
+    # Optional dependencies
+    extras_require={
+        "dev": dev_requirements,
+        "all": requirements + dev_requirements,
+    },
+    
+    # Entry points for command-line scripts
+    entry_points={
+        "console_scripts": [
+            "{{project_name}}-train=src.{{project_name}}.models.train:main",
+            "{{project_name}}-predict=src.{{project_name}}.inference.predict:main",
+        ],
+    },
+    
+    # Package data to include
+    include_package_data=True,
+    package_data={
+        "{{project_name}}": [
+            "configs/*.yaml",
+            "configs/*.json",
+        ],
+    },
+    
+    # PyPI classifiers
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+    ],
+    
+    # Keywords for PyPI
+    keywords="machine-learning ml data-science {{domain_keywords}}",
+    
+    # Project is zip-safe
+    zip_safe=False,
+)
