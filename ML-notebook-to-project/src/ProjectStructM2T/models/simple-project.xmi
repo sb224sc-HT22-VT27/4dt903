@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectStructMM:Project xmi:version="2.0" 
+    xmlns:xmi="http://www.omg.org/XMI" 
+    xmlns:projectStructMM="http://www.g7.org/projectStructMM" 
+    name="SimpleProject" 
+    description="A minimal project to test the M2T transformation">
+    
+  <!-- Simple folder structure -->
+  <folders name="docs">
+    <files name="README.md" fileType="md">
+      <content># Simple Project Documentation
+
+This is a simple test project to demonstrate the ProjectStructMM M2T transformation.
+
+## Features
+- Minimal structure
+- Easy to verify
+- Quick to generate
+</content>
+    </files>
+  </folders>
+  
+  <folders name="src">
+    <files name="hello.py" fileType="py">
+      <content>#!/usr/bin/env python3
+"""
+Simple Hello World script
+"""
+
+def main():
+    print("Hello from ProjectStructMM!")
+    print("This file was generated from a model.")
+
+if __name__ == "__main__":
+    main()
+</content>
+    </files>
+    <files name="config.json" fileType="json">
+      <content>{
+  "project": "SimpleProject",
+  "version": "1.0.0",
+  "generated": true
+}
+</content>
+    </files>
+  </folders>
+  
+  <!-- Root level files -->
+  <files name="README.md" fileType="md">
+    <content># SimpleProject
+
+A minimal project generated from ProjectStructMM to test M2T transformation.
+
+## Structure
+- `docs/` - Documentation
+- `src/` - Source code
+
+Generated using Acceleo M2T.
+</content>
+  </files>
+  
+  <files name=".gitignore" fileType="">
+    <content>__pycache__/
+*.pyc
+.DS_Store
+</content>
+  </files>
+  
+</projectStructMM:Project>
