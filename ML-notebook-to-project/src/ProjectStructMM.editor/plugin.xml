@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!-- ProjectStructMM Editor Plugin Configuration -->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated projectStructMM -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="projectStructMM.presentation.ProjectStructMMModelWizardID"
+            name="%_UI_ProjectStructMMModelWizard_label"
+            class="projectStructMM.presentation.ProjectStructMMModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ProjectStructMMModelFile.gif">
+         <description>%_UI_ProjectStructMMModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated projectStructMM -->
+      <editor
+            id="projectStructMM.presentation.ProjectStructMMEditorID"
+            name="%_UI_ProjectStructMMEditor_label"
+            icon="icons/full/obj16/ProjectStructMMModelFile.gif"
+            extensions="projectstructmm"
+            class="projectStructMM.presentation.ProjectStructMMEditor"
+            contributorClass="projectStructMM.presentation.ProjectStructMMActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
