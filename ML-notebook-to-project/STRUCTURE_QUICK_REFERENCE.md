@@ -267,7 +267,7 @@ pip install -r requirements-dev.txt
 ## Validation Checklist
 
 ✓ Can install with `pip install -e .`  
-✓ Can import package: `import src`  
+✓ Can import modules: `from src.data import loader`  
 ✓ Tests run with `pytest`  
 ✓ Scripts execute: `python scripts/train.py`  
 ✓ Configuration loads from YAML  

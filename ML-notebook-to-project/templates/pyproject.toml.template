@@ -62,7 +62,7 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["*"]
+include = ["data", "features", "models", "inference", "utils"]
 exclude = ["tests*"]
 
 # Black configuration
