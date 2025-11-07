@@ -54,15 +54,15 @@ Repository = "{{project_url}}"
 "Bug Tracker" = "{{project_url}}/issues"
 
 [project.scripts]
-{{project_name}}-train = "{{project_name}}.models.train:main"
-{{project_name}}-predict = "{{project_name}}.inference.predict:main"
+{{project_name}}-train = "src.models.train:main"
+{{project_name}}-predict = "src.inference.predict:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["{{project_name}}*"]
+include = ["*"]
 exclude = ["tests*"]
 
 # Black configuration

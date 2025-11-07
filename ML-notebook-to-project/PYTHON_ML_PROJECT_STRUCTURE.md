@@ -43,29 +43,28 @@ project-name/
 │   └── reports/                   # Analysis and reporting notebooks
 │
 ├── src/                           # Source code package
-│   └── <project_name>/            # Main package (use project name, snake_case)
-│       ├── __init__.py            # Package initialization
-│       ├── config.py              # Configuration management
-│       ├── data/                  # Data processing modules
-│       │   ├── __init__.py
-│       │   ├── loader.py          # Data loading functions
-│       │   ├── preprocessing.py   # Data preprocessing pipeline
-│       │   └── validation.py      # Data validation
-│       ├── features/              # Feature engineering
-│       │   ├── __init__.py
-│       │   └── engineering.py     # Feature transformation functions
-│       ├── models/                # Model definitions and training
-│       │   ├── __init__.py
-│       │   ├── model.py           # Model architecture/definition
-│       │   ├── train.py           # Training pipeline
-│       │   └── evaluate.py        # Model evaluation
-│       ├── inference/             # Inference/prediction
-│       │   ├── __init__.py
-│       │   └── predict.py         # Prediction functions
-│       └── utils/                 # Utility functions
-│           ├── __init__.py
-│           ├── logging.py         # Logging configuration
-│           └── helpers.py         # Helper functions
+│   ├── __init__.py                # Package initialization
+│   ├── config.py                  # Configuration management
+│   ├── data/                      # Data processing modules
+│   │   ├── __init__.py
+│   │   ├── loader.py              # Data loading functions
+│   │   ├── preprocessing.py       # Data preprocessing pipeline
+│   │   └── validation.py          # Data validation
+│   ├── features/                  # Feature engineering
+│   │   ├── __init__.py
+│   │   └── engineering.py         # Feature transformation functions
+│   ├── models/                    # Model definitions and training
+│   │   ├── __init__.py
+│   │   ├── model.py               # Model architecture/definition
+│   │   ├── train.py               # Training pipeline
+│   │   └── evaluate.py            # Model evaluation
+│   ├── inference/                 # Inference/prediction
+│   │   ├── __init__.py
+│   │   └── predict.py             # Prediction functions
+│   └── utils/                     # Utility functions
+│       ├── __init__.py
+│       ├── logging.py             # Logging configuration
+│       └── helpers.py             # Helper functions
 │
 ├── tests/                         # Test directory (mirrors src structure)
 │   ├── __init__.py
@@ -261,7 +260,7 @@ clean:
 
 ### Source Code Organization
 
-#### src/<project_name>/__init__.py
+#### src/__init__.py
 Package initialization:
 ```python
 """Project Name - ML Project Description."""
@@ -274,7 +273,7 @@ from .models.model import Model
 from .inference.predict import predict
 ```
 
-#### src/<project_name>/config.py
+#### src/config.py
 Configuration management:
 ```python
 """Configuration management for the project."""
@@ -319,11 +318,11 @@ import argparse
 import logging
 from pathlib import Path
 
-from <project_name>.config import Config
-from <project_name>.data.loader import load_data
-from <project_name>.data.preprocessing import preprocess_data
-from <project_name>.models.train import train_model
-from <project_name>.models.evaluate import evaluate_model
+from src.config import Config
+from src.data.loader import load_data
+from src.data.preprocessing import preprocess_data
+from src.models.train import train_model
+from src.models.evaluate import evaluate_model
 
 def main(config_path: str) -> None:
     """Run the training pipeline."""
@@ -429,7 +428,7 @@ Example test structure:
 # tests/test_data/test_preprocessing.py
 import pytest
 import pandas as pd
-from <project_name>.data.preprocessing import preprocess_data
+from src.data.preprocessing import preprocess_data
 
 @pytest.fixture
 def sample_data():

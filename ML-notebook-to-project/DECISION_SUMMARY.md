@@ -129,13 +129,13 @@ The structure is designed to be the **target output** for the M2T (Model-to-Text
 |------------------|-----------------|--------|
 | Notebook metadata | Project configuration | Defined |
 | Imports | requirements.txt | Defined |
-| Data loading cells | src/project_name/data/loader.py | Defined |
-| Preprocessing cells | src/project_name/data/preprocessing.py | Defined |
-| Feature engineering | src/project_name/features/engineering.py | Defined |
-| Model definition | src/project_name/models/model.py | Defined |
-| Training code | src/project_name/models/train.py | Defined |
-| Evaluation code | src/project_name/models/evaluate.py | Defined |
-| Prediction code | src/project_name/inference/predict.py | Defined |
+| Data loading cells | src/data/loader.py | Defined |
+| Preprocessing cells | src/data/preprocessing.py | Defined |
+| Feature engineering | src/features/engineering.py | Defined |
+| Model definition | src/models/model.py | Defined |
+| Training code | src/models/train.py | Defined |
+| Evaluation code | src/models/evaluate.py | Defined |
+| Prediction code | src/inference/predict.py | Defined |
 | Constants/config | configs/config.yaml | Defined |
 | Markdown cells | README.md, docs/ | Defined |
 

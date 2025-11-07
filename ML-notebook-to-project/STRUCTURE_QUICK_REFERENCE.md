@@ -16,19 +16,18 @@ project-name/
 ├── models/
 ├── notebooks/
 ├── src/
-│   └── project_name/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── data/
+│   │   ├── __init__.py
+│   │   └── preprocessing.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── model.py
+│   │   └── train.py
+│   └── inference/
 │       ├── __init__.py
-│       ├── config.py
-│       ├── data/
-│       │   ├── __init__.py
-│       │   └── preprocessing.py
-│       ├── models/
-│       │   ├── __init__.py
-│       │   ├── model.py
-│       │   └── train.py
-│       └── inference/
-│           ├── __init__.py
-│           └── predict.py
+│       └── predict.py
 ├── tests/
 │   └── __init__.py
 ├── configs/
@@ -45,7 +44,7 @@ project-name/
 | `data/` | Data storage | No (use DVC) |
 | `models/` | Trained models | No (use DVC/MLflow) |
 | `notebooks/` | Jupyter notebooks for exploration | Yes |
-| `src/project_name/` | Main source code package | Yes |
+| `src/` | Main source code package | Yes |
 | `tests/` | Unit and integration tests | Yes |
 | `configs/` | Configuration files (YAML) | Yes |
 | `scripts/` | Executable scripts | Yes |
@@ -67,23 +66,23 @@ project-name/
 
 ## Module Organization
 
-### src/project_name/data/
+### src/data/
 - `loader.py` - Data loading from various sources
 - `preprocessing.py` - Data cleaning and transformation
 - `validation.py` - Data quality checks
 
-### src/project_name/features/
+### src/features/
 - `engineering.py` - Feature creation and transformation
 
-### src/project_name/models/
+### src/models/
 - `model.py` - Model architecture/definition
 - `train.py` - Training pipeline and logic
 - `evaluate.py` - Model evaluation metrics
 
-### src/project_name/inference/
+### src/inference/
 - `predict.py` - Production inference functions
 
-### src/project_name/utils/
+### src/utils/
 - `logging.py` - Logging configuration
 - `helpers.py` - Utility functions
 
@@ -106,9 +105,9 @@ setup(
 ### Basic train.py script
 ```python
 import argparse
-from project_name.config import Config
-from project_name.data.loader import load_data
-from project_name.models.train import train_model
+from src.config import Config
+from src.data.loader import load_data
+from src.models.train import train_model
 
 def main(config_path: str):
     config = Config.from_yaml(config_path)
@@ -175,13 +174,13 @@ make clean       # Clean temporary files
 | Notebook Element | Target Location |
 |------------------|-----------------|
 | Imports | `requirements.txt` |
-| Data loading | `src/project_name/data/loader.py` |
-| Data cleaning | `src/project_name/data/preprocessing.py` |
-| Feature engineering | `src/project_name/features/engineering.py` |
-| Model definition | `src/project_name/models/model.py` |
-| Training loop | `src/project_name/models/train.py` |
-| Evaluation | `src/project_name/models/evaluate.py` |
-| Prediction | `src/project_name/inference/predict.py` |
+| Data loading | `src/data/loader.py` |
+| Data cleaning | `src/data/preprocessing.py` |
+| Feature engineering | `src/features/engineering.py` |
+| Model definition | `src/models/model.py` |
+| Training loop | `src/models/train.py` |
+| Evaluation | `src/models/evaluate.py` |
+| Prediction | `src/inference/predict.py` |
 | Constants/Config | `configs/config.yaml` |
 | Exploratory code | Keep in `notebooks/exploratory/` |
 
@@ -215,8 +214,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Local application
-from project_name.config import Config
-from project_name.data.loader import load_data
+from src.config import Config
+from src.data.loader import load_data
 ```
 
 ## Documentation Standards
@@ -268,7 +267,7 @@ pip install -r requirements-dev.txt
 ## Validation Checklist
 
 ✓ Can install with `pip install -e .`  
-✓ Can import package: `import project_name`  
+✓ Can import package: `import src`  
 ✓ Tests run with `pytest`  
 ✓ Scripts execute: `python scripts/train.py`  
 ✓ Configuration loads from YAML  

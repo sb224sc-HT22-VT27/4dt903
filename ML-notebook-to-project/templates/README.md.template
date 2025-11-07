@@ -29,7 +29,7 @@ This project was automatically generated from a Jupyter notebook using the ML-no
 │   └── processed/                 # Preprocessed data
 ├── models/                        # Trained models (git-ignored)
 ├── notebooks/                     # Jupyter notebooks
-├── src/{{project_name}}/          # Source code
+├── src/                         # Source code
 │   ├── data/                      # Data loading and preprocessing
 │   ├── features/                  # Feature engineering
 │   ├── models/                    # Model definitions and training
@@ -119,9 +119,9 @@ make predict
 After installation, you can import and use the package in your Python code:
 
 ```python
-from {{project_name}}.data.loader import load_data
-from {{project_name}}.models.model import Model
-from {{project_name}}.inference.predict import predict
+from src.data.loader import load_data
+from src.models.model import Model
+from src.inference.predict import predict
 
 # Load data
 data = load_data("path/to/data.csv")
@@ -230,10 +230,10 @@ make clean         # Clean build artifacts
 For detailed API documentation, see [docs/api.md](docs/api.md)
 
 Key modules:
-- `{{project_name}}.data` - Data loading and preprocessing
-- `{{project_name}}.features` - Feature engineering
-- `{{project_name}}.models` - Model definitions and training
-- `{{project_name}}.inference` - Prediction and inference
+- `src.data` - Data loading and preprocessing
+- `src.features` - Feature engineering
+- `src.models` - Model definitions and training
+- `src.inference` - Prediction and inference
 
 ## Deployment
 

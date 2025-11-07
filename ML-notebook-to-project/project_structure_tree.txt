@@ -25,29 +25,28 @@ project-name/
 │   └── reports/
 │
 ├── src/
-│   └── <project_name>/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── data/
+│   │   ├── __init__.py
+│   │   ├── loader.py
+│   │   ├── preprocessing.py
+│   │   └── validation.py
+│   ├── features/
+│   │   ├── __init__.py
+│   │   └── engineering.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── model.py
+│   │   ├── train.py
+│   │   └── evaluate.py
+│   ├── inference/
+│   │   ├── __init__.py
+│   │   └── predict.py
+│   └── utils/
 │       ├── __init__.py
-│       ├── config.py
-│       ├── data/
-│       │   ├── __init__.py
-│       │   ├── loader.py
-│       │   ├── preprocessing.py
-│       │   └── validation.py
-│       ├── features/
-│       │   ├── __init__.py
-│       │   └── engineering.py
-│       ├── models/
-│       │   ├── __init__.py
-│       │   ├── model.py
-│       │   ├── train.py
-│       │   └── evaluate.py
-│       ├── inference/
-│       │   ├── __init__.py
-│       │   └── predict.py
-│       └── utils/
-│           ├── __init__.py
-│           ├── logging.py
-│           └── helpers.py
+│       ├── logging.py
+│       └── helpers.py
 │
 ├── tests/
 │   ├── __init__.py

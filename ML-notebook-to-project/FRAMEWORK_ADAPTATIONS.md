@@ -31,7 +31,7 @@ joblib>=1.3.0
 ### Model Structure
 
 ```python
-# src/project_name/models/model.py
+# src/models/model.py
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -97,7 +97,7 @@ tensorboard>=2.13.0
 ### Model Structure
 
 ```python
-# src/project_name/models/model.py
+# src/models/model.py
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -212,7 +212,7 @@ tensorboard>=2.13.0
 ### Model Structure
 
 ```python
-# src/project_name/models/model.py
+# src/models/model.py
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -251,7 +251,7 @@ class Model(nn.Module):
         model.load_state_dict(checkpoint['model_state_dict'])
         return model
 
-# src/project_name/models/train.py
+# src/models/train.py
 def train_model(model, train_loader, val_loader, config, device):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(
@@ -338,7 +338,7 @@ optuna>=3.0.0  # for hyperparameter tuning
 ### Model Structure
 
 ```python
-# src/project_name/models/model.py
+# src/models/model.py
 import xgboost as xgb
 # import lightgbm as lgb
 
@@ -429,7 +429,7 @@ models/
 ### Model Structure
 
 ```python
-# src/project_name/models/model.py
+# src/models/model.py
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
@@ -598,7 +598,7 @@ sentencepiece>=0.1.99
 ### Additional Structure
 
 ```
-src/project_name/
+src/
 ├── data/
 │   ├── loader.py
 │   ├── preprocessing.py
@@ -627,7 +627,7 @@ sktime>=0.22.0
 ### Additional Structure
 
 ```
-src/project_name/
+src/
 ├── data/
 │   ├── user_item_matrix.py
 │   └── interactions.py
