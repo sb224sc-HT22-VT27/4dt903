@@ -1,6 +1,7 @@
 # README
 
 **NOTE:** [Commit messages should follow specification](https://www.conventionalcommits.org/en/v1.0.0/#specification)
+**NOTE 1:** When merging use `--squash`
 
 ![Planning Diagram](./img/simple-diagram.png)
 
