@@ -1,5 +1,16 @@
 # 4DT903 / 4DV651 | Project in Model-based development | 10hp | 01/09/2025 - 18/01/2026
 
+## Contributing
+
+We welcome contributions! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide to understand our workflow and PR merge strategy.
+
+**Quick Links:**
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [PR Merge Strategy](.github/PR_MERGE_STRATEGY.md)
+- [Pull Request Template](.github/pull_request_template.md)
+
+## Course Examples
+
 [Example 1](https://www.vogella.com/tutorials/EclipseEMF/article.html)
 
 - from 1.1 to 1.5 (skip 1.6)
