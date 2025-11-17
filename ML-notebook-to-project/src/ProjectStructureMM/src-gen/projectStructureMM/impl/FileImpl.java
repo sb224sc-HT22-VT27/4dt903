@@ -2,11 +2,13 @@
  */
 package projectStructureMM.impl;
 
-import org.eclipse.emf.common.notify.Notification;
+import java.util.Collection;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 import projectStructureMM.File;
 import projectStructureMM.ProjectStructureMMPackage;
@@ -26,24 +28,14 @@ import projectStructureMM.ProjectStructureMMPackage;
  */
 public class FileImpl extends FileSystemElementImpl implements File {
 	/**
-	 * The default value of the '{@link #getContent() <em>Content</em>}' attribute.
+	 * The cached value of the '{@link #getContent() <em>Content</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getContent()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String CONTENT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getContent() <em>Content</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getContent()
-	 * @generated
-	 * @ordered
-	 */
-	protected String content = CONTENT_EDEFAULT;
+	protected EList<String> content;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -70,22 +62,12 @@ public class FileImpl extends FileSystemElementImpl implements File {
 	 * @generated
 	 */
 	@Override
-	public String getContent() {
+	public EList<String> getContent() {
+		if (content == null) {
+			content = new EDataTypeUniqueEList<String>(String.class, this,
+					ProjectStructureMMPackage.FILE__CONTENT);
+		}
 		return content;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setContent(String newContent) {
-		String oldContent = content;
-		content = newContent;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ProjectStructureMMPackage.FILE__CONTENT, oldContent,
-					content));
 	}
 
 	/**
@@ -107,11 +89,13 @@ public class FileImpl extends FileSystemElementImpl implements File {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case ProjectStructureMMPackage.FILE__CONTENT:
-			setContent((String) newValue);
+			getContent().clear();
+			getContent().addAll((Collection<? extends String>) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -126,7 +110,7 @@ public class FileImpl extends FileSystemElementImpl implements File {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case ProjectStructureMMPackage.FILE__CONTENT:
-			setContent(CONTENT_EDEFAULT);
+			getContent().clear();
 			return;
 		}
 		super.eUnset(featureID);
@@ -141,7 +125,7 @@ public class FileImpl extends FileSystemElementImpl implements File {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 		case ProjectStructureMMPackage.FILE__CONTENT:
-			return CONTENT_EDEFAULT == null ? content != null : !CONTENT_EDEFAULT.equals(content);
+			return content != null && !content.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

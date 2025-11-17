@@ -284,10 +284,10 @@ public interface ProjectStructureMMPackage extends EPackage {
 	EClass getFile();
 
 	/**
-	 * Returns the meta object for the attribute '{@link projectStructureMM.File#getContent <em>Content</em>}'.
+	 * Returns the meta object for the attribute list '{@link projectStructureMM.File#getContent <em>Content</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Content</em>'.
+	 * @return the meta object for the attribute list '<em>Content</em>'.
 	 * @see projectStructureMM.File#getContent()
 	 * @see #getFile()
 	 * @generated
