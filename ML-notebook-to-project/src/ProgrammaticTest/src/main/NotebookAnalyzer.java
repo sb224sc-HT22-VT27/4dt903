@@ -39,6 +39,28 @@ public class NotebookAnalyzer {
                 System.out.println(imp);
             }
 
+            // Analyze constants and commands for each code cell
+            System.out.println("\n=== Constants and Commands ===");
+            for (CodeCell cell : notebook.getCodeCells()) {
+                System.out.println("Cell " + cell.getId() + ":");
+                
+                // Extract and display constants
+                if (cell.hasConstants()) {
+                    System.out.println("  Constants:");
+                    for (String constant : cell.extractConstants()) {
+                        System.out.println("    " + constant);
+                    }
+                }
+                
+                // Extract and display commands
+                if (cell.hasCommands()) {
+                    System.out.println("  Commands:");
+                    for (String command : cell.extractCommands()) {
+                        System.out.println("    " + command);
+                    }
+                }
+            }
+
             // Categorize code cells
             System.out.println("\n=== Code Analysis ===");
             for (CodeCell cell : notebook.getCodeCells()) {
