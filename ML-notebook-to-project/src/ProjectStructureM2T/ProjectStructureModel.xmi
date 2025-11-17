@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://www.g7.org/projectStructureMM /ProjectStructureMM/model/projectStructureMM.ecore"
 	name="DemoProject">
   <filesystemelement xsi:type="Directory" name="src">
-    <filesystemelement xsi:type="File" name="main.py" content="print('Hello World')"/>
+    <filesystemelement xsi:type="File" name="main.py" content="print('Hello World')" content="print('Welcome to the demo')"/>
   </filesystemelement>
   <filesystemelement xsi:type="Directory" name="data"/>
 </ProjectStructure>
