@@ -31,6 +31,8 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <ul>
  *   <li>{@link notebookMM.impl.CodeCellImpl#getSource <em>Source</em>}</li>
  *   <li>{@link notebookMM.impl.CodeCellImpl#getImports <em>Imports</em>}</li>
+ *   <li>{@link notebookMM.impl.CodeCellImpl#getConstants <em>Constants</em>}</li>
+ *   <li>{@link notebookMM.impl.CodeCellImpl#getCommands <em>Commands</em>}</li>
  *   <li>{@link notebookMM.impl.CodeCellImpl#getOutputs <em>Outputs</em>}</li>
  * </ul>
  *
@@ -66,6 +68,26 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	 * @ordered
 	 */
 	protected EList<String> imports;
+
+	/**
+	 * The cached value of the '{@link #getConstants() <em>Constants</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConstants()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> constants;
+
+	/**
+	 * The cached value of the '{@link #getCommands() <em>Commands</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCommands()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> commands;
 
 	/**
 	 * The cached value of the '{@link #getOutputs() <em>Outputs</em>}' attribute list.
@@ -139,6 +161,32 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	 * @generated
 	 */
 	@Override
+	public EList<String> getConstants() {
+		if (constants == null) {
+			constants = new EDataTypeUniqueEList<String>(String.class, this, NotebookMMPackage.CODE_CELL__CONSTANTS);
+		}
+		return constants;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EList<String> getCommands() {
+		if (commands == null) {
+			commands = new EDataTypeUniqueEList<String>(String.class, this, NotebookMMPackage.CODE_CELL__COMMANDS);
+		}
+		return commands;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EList<String> getOutputs() {
 		if (outputs == null) {
 			outputs = new EDataTypeUniqueEList<String>(String.class, this, NotebookMMPackage.CODE_CELL__OUTPUTS);
@@ -190,6 +238,111 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 		// Ensure that you remove @generated or mark it @generated NOT
 		
 		return !extractImports().isEmpty();
+		
+		//throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public EList<String> extractConstants() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		
+		EList<String> constants = new BasicEList<>();
+		if (getSource() == null || getSource().isEmpty()) {
+			return constants;
+		}
+
+		// Regex pattern for Python constant definitions
+		// Constants are typically uppercase variable assignments at module level
+		Pattern constantPattern = Pattern.compile(
+				"^\\s*([A-Z][A-Z0-9_]*)\\s*=\\s*(.+)\\s*$", Pattern.MULTILINE);
+
+		Matcher matcher = constantPattern.matcher(getSource());
+		while (matcher.find()) {
+			constants.add(matcher.group(0).trim());
+		}
+
+		// Update the constants attribute
+		getConstants().clear();
+		getConstants().addAll(constants);
+
+		return constants;
+		
+		//throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public boolean hasConstants() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		
+		return !extractConstants().isEmpty();
+		
+		//throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public EList<String> extractCommands() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		
+		EList<String> commands = new BasicEList<>();
+		if (getSource() == null || getSource().isEmpty()) {
+			return commands;
+		}
+
+		// Extract all non-import, non-constant lines as commands
+		String[] lines = getSource().split("\\r?\\n");
+		Pattern importPattern = Pattern.compile(
+				"^\\s*(import\\s+[\\w.]+(?:\\s+as\\s+\\w+)?|from\\s+[\\w.]+\\s+import\\s+.+)\\s*$");
+		Pattern constantPattern = Pattern.compile("^\\s*([A-Z][A-Z0-9_]*)\\s*=\\s*(.+)\\s*$");
+		
+		for (String line : lines) {
+			String trimmedLine = line.trim();
+			// Skip empty lines, comments, imports, and constants
+			if (!trimmedLine.isEmpty() 
+					&& !trimmedLine.startsWith("#") 
+					&& !importPattern.matcher(line).matches()
+					&& !constantPattern.matcher(line).matches()) {
+				commands.add(line);
+			}
+		}
+
+		// Update the commands attribute
+		getCommands().clear();
+		getCommands().addAll(commands);
+
+		return commands;
+		
+		//throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public boolean hasCommands() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		
+		return !extractCommands().isEmpty();
 		
 		//throw new UnsupportedOperationException();
 	}
@@ -308,6 +461,10 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 			return getSource();
 		case NotebookMMPackage.CODE_CELL__IMPORTS:
 			return getImports();
+		case NotebookMMPackage.CODE_CELL__CONSTANTS:
+			return getConstants();
+		case NotebookMMPackage.CODE_CELL__COMMANDS:
+			return getCommands();
 		case NotebookMMPackage.CODE_CELL__OUTPUTS:
 			return getOutputs();
 		}
@@ -329,6 +486,14 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 		case NotebookMMPackage.CODE_CELL__IMPORTS:
 			getImports().clear();
 			getImports().addAll((Collection<? extends String>) newValue);
+			return;
+		case NotebookMMPackage.CODE_CELL__CONSTANTS:
+			getConstants().clear();
+			getConstants().addAll((Collection<? extends String>) newValue);
+			return;
+		case NotebookMMPackage.CODE_CELL__COMMANDS:
+			getCommands().clear();
+			getCommands().addAll((Collection<? extends String>) newValue);
 			return;
 		case NotebookMMPackage.CODE_CELL__OUTPUTS:
 			getOutputs().clear();
@@ -352,6 +517,12 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 		case NotebookMMPackage.CODE_CELL__IMPORTS:
 			getImports().clear();
 			return;
+		case NotebookMMPackage.CODE_CELL__CONSTANTS:
+			getConstants().clear();
+			return;
+		case NotebookMMPackage.CODE_CELL__COMMANDS:
+			getCommands().clear();
+			return;
 		case NotebookMMPackage.CODE_CELL__OUTPUTS:
 			getOutputs().clear();
 			return;
@@ -371,6 +542,10 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 			return SOURCE_EDEFAULT == null ? source != null : !SOURCE_EDEFAULT.equals(source);
 		case NotebookMMPackage.CODE_CELL__IMPORTS:
 			return imports != null && !imports.isEmpty();
+		case NotebookMMPackage.CODE_CELL__CONSTANTS:
+			return constants != null && !constants.isEmpty();
+		case NotebookMMPackage.CODE_CELL__COMMANDS:
+			return commands != null && !commands.isEmpty();
 		case NotebookMMPackage.CODE_CELL__OUTPUTS:
 			return outputs != null && !outputs.isEmpty();
 		}
@@ -389,6 +564,14 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 			return extractImports();
 		case NotebookMMPackage.CODE_CELL___HAS_IMPORTS:
 			return hasImports();
+		case NotebookMMPackage.CODE_CELL___EXTRACT_CONSTANTS:
+			return extractConstants();
+		case NotebookMMPackage.CODE_CELL___HAS_CONSTANTS:
+			return hasConstants();
+		case NotebookMMPackage.CODE_CELL___EXTRACT_COMMANDS:
+			return extractCommands();
+		case NotebookMMPackage.CODE_CELL___HAS_COMMANDS:
+			return hasCommands();
 		case NotebookMMPackage.CODE_CELL___IS_TRAINING_CODE:
 			return isTrainingCode();
 		case NotebookMMPackage.CODE_CELL___IS_DATA_PREPROCESSING:
@@ -418,6 +601,10 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 		result.append(source);
 		result.append(", imports: ");
 		result.append(imports);
+		result.append(", constants: ");
+		result.append(constants);
+		result.append(", commands: ");
+		result.append(commands);
 		result.append(", outputs: ");
 		result.append(outputs);
 		result.append(')');

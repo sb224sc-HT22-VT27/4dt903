@@ -15,6 +15,8 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link notebookMM.CodeCell#getSource <em>Source</em>}</li>
  *   <li>{@link notebookMM.CodeCell#getImports <em>Imports</em>}</li>
+ *   <li>{@link notebookMM.CodeCell#getConstants <em>Constants</em>}</li>
+ *   <li>{@link notebookMM.CodeCell#getCommands <em>Commands</em>}</li>
  *   <li>{@link notebookMM.CodeCell#getOutputs <em>Outputs</em>}</li>
  * </ul>
  *
@@ -58,6 +60,30 @@ public interface CodeCell extends Cell {
 	EList<String> getImports();
 
 	/**
+	 * Returns the value of the '<em><b>Constants</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Constants</em>' attribute list.
+	 * @see notebookMM.NotebookMMPackage#getCodeCell_Constants()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getConstants();
+
+	/**
+	 * Returns the value of the '<em><b>Commands</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Commands</em>' attribute list.
+	 * @see notebookMM.NotebookMMPackage#getCodeCell_Commands()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getCommands();
+
+	/**
 	 * Returns the value of the '<em><b>Outputs</b></em>' attribute list.
 	 * The list contents are of type {@link java.lang.String}.
 	 * <!-- begin-user-doc -->
@@ -87,6 +113,44 @@ public interface CodeCell extends Cell {
 	 * @generated
 	 */
 	boolean hasImports();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Extracts constant definitions from source code
+	 * <!-- end-model-doc -->
+	 * @model
+	 * @generated
+	 */
+	EList<String> extractConstants();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasConstants();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Extracts executable commands from source code
+	 * <!-- end-model-doc -->
+	 * @model
+	 * @generated
+	 */
+	EList<String> extractCommands();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasCommands();
 
 	/**
 	 * <!-- begin-user-doc -->
