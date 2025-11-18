@@ -2,8 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.g7.org/projectStructureMM /ProjectStructureMM/model/projectStructureMM.ecore"
 	name="DemoProject">
-  <filesystemelement xsi:type="Directory" name="src">
-    <filesystemelement xsi:type="File" name="main.py" content="print('Hello World')"/>
-  </filesystemelement>
-  <filesystemelement xsi:type="Directory" name="data"/>
+	<filesystemelement xsi:type="Directory" name="data"/>
+	<filesystemelement xsi:type="Directory" name="src"/>
+	<filesystemelement xsi:type="Directory" name="models"/>
+	<filesystemelement xsi:type="Directory" name="outputs"/>
+	<filesystemelement xsi:type="File" name="requirements.txt"/>
 </ProjectStructure>
