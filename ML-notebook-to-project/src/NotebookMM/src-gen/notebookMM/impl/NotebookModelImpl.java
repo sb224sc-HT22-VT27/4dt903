@@ -203,7 +203,7 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	public EList<CodeCell> getCodeCells() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		EList<CodeCell> codeCells = new BasicEList<>();
 		for (Cell cell : getCells()) {
 			if (cell instanceof CodeCell) {
@@ -211,7 +211,7 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 			}
 		}
 		return codeCells;
-		
+
 		//throw new UnsupportedOperationException();
 	}
 
@@ -224,7 +224,7 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	public EList<MarkdownCell> getMarkdownCells() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		EList<MarkdownCell> markdownCells = new BasicEList<>();
 		for (Cell cell : getCells()) {
 			if (cell instanceof MarkdownCell) {
@@ -232,7 +232,7 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 			}
 		}
 		return markdownCells;
-		
+
 		//throw new UnsupportedOperationException();
 	}
 
@@ -245,13 +245,13 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	public EList<String> getAllImports() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		Set<String> allImports = new LinkedHashSet<>();
 		for (CodeCell codeCell : getCodeCells()) {
 			allImports.addAll(codeCell.extractImports());
 		}
 		return new BasicEList<>(allImports);
-		
+
 		//throw new UnsupportedOperationException();
 	}
 
@@ -264,7 +264,7 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	public EList<Cell> getCellsByType(CellType type) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		EList<Cell> result = new BasicEList<>();
 		for (Cell cell : getCells()) {
 			if (cell.getCellType() == type) {
@@ -272,7 +272,7 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 			}
 		}
 		return result;
-		
+
 		//throw new UnsupportedOperationException();
 	}
 
@@ -285,7 +285,7 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 	public boolean validate() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		// Basic validation logic
 		if (getName() == null || getName().isEmpty()) {
 			return false;
@@ -297,7 +297,7 @@ public class NotebookModelImpl extends MinimalEObjectImpl.Container implements N
 			return false;
 		}
 		return true;
-		
+
 		//throw new UnsupportedOperationException();
 	}
 

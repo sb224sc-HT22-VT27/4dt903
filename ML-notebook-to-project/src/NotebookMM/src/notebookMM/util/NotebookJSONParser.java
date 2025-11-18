@@ -7,7 +7,13 @@ import java.nio.file.Paths;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import notebookMM.*;
+import notebookMM.Cell;
+import notebookMM.CellType;
+import notebookMM.CodeCell;
+import notebookMM.MarkdownCell;
+import notebookMM.NotebookMMFactory;
+import notebookMM.NotebookMetadata;
+import notebookMM.NotebookModel;
 
 public class NotebookJSONParser {
 	private NotebookMMFactory factory = NotebookMMFactory.eINSTANCE;
@@ -104,6 +110,9 @@ public class NotebookJSONParser {
 
 			// Extract imports automatically
 			codeCell.extractImports();
+
+			// Extract constants automatically
+			// codeCell.extractConstants(); // TODO
 
 			cell = codeCell;
 

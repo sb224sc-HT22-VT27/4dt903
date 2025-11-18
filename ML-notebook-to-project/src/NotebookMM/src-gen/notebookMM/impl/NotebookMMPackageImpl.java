@@ -379,8 +379,28 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 	 * @generated
 	 */
 	@Override
-	public EAttribute getCodeCell_Outputs() {
+	public EAttribute getCodeCell_Constants() {
 		return (EAttribute) codeCellEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCodeCell_Commands() {
+		return (EAttribute) codeCellEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCodeCell_Outputs() {
+		return (EAttribute) codeCellEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -409,7 +429,7 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 	 * @generated
 	 */
 	@Override
-	public EOperation getCodeCell__IsTrainingCode() {
+	public EOperation getCodeCell__ExtractConstants() {
 		return codeCellEClass.getEOperations().get(2);
 	}
 
@@ -419,7 +439,7 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 	 * @generated
 	 */
 	@Override
-	public EOperation getCodeCell__IsDataPreprocessing() {
+	public EOperation getCodeCell__HasConstants() {
 		return codeCellEClass.getEOperations().get(3);
 	}
 
@@ -429,7 +449,7 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 	 * @generated
 	 */
 	@Override
-	public EOperation getCodeCell__IsPredictionCode() {
+	public EOperation getCodeCell__ExtractCommands() {
 		return codeCellEClass.getEOperations().get(4);
 	}
 
@@ -439,7 +459,7 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 	 * @generated
 	 */
 	@Override
-	public EOperation getCodeCell__GetSourceLines() {
+	public EOperation getCodeCell__HasCommands() {
 		return codeCellEClass.getEOperations().get(5);
 	}
 
@@ -449,8 +469,48 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 	 * @generated
 	 */
 	@Override
-	public EOperation getCodeCell__ContainsKeyword__String() {
+	public EOperation getCodeCell__IsTrainingCode() {
 		return codeCellEClass.getEOperations().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EOperation getCodeCell__IsDataPreprocessing() {
+		return codeCellEClass.getEOperations().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EOperation getCodeCell__IsPredictionCode() {
+		return codeCellEClass.getEOperations().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EOperation getCodeCell__GetSourceLines() {
+		return codeCellEClass.getEOperations().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EOperation getCodeCell__ContainsKeyword__String() {
+		return codeCellEClass.getEOperations().get(10);
 	}
 
 	/**
@@ -570,9 +630,15 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 		codeCellEClass = createEClass(CODE_CELL);
 		createEAttribute(codeCellEClass, CODE_CELL__SOURCE);
 		createEAttribute(codeCellEClass, CODE_CELL__IMPORTS);
+		createEAttribute(codeCellEClass, CODE_CELL__CONSTANTS);
+		createEAttribute(codeCellEClass, CODE_CELL__COMMANDS);
 		createEAttribute(codeCellEClass, CODE_CELL__OUTPUTS);
 		createEOperation(codeCellEClass, CODE_CELL___EXTRACT_IMPORTS);
 		createEOperation(codeCellEClass, CODE_CELL___HAS_IMPORTS);
+		createEOperation(codeCellEClass, CODE_CELL___EXTRACT_CONSTANTS);
+		createEOperation(codeCellEClass, CODE_CELL___HAS_CONSTANTS);
+		createEOperation(codeCellEClass, CODE_CELL___EXTRACT_COMMANDS);
+		createEOperation(codeCellEClass, CODE_CELL___HAS_COMMANDS);
 		createEOperation(codeCellEClass, CODE_CELL___IS_TRAINING_CODE);
 		createEOperation(codeCellEClass, CODE_CELL___IS_DATA_PREPROCESSING);
 		createEOperation(codeCellEClass, CODE_CELL___IS_PREDICTION_CODE);
@@ -686,6 +752,10 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCodeCell_Imports(), ecorePackage.getEString(), "imports", null, 0, -1, CodeCell.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCodeCell_Constants(), ecorePackage.getEString(), "constants", null, 0, -1, CodeCell.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCodeCell_Commands(), ecorePackage.getEString(), "commands", null, 0, -1, CodeCell.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCodeCell_Outputs(), ecorePackage.getEString(), "outputs", null, 0, -1, CodeCell.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -693,6 +763,18 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 				IS_ORDERED);
 
 		initEOperation(getCodeCell__HasImports(), ecorePackage.getEBoolean(), "hasImports", 0, 1, IS_UNIQUE,
+				IS_ORDERED);
+
+		initEOperation(getCodeCell__ExtractConstants(), ecorePackage.getEString(), "extractConstants", 0, -1, IS_UNIQUE,
+				IS_ORDERED);
+
+		initEOperation(getCodeCell__HasConstants(), ecorePackage.getEBoolean(), "hasConstants", 0, 1, IS_UNIQUE,
+				IS_ORDERED);
+
+		initEOperation(getCodeCell__ExtractCommands(), ecorePackage.getEString(), "extractCommands", 0, -1, IS_UNIQUE,
+				IS_ORDERED);
+
+		initEOperation(getCodeCell__HasCommands(), ecorePackage.getEBoolean(), "hasCommands", 0, 1, IS_UNIQUE,
 				IS_ORDERED);
 
 		initEOperation(getCodeCell__IsTrainingCode(), ecorePackage.getEBoolean(), "isTrainingCode", 0, 1, IS_UNIQUE,

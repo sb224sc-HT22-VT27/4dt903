@@ -103,11 +103,11 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 	public boolean isHeader() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		if (getContent() == null)
 			return false;
 		return getContent().trim().startsWith("#");
-		
+
 		//throw new UnsupportedOperationException();
 	}
 
@@ -120,7 +120,7 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 	public int getHeaderLevel() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		if (!isHeader())
 			return 0;
 
@@ -130,7 +130,7 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 			return matcher.group(1).length();
 		}
 		return 0;
-		
+
 		//throw new UnsupportedOperationException();
 	}
 
@@ -143,7 +143,7 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 	public String extractTitle() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		if (!isHeader())
 			return "";
 
@@ -153,7 +153,7 @@ public class MarkdownCellImpl extends CellImpl implements MarkdownCell {
 			return matcher.group(1).trim();
 		}
 		return "";
-		
+
 		//throw new UnsupportedOperationException();
 	}
 

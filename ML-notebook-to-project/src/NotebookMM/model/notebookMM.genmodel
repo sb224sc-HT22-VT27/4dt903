@@ -42,9 +42,15 @@
     <genClasses ecoreClass="notebookMM.ecore#//CodeCell">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//CodeCell/source"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//CodeCell/imports"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//CodeCell/constants"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//CodeCell/commands"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//CodeCell/outputs"/>
       <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/extractImports"/>
       <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/hasImports"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/extractConstants"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/hasConstants"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/extractCommands"/>
+      <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/hasCommands"/>
       <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/isTrainingCode"/>
       <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/isDataPreprocessing"/>
       <genOperations ecoreOperation="notebookMM.ecore#//CodeCell/isPredictionCode"/>

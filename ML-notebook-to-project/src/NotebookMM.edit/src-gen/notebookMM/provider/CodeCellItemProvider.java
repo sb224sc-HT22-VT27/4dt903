@@ -46,6 +46,8 @@ public class CodeCellItemProvider extends CellItemProvider {
 
 			addSourcePropertyDescriptor(object);
 			addImportsPropertyDescriptor(object);
+			addConstantsPropertyDescriptor(object);
+			addCommandsPropertyDescriptor(object);
 			addOutputsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -80,6 +82,38 @@ public class CodeCellItemProvider extends CellItemProvider {
 						getString("_UI_PropertyDescriptor_description", "_UI_CodeCell_imports_feature",
 								"_UI_CodeCell_type"),
 						NotebookMMPackage.Literals.CODE_CELL__IMPORTS, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Constants feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addConstantsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_CodeCell_constants_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_CodeCell_constants_feature",
+								"_UI_CodeCell_type"),
+						NotebookMMPackage.Literals.CODE_CELL__CONSTANTS, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Commands feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addCommandsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_CodeCell_commands_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_CodeCell_commands_feature",
+								"_UI_CodeCell_type"),
+						NotebookMMPackage.Literals.CODE_CELL__COMMANDS, true, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -147,6 +181,8 @@ public class CodeCellItemProvider extends CellItemProvider {
 		switch (notification.getFeatureID(CodeCell.class)) {
 		case NotebookMMPackage.CODE_CELL__SOURCE:
 		case NotebookMMPackage.CODE_CELL__IMPORTS:
+		case NotebookMMPackage.CODE_CELL__CONSTANTS:
+		case NotebookMMPackage.CODE_CELL__COMMANDS:
 		case NotebookMMPackage.CODE_CELL__OUTPUTS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;

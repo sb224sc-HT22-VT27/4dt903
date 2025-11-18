@@ -237,7 +237,7 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 	public boolean isPythonKernel() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 		String kernel = getKernelspec();
 		String lang = getLanguage();
 
@@ -248,7 +248,7 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 			return true;
 		}
 		return false;
-		
+
 		//throw new UnsupportedOperationException();
 	}
 

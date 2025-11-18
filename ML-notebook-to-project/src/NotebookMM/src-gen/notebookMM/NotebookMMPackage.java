@@ -360,13 +360,31 @@ public interface NotebookMMPackage extends EPackage {
 	int CODE_CELL__IMPORTS = CELL_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Constants</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL__CONSTANTS = CELL_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Commands</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL__COMMANDS = CELL_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Outputs</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL__OUTPUTS = CELL_FEATURE_COUNT + 2;
+	int CODE_CELL__OUTPUTS = CELL_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Code Cell</em>' class.
@@ -375,7 +393,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL_FEATURE_COUNT = CELL_FEATURE_COUNT + 3;
+	int CODE_CELL_FEATURE_COUNT = CELL_FEATURE_COUNT + 5;
 
 	/**
 	 * The operation id for the '<em>Is Empty</em>' operation.
@@ -414,13 +432,49 @@ public interface NotebookMMPackage extends EPackage {
 	int CODE_CELL___HAS_IMPORTS = CELL_OPERATION_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Extract Constants</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___EXTRACT_CONSTANTS = CELL_OPERATION_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Has Constants</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___HAS_CONSTANTS = CELL_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Extract Commands</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___EXTRACT_COMMANDS = CELL_OPERATION_COUNT + 4;
+
+	/**
+	 * The operation id for the '<em>Has Commands</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_CELL___HAS_COMMANDS = CELL_OPERATION_COUNT + 5;
+
+	/**
 	 * The operation id for the '<em>Is Training Code</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL___IS_TRAINING_CODE = CELL_OPERATION_COUNT + 2;
+	int CODE_CELL___IS_TRAINING_CODE = CELL_OPERATION_COUNT + 6;
 
 	/**
 	 * The operation id for the '<em>Is Data Preprocessing</em>' operation.
@@ -429,7 +483,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL___IS_DATA_PREPROCESSING = CELL_OPERATION_COUNT + 3;
+	int CODE_CELL___IS_DATA_PREPROCESSING = CELL_OPERATION_COUNT + 7;
 
 	/**
 	 * The operation id for the '<em>Is Prediction Code</em>' operation.
@@ -438,7 +492,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL___IS_PREDICTION_CODE = CELL_OPERATION_COUNT + 4;
+	int CODE_CELL___IS_PREDICTION_CODE = CELL_OPERATION_COUNT + 8;
 
 	/**
 	 * The operation id for the '<em>Get Source Lines</em>' operation.
@@ -447,7 +501,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL___GET_SOURCE_LINES = CELL_OPERATION_COUNT + 5;
+	int CODE_CELL___GET_SOURCE_LINES = CELL_OPERATION_COUNT + 9;
 
 	/**
 	 * The operation id for the '<em>Contains Keyword</em>' operation.
@@ -456,7 +510,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL___CONTAINS_KEYWORD__STRING = CELL_OPERATION_COUNT + 6;
+	int CODE_CELL___CONTAINS_KEYWORD__STRING = CELL_OPERATION_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Code Cell</em>' class.
@@ -465,7 +519,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_CELL_OPERATION_COUNT = CELL_OPERATION_COUNT + 7;
+	int CODE_CELL_OPERATION_COUNT = CELL_OPERATION_COUNT + 11;
 
 	/**
 	 * The meta object id for the '{@link notebookMM.impl.MarkdownCellImpl <em>Markdown Cell</em>}' class.
@@ -839,6 +893,28 @@ public interface NotebookMMPackage extends EPackage {
 	EAttribute getCodeCell_Imports();
 
 	/**
+	 * Returns the meta object for the attribute list '{@link notebookMM.CodeCell#getConstants <em>Constants</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Constants</em>'.
+	 * @see notebookMM.CodeCell#getConstants()
+	 * @see #getCodeCell()
+	 * @generated
+	 */
+	EAttribute getCodeCell_Constants();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link notebookMM.CodeCell#getCommands <em>Commands</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Commands</em>'.
+	 * @see notebookMM.CodeCell#getCommands()
+	 * @see #getCodeCell()
+	 * @generated
+	 */
+	EAttribute getCodeCell_Commands();
+
+	/**
 	 * Returns the meta object for the attribute list '{@link notebookMM.CodeCell#getOutputs <em>Outputs</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -868,6 +944,46 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getCodeCell__HasImports();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#extractConstants() <em>Extract Constants</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Extract Constants</em>' operation.
+	 * @see notebookMM.CodeCell#extractConstants()
+	 * @generated
+	 */
+	EOperation getCodeCell__ExtractConstants();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#hasConstants() <em>Has Constants</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Has Constants</em>' operation.
+	 * @see notebookMM.CodeCell#hasConstants()
+	 * @generated
+	 */
+	EOperation getCodeCell__HasConstants();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#extractCommands() <em>Extract Commands</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Extract Commands</em>' operation.
+	 * @see notebookMM.CodeCell#extractCommands()
+	 * @generated
+	 */
+	EOperation getCodeCell__ExtractCommands();
+
+	/**
+	 * Returns the meta object for the '{@link notebookMM.CodeCell#hasCommands() <em>Has Commands</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Has Commands</em>' operation.
+	 * @see notebookMM.CodeCell#hasCommands()
+	 * @generated
+	 */
+	EOperation getCodeCell__HasCommands();
 
 	/**
 	 * Returns the meta object for the '{@link notebookMM.CodeCell#isTrainingCode() <em>Is Training Code</em>}' operation.
@@ -1205,6 +1321,22 @@ public interface NotebookMMPackage extends EPackage {
 		EAttribute CODE_CELL__IMPORTS = eINSTANCE.getCodeCell_Imports();
 
 		/**
+		 * The meta object literal for the '<em><b>Constants</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CODE_CELL__CONSTANTS = eINSTANCE.getCodeCell_Constants();
+
+		/**
+		 * The meta object literal for the '<em><b>Commands</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CODE_CELL__COMMANDS = eINSTANCE.getCodeCell_Commands();
+
+		/**
 		 * The meta object literal for the '<em><b>Outputs</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1227,6 +1359,38 @@ public interface NotebookMMPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation CODE_CELL___HAS_IMPORTS = eINSTANCE.getCodeCell__HasImports();
+
+		/**
+		 * The meta object literal for the '<em><b>Extract Constants</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___EXTRACT_CONSTANTS = eINSTANCE.getCodeCell__ExtractConstants();
+
+		/**
+		 * The meta object literal for the '<em><b>Has Constants</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___HAS_CONSTANTS = eINSTANCE.getCodeCell__HasConstants();
+
+		/**
+		 * The meta object literal for the '<em><b>Extract Commands</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___EXTRACT_COMMANDS = eINSTANCE.getCodeCell__ExtractCommands();
+
+		/**
+		 * The meta object literal for the '<em><b>Has Commands</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CODE_CELL___HAS_COMMANDS = eINSTANCE.getCodeCell__HasCommands();
 
 		/**
 		 * The meta object literal for the '<em><b>Is Training Code</b></em>' operation.
