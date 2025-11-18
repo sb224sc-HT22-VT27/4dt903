@@ -159,7 +159,7 @@ public interface ProjectStructureMMPackage extends EPackage {
 	int FILE__NAME = FILE_SYSTEM_ELEMENT__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Content</b></em>' attribute.
+	 * The feature id for the '<em><b>Content</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -284,10 +284,10 @@ public interface ProjectStructureMMPackage extends EPackage {
 	EClass getFile();
 
 	/**
-	 * Returns the meta object for the attribute '{@link projectStructureMM.File#getContent <em>Content</em>}'.
+	 * Returns the meta object for the attribute list '{@link projectStructureMM.File#getContent <em>Content</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Content</em>'.
+	 * @return the meta object for the attribute list '<em>Content</em>'.
 	 * @see projectStructureMM.File#getContent()
 	 * @see #getFile()
 	 * @generated
@@ -396,7 +396,7 @@ public interface ProjectStructureMMPackage extends EPackage {
 		EClass FILE = eINSTANCE.getFile();
 
 		/**
-		 * The meta object literal for the '<em><b>Content</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Content</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

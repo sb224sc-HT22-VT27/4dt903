@@ -296,7 +296,7 @@ public class ProjectStructureMMPackageImpl extends EPackageImpl implements Proje
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(fileEClass, File.class, "File", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getFile_Content(), ecorePackage.getEString(), "content", null, 0, 1, File.class, !IS_TRANSIENT,
+		initEAttribute(getFile_Content(), ecorePackage.getEString(), "content", null, 0, -1, File.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(projectStructureEClass, ProjectStructure.class, "ProjectStructure", !IS_ABSTRACT, !IS_INTERFACE,

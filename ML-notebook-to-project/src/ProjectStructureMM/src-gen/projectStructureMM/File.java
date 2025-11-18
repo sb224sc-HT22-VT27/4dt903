@@ -2,6 +2,8 @@
  */
 package projectStructureMM;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>File</b></em>'.
@@ -20,25 +22,15 @@ package projectStructureMM;
  */
 public interface File extends FileSystemElement {
 	/**
-	 * Returns the value of the '<em><b>Content</b></em>' attribute.
+	 * Returns the value of the '<em><b>Content</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Content</em>' attribute.
-	 * @see #setContent(String)
+	 * @return the value of the '<em>Content</em>' attribute list.
 	 * @see projectStructureMM.ProjectStructureMMPackage#getFile_Content()
 	 * @model
 	 * @generated
 	 */
-	String getContent();
-
-	/**
-	 * Sets the value of the '{@link projectStructureMM.File#getContent <em>Content</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Content</em>' attribute.
-	 * @see #getContent()
-	 * @generated
-	 */
-	void setContent(String value);
+	EList<String> getContent();
 
 } // File
