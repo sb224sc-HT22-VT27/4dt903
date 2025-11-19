@@ -1,3 +1,25 @@
+/*
+ * NotebookToProject QVTo Transformation
+ * 
+ * This transformation converts a Jupyter Notebook model into a Python project structure.
+ * 
+ * Input: NotebookModel (NotebookMM)
+ * Output: ProjectStructure (ProjectStructureMM)
+ * 
+ * The transformation creates a project with the following structure:
+ * - ProjectStructure/
+ *   - src/
+ *     - main.py (contains all notebook code organized by type)
+ * 
+ * The main.py file is organized as follows:
+ * 1. All imports from all CodeCells
+ * 2. All constants from all CodeCells
+ * 3. All commands from all CodeCells
+ * 
+ * This organization leverages the NotebookMM metamodel which already
+ * separates CodeCell content into imports, constants, and commands attributes.
+ */
+
 modeltype NotebookMM uses "http://www.g7.org/notebookMM";
 modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
