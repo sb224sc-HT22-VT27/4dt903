@@ -3,15 +3,64 @@ modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
 transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : ProjectStuctureMM);
 
-// property NAME : TYPE = val; Consts
+// Constants
+property MAIN_FILE_NAME : String = "main.py";
+property SRC_DIR_NAME : String = "src";
 
 main() {
-	// [MetaModel::Attribute]
+	// Transform the notebook model to project structure
 	srcModel.rootObjects()[NotebookMM::NotebookModel] -> map toProjectStructure();
 	log("Notebook transformed to Project!");
 }
 
-// result = ProjectStructureMM | self = NotebookMM
+// Main mapping: Transform NotebookModel to ProjectStructure
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
+	
+	// Create the src directory
+	var srcDir : ProjectStuctureMM::Directory := object ProjectStuctureMM::Directory {
+		name := SRC_DIR_NAME;
+	};
+	
+	// Create main.py file with imports, constants, and commands
+	var mainFile : ProjectStuctureMM::File := self.map toMainPythonFile();
+	srcDir.filesystemelement += mainFile;
+	
+	result.filesystemelement += srcDir;
+}
+
+// Mapping: Create the main Python file from the notebook
+mapping NotebookMM::NotebookModel::toMainPythonFile() : ProjectStuctureMM::File {
+	result.name := MAIN_FILE_NAME;
+	
+	// Section 1: Add all imports first
+	self.cells[NotebookMM::CodeCell] -> forEach(cell) {
+		cell.imports -> forEach(imp) {
+			result.content += imp;
+		};
+	};
+	
+	// Add blank line after imports if there are any imports
+	if (self.cells[NotebookMM::CodeCell] -> exists(c | not c.imports->isEmpty())) then {
+		result.content += "";
+	} endif;
+	
+	// Section 2: Add all constants
+	self.cells[NotebookMM::CodeCell] -> forEach(cell) {
+		cell.constants -> forEach(constant) {
+			result.content += constant;
+		};
+	};
+	
+	// Add blank line after constants if there are any constants
+	if (self.cells[NotebookMM::CodeCell] -> exists(c | not c.constants->isEmpty())) then {
+		result.content += "";
+	} endif;
+	
+	// Section 3: Add all commands
+	self.cells[NotebookMM::CodeCell] -> forEach(cell) {
+		cell.commands -> forEach(command) {
+			result.content += command;
+		};
+	};
 }
