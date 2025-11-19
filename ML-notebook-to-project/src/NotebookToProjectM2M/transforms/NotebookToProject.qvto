@@ -1,17 +1,91 @@
+/*
+ * NotebookToProject QVTo Transformation
+ * 
+ * This transformation converts a Jupyter Notebook model into a Python project structure.
+ * 
+ * Input: NotebookModel (NotebookMM)
+ * Output: ProjectStructure (ProjectStructureMM)
+ * 
+ * The transformation creates a project with the following structure:
+ * - ProjectStructure/
+ *   - src/
+ *     - main.py (contains all notebook code organized by type)
+ * 
+ * The main.py file is organized as follows:
+ * 1. All imports from all CodeCells
+ * 2. All constants from all CodeCells
+ * 3. All commands from all CodeCells
+ * 
+ * This organization leverages the NotebookMM metamodel which already
+ * separates CodeCell content into imports, constants, and commands attributes.
+ */
+
 modeltype NotebookMM uses "http://www.g7.org/notebookMM";
 modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
 transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : ProjectStuctureMM);
 
-// property NAME : TYPE = val; Consts
+// Constants
+property MAIN_FILE_NAME : String = "main.py";
+property SRC_DIR_NAME : String = "src";
 
 main() {
-	// [MetaModel::Attribute]
+	// Transform the notebook model to project structure
 	srcModel.rootObjects()[NotebookMM::NotebookModel] -> map toProjectStructure();
 	log("Notebook transformed to Project!");
 }
 
-// result = ProjectStructureMM | self = NotebookMM
+// Main mapping: Transform NotebookModel to ProjectStructure
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
+	
+	// Create the src directory
+	var srcDir : ProjectStuctureMM::Directory := object ProjectStuctureMM::Directory {
+		name := SRC_DIR_NAME;
+	};
+	
+	// Create main.py file with imports, constants, and commands
+	var mainFile : ProjectStuctureMM::File := self.map toMainPythonFile();
+	srcDir.filesystemelement += mainFile;
+	
+	result.filesystemelement += srcDir;
+}
+
+// Mapping: Create the main Python file from the notebook
+mapping NotebookMM::NotebookModel::toMainPythonFile() : ProjectStuctureMM::File {
+	result.name := MAIN_FILE_NAME;
+	
+	// Get all code cells
+	var codeCells : Sequence(NotebookMM::CodeCell) := self.cells[NotebookMM::CodeCell];
+	
+	// Section 1: Add all imports first
+	codeCells -> forEach(cell) {
+		cell.imports -> forEach(imp) {
+			result.content += imp;
+		};
+	};
+	
+	// Add blank line after imports if there are any imports
+	if (codeCells -> exists(c | not c.imports->isEmpty())) then {
+		result.content += "";
+	} endif;
+	
+	// Section 2: Add all constants
+	codeCells -> forEach(cell) {
+		cell.constants -> forEach(constant) {
+			result.content += constant;
+		};
+	};
+	
+	// Add blank line after constants if there are any constants
+	if (codeCells -> exists(c | not c.constants->isEmpty())) then {
+		result.content += "";
+	} endif;
+	
+	// Section 3: Add all commands
+	codeCells -> forEach(cell) {
+		cell.commands -> forEach(command) {
+			result.content += command;
+		};
+	};
 }
