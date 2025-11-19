@@ -33,32 +33,35 @@ mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::Pro
 mapping NotebookMM::NotebookModel::toMainPythonFile() : ProjectStuctureMM::File {
 	result.name := MAIN_FILE_NAME;
 	
+	// Get all code cells
+	var codeCells : Sequence(NotebookMM::CodeCell) := self.cells[NotebookMM::CodeCell];
+	
 	// Section 1: Add all imports first
-	self.cells[NotebookMM::CodeCell] -> forEach(cell) {
+	codeCells -> forEach(cell) {
 		cell.imports -> forEach(imp) {
 			result.content += imp;
 		};
 	};
 	
 	// Add blank line after imports if there are any imports
-	if (self.cells[NotebookMM::CodeCell] -> exists(c | not c.imports->isEmpty())) then {
+	if (codeCells -> exists(c | not c.imports->isEmpty())) then {
 		result.content += "";
 	} endif;
 	
 	// Section 2: Add all constants
-	self.cells[NotebookMM::CodeCell] -> forEach(cell) {
+	codeCells -> forEach(cell) {
 		cell.constants -> forEach(constant) {
 			result.content += constant;
 		};
 	};
 	
 	// Add blank line after constants if there are any constants
-	if (self.cells[NotebookMM::CodeCell] -> exists(c | not c.constants->isEmpty())) then {
+	if (codeCells -> exists(c | not c.constants->isEmpty())) then {
 		result.content += "";
 	} endif;
 	
 	// Section 3: Add all commands
-	self.cells[NotebookMM::CodeCell] -> forEach(cell) {
+	codeCells -> forEach(cell) {
 		cell.commands -> forEach(command) {
 			result.content += command;
 		};
