@@ -10,15 +10,13 @@ property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outpu
 main() {
 	// [MetaModel::Attribute]
 	srcModel.rootObjects()[NotebookMM::NotebookModel] -> map toProjectStructure();
+		
 	log("Notebook transformed to Project!");
 	
 }
 
-// result = ProjectStructureMM | self = NotebookMM
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
-	
-	log("WTF!!!");
 	
 	result.filesystemelement := createDirectories();
 }
