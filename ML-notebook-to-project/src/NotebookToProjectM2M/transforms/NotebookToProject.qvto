@@ -1,5 +1,17 @@
-transformation NotebookToProject();
+modeltype NotebookMM uses "http://www.g7.org/notebookMM";
+modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
+
+transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : ProjectStuctureMM);
+
+// property NAME : TYPE = val; Consts
 
 main() {
+	// [MetaModel::Attribute]
+	srcModel.rootObjects()[NotebookMM::NotebookModel] -> map toProjectStructure();
+	log("Notebook transformed to Project!");
+}
 
+// result = ProjectStructureMM | self = NotebookMM
+mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
+	result.name := self.name;
 }
