@@ -4,14 +4,42 @@ modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : ProjectStuctureMM);
 
 // property NAME : TYPE = val; Consts
+property MAIN_FILE_NAME : String = "main.py";
+property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outputs"};
 
 main() {
 	// [MetaModel::Attribute]
 	srcModel.rootObjects()[NotebookMM::NotebookModel] -> map toProjectStructure();
 	log("Notebook transformed to Project!");
+	
 }
 
 // result = ProjectStructureMM | self = NotebookMM
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
+	
+	log("WTF!!!");
+	
+	result.filesystemelement := createDirectories();
+}
+
+helper createDirectories() : Sequence(ProjectStuctureMM::FileSystemElement) {
+    return DIR_NAMES->collect(dirName |
+        object ProjectStuctureMM::Directory {
+            name := dirName;
+            filesystemelement := if dirName = 'src' then createFile() else OrderedSet{} endif;
+        }
+    );
+}
+
+helper createFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
+    return OrderedSet {
+        object ProjectStuctureMM::File {
+            name := MAIN_FILE_NAME;
+            content := OrderedSet {
+                "i = 5\n",
+                "print(\"Hello, World! \" + i)\n"
+            };
+        }
+    };
 }
