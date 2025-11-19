@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uriMap:MappingContainer xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:uriMap="http:///www.eclipse.org/m2m/qvt/oml/MModelUriMap/1.0.0">
+  <mapping sourceURI="http://www.g7.org/projectStructureMM" targetURI="platform:/resource/ProjectStructureMM/model/projectStructureMM.ecore"/>
+  <mapping sourceURI="http://www.g7.org/notebookMM" targetURI="platform:/resource/NotebookMM/model/notebookMM.ecore"/>
+</uriMap:MappingContainer>
