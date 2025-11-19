@@ -25,7 +25,7 @@ helper createDirectories() : Sequence(ProjectStuctureMM::FileSystemElement) {
     return DIR_NAMES->collect(dirName |
         object ProjectStuctureMM::Directory {
             name := dirName;
-            filesystemelement := if dirName = 'src' then createFile() else OrderedSet{} endif;
+            filesystemelement := if dirName = 'src' then createFile() else createKeepFile() endif;
         }
     );
 }
@@ -40,4 +40,13 @@ helper createFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
             };
         }
     };
+}
+
+helper createKeepFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
+	return OrderedSet{
+		object ProjectStuctureMM::File {
+			name := ".keep";
+			content := OrderedSet{};
+		}
+	};
 }
