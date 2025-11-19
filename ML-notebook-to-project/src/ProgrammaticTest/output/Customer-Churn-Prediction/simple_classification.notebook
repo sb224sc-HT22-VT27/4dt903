@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ASCII"?>
+<notebookMM:NotebookModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notebookMM="http://www.g7.org/notebookMM" name="simple_classification">
+  <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_0" content="# Customer Churn Prediction&#xA;This notebook trains a model to predict customer churn based on usage patterns."/>
+  <cells xsi:type="notebookMM:CodeCell" executionOrder="1" id="cell_1" source="import pandas as pd&#xA;import numpy as np&#xA;from sklearn.model_selection import train_test_split&#xA;from sklearn.preprocessing import StandardScaler&#xA;from sklearn.ensemble import RandomForestClassifier&#xA;from sklearn.metrics import accuracy_score, classification_report&#xA;import joblib">
+    <imports>import pandas as pd</imports>
+    <imports>import numpy as np</imports>
+    <imports>from sklearn.model_selection import train_test_split</imports>
+    <imports>from sklearn.preprocessing import StandardScaler</imports>
+    <imports>from sklearn.ensemble import RandomForestClassifier</imports>
+    <imports>from sklearn.metrics import accuracy_score, classification_report</imports>
+    <imports>import joblib</imports>
+  </cells>
+  <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_2" content="## Load and Explore Data"/>
+  <cells xsi:type="notebookMM:CodeCell" executionOrder="2" id="cell_3" source="# Load data&#xA;df = pd.read_csv('data/customers.csv')&#xA;print(f&quot;Dataset shape: {df.shape}&quot;)&#xA;print(df.head())">
+    <outputs>{&quot;output_type&quot;:&quot;stream&quot;,&quot;name&quot;:&quot;stdout&quot;,&quot;text&quot;:[&quot;Dataset shape: (100, 8)\n&quot;,&quot;  customer_id  age  monthly_charges  total_usage  months_active  \\\n&quot;,&quot;0        C001   34            65.50         2340             12   \n&quot;,&quot;1        C002   45            89.99         4560             24   \n&quot;,&quot;2        C003   28            45.00          890              8   \n&quot;,&quot;3        C004   52           120.50         8900             36   \n&quot;,&quot;4        C005   31            55.75         1200             10   \n&quot;,&quot;\n&quot;,&quot;   support_calls contract_type  churned  \n&quot;,&quot;0              3       monthly        0  \n&quot;,&quot;1              1        annual        0  \n&quot;,&quot;2              7       monthly        1  \n&quot;,&quot;3              2      two_year        0  \n&quot;,&quot;4              5       monthly        1  \n&quot;]}</outputs>
+  </cells>
+  <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_4" content="## Data Preprocessing"/>
+  <cells xsi:type="notebookMM:CodeCell" executionOrder="3" id="cell_5" source="# Handle missing values&#xA;df = df.dropna()&#xA;&#xA;# Feature engineering&#xA;df['usage_per_month'] = df['total_usage'] / df['months_active']&#xA;df['support_ratio'] = df['support_calls'] / df['months_active']&#xA;&#xA;# Select features&#xA;features = ['age', 'monthly_charges', 'total_usage', 'usage_per_month',&#xA;            'support_ratio', 'contract_type']&#xA;X = df[features]&#xA;y = df['churned']&#xA;&#xA;# Encode categorical variables&#xA;X = pd.get_dummies(X, columns=['contract_type'])">
+    <constants>X = df[features]</constants>
+    <constants>X = pd.get_dummies(X, columns=['contract_type'])</constants>
+  </cells>
+  <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_6" content="## Split and Scale Data"/>
+  <cells xsi:type="notebookMM:CodeCell" executionOrder="4" id="cell_7" source="# Split data&#xA;X_train, X_test, y_train, y_test = train_test_split(&#xA;    X, y, test_size=0.2, random_state=42&#xA;)&#xA;&#xA;feature_names = X_train.columns.tolist()&#xA;&#xA;# Scale features&#xA;scaler = StandardScaler()&#xA;X_train_scaled = scaler.fit_transform(X_train)&#xA;X_test_scaled = scaler.transform(X_test)"/>
+  <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_8" content="## Train Model"/>
+  <cells xsi:type="notebookMM:CodeCell" executionOrder="5" id="cell_9" source="# Train Random Forest model&#xA;model = RandomForestClassifier(&#xA;    n_estimators=100,&#xA;    max_depth=10,&#xA;    random_state=42&#xA;)&#xA;model.fit(X_train_scaled, y_train)&#xA;print(&quot;Model trained successfully!&quot;)">
+    <outputs>{&quot;output_type&quot;:&quot;stream&quot;,&quot;name&quot;:&quot;stdout&quot;,&quot;text&quot;:[&quot;Model trained successfully!\n&quot;]}</outputs>
+  </cells>
+  <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_10" content="## Evaluate Model"/>
+  <cells xsi:type="notebookMM:CodeCell" executionOrder="6" id="cell_11" source="# Make predictions&#xA;y_pred = model.predict(X_test_scaled)&#xA;&#xA;# Evaluate&#xA;accuracy = accuracy_score(y_test, y_pred)&#xA;print(f&quot;Accuracy: {accuracy:.3f}&quot;)&#xA;print(&quot;\nClassification Report:&quot;)&#xA;print(classification_report(y_test, y_pred))">
+    <outputs>{&quot;output_type&quot;:&quot;stream&quot;,&quot;name&quot;:&quot;stdout&quot;,&quot;text&quot;:[&quot;Accuracy: 1.000\n&quot;,&quot;\n&quot;,&quot;Classification Report:\n&quot;,&quot;              precision    recall  f1-score   support\n&quot;,&quot;\n&quot;,&quot;           0       1.00      1.00      1.00        12\n&quot;,&quot;           1       1.00      1.00      1.00         8\n&quot;,&quot;\n&quot;,&quot;    accuracy                           1.00        20\n&quot;,&quot;   macro avg       1.00      1.00      1.00        20\n&quot;,&quot;weighted avg       1.00      1.00      1.00        20\n&quot;,&quot;\n&quot;]}</outputs>
+  </cells>
+  <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_12" content="## Save Model and Scaler"/>
+  <cells xsi:type="notebookMM:CodeCell" executionOrder="7" id="cell_13" source="# Save trained model&#xA;joblib.dump(model, 'models/churn_model.pkl')&#xA;joblib.dump(scaler, 'models/scaler.pkl')&#xA;joblib.dump(feature_names, 'models/feature_names.pkl')&#xA;print(&quot;Model and scaler saved!&quot;)">
+    <outputs>{&quot;output_type&quot;:&quot;stream&quot;,&quot;name&quot;:&quot;stdout&quot;,&quot;text&quot;:[&quot;Model and scaler saved!\n&quot;]}</outputs>
+  </cells>
+  <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_14" content="## Make Predictions on New Data"/>
+  <cells xsi:type="notebookMM:CodeCell" executionOrder="8" id="cell_15" source="# Example prediction function&#xA;def predict_churn(customer_data):&#xA;    &quot;&quot;&quot;&#xA;    Predict churn for a new customer&#xA;    customer_data: dict with customer features&#xA;    &quot;&quot;&quot;&#xA;    # Load model and scaler&#xA;    model = joblib.load('models/churn_model.pkl')&#xA;    scaler = joblib.load('models/scaler.pkl')&#xA;    feature_names = joblib.load('models/feature_names.pkl')&#xA;&#xA;    # Prepare features&#xA;    features_df = pd.DataFrame([customer_data])&#xA;    features_df = pd.get_dummies(features_df)&#xA;&#xA;    for col in feature_names:&#xA;        if col not in features_df.columns:&#xA;            features_df[col] = 0&#xA;&#xA;    features_df = features_df[feature_names]&#xA;&#xA;    features_scaled = scaler.transform(features_df)&#xA;&#xA;    # Predict&#xA;    prediction = model.predict(features_scaled)&#xA;    probability = model.predict_proba(features_scaled)&#xA;&#xA;    return prediction[0], probability[0]&#xA;&#xA;# Test prediction&#xA;new_customer = {&#xA;    'age': 35,&#xA;    'monthly_charges': 75.5,&#xA;    'total_usage': 450,&#xA;    'usage_per_month': 37.5,&#xA;    'support_ratio': 0.5,&#xA;    'contract_type': 'monthly'&#xA;}&#xA;&#xA;pred, prob = predict_churn(new_customer)&#xA;print(f&quot;Churn prediction: {pred}&quot;)&#xA;print(f&quot;Churn probability: {prob[1]:.3f}&quot;)">
+    <outputs>{&quot;output_type&quot;:&quot;stream&quot;,&quot;name&quot;:&quot;stdout&quot;,&quot;text&quot;:[&quot;Churn prediction: 1\n&quot;,&quot;Churn probability: 0.600\n&quot;]}</outputs>
+  </cells>
+  <metadata kernelspec="python3" language="python" nbformat="4"/>
+</notebookMM:NotebookModel>

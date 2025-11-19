@@ -10,3 +10,5 @@ Require-Bundle: org.eclipse.swt,
  ProjectStructureMM
 Automatic-Module-Name: ProgrammaticTest
 Bundle-RequiredExecutionEnvironment: JavaSE-21
+Import-Package: org.eclipse.emf.ecore.xmi;version="[2.39.0,3.0.0)",
+ org.eclipse.emf.ecore.xmi.impl;version="[2.39.0,3.0.0)"

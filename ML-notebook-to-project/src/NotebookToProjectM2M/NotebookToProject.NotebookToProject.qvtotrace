@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<trace:Trace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:trace="http:///www.eclipse.org/m2m/qvt/operational/trace.ecore"/>
+<trace:Trace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:trace="http:///www.eclipse.org/m2m/qvt/operational/trace.ecore">
+  <traceRecords>
+    <mappingOperation name="toProjectStructure" package="NotebookToProject" module="NotebookToProject"/>
+    <context>
+      <context name="self" type="NotebookModel">
+        <value>
+          <modelElement href="../ProgrammaticTest/output/CNN.notebook#/"/>
+        </value>
+      </context>
+    </context>
+    <parameters/>
+    <result>
+      <result kind="OUT" name="result" type="ProjectStructure">
+        <value>
+          <modelElement href="NotebookToProject.projectStructureMM#/0"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
+</trace:Trace>

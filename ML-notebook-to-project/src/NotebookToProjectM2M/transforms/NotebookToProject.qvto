@@ -9,6 +9,7 @@ property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outpu
 
 main() {
 	// [MetaModel::Attribute]
+	log(srcModel.rootObjects()[NotebookMM::NotebookModel]->asOrderedSet()->first().toString());
 	srcModel.rootObjects()[NotebookMM::NotebookModel] -> map toProjectStructure();
 		
 	log("Notebook transformed to Project!");
