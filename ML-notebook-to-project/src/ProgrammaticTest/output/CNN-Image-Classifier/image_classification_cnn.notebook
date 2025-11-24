@@ -15,18 +15,7 @@
     <imports>import json</imports>
   </cells>
   <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_2" content="## Configuration"/>
-  <cells xsi:type="notebookMM:CodeCell" id="cell_3" source="# Hyperparameters&#xA;IMG_SIZE = 224&#xA;BATCH_SIZE = 32&#xA;EPOCHS = 50&#xA;LEARNING_RATE = 0.001&#xA;NUM_CLASSES = 10&#xA;&#xA;# Paths&#xA;TRAIN_DIR = 'data/train'&#xA;VAL_DIR = 'data/validation'&#xA;TEST_DIR = 'data/test'&#xA;MODEL_PATH = 'models/product_classifier.keras'&#xA;HISTORY_PATH = 'output/training_history.json'&#xA;&#xA;print(f&quot;Using TensorFlow version: {tf.__version__}&quot;)&#xA;print(f&quot;GPU Available: {tf.config.list_physical_devices('GPU')}&quot;)">
-    <constants>IMG_SIZE = 224</constants>
-    <constants>BATCH_SIZE = 32</constants>
-    <constants>EPOCHS = 50</constants>
-    <constants>LEARNING_RATE = 0.001</constants>
-    <constants>NUM_CLASSES = 10</constants>
-    <constants>TRAIN_DIR = 'data/train'</constants>
-    <constants>VAL_DIR = 'data/validation'</constants>
-    <constants>TEST_DIR = 'data/test'</constants>
-    <constants>MODEL_PATH = 'models/product_classifier.keras'</constants>
-    <constants>HISTORY_PATH = 'output/training_history.json'</constants>
-  </cells>
+  <cells xsi:type="notebookMM:CodeCell" id="cell_3" source="# Hyperparameters&#xA;IMG_SIZE = 224&#xA;BATCH_SIZE = 32&#xA;EPOCHS = 50&#xA;LEARNING_RATE = 0.001&#xA;NUM_CLASSES = 10&#xA;&#xA;# Paths&#xA;TRAIN_DIR = 'data/train'&#xA;VAL_DIR = 'data/validation'&#xA;TEST_DIR = 'data/test'&#xA;MODEL_PATH = 'models/product_classifier.keras'&#xA;HISTORY_PATH = 'output/training_history.json'&#xA;&#xA;print(f&quot;Using TensorFlow version: {tf.__version__}&quot;)&#xA;print(f&quot;GPU Available: {tf.config.list_physical_devices('GPU')}&quot;)"/>
   <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_4" content="## Data Loading and Augmentation"/>
   <cells xsi:type="notebookMM:CodeCell" id="cell_5" source="# Data augmentation for training&#xA;train_datagen = ImageDataGenerator(&#xA;    rescale=1./255,&#xA;    rotation_range=20,&#xA;    width_shift_range=0.2,&#xA;    height_shift_range=0.2,&#xA;    horizontal_flip=True,&#xA;    zoom_range=0.2,&#xA;    shear_range=0.2,&#xA;    fill_mode='nearest'&#xA;)&#xA;&#xA;# Only rescaling for validation and test&#xA;val_datagen = ImageDataGenerator(rescale=1./255)&#xA;test_datagen = ImageDataGenerator(rescale=1./255)&#xA;&#xA;# Load datasets&#xA;train_generator = train_datagen.flow_from_directory(&#xA;    TRAIN_DIR,&#xA;    target_size=(IMG_SIZE, IMG_SIZE),&#xA;    batch_size=BATCH_SIZE,&#xA;    class_mode='categorical'&#xA;)&#xA;&#xA;val_generator = val_datagen.flow_from_directory(&#xA;    VAL_DIR,&#xA;    target_size=(IMG_SIZE, IMG_SIZE),&#xA;    batch_size=BATCH_SIZE,&#xA;    class_mode='categorical'&#xA;)&#xA;&#xA;test_generator = test_datagen.flow_from_directory(&#xA;    TEST_DIR,&#xA;    target_size=(IMG_SIZE, IMG_SIZE),&#xA;    batch_size=BATCH_SIZE,&#xA;    class_mode='categorical',&#xA;    shuffle=False&#xA;)&#xA;&#xA;print(f&quot;Training samples: {train_generator.samples}&quot;)&#xA;print(f&quot;Validation samples: {val_generator.samples}&quot;)&#xA;print(f&quot;Test samples: {test_generator.samples}&quot;)&#xA;print(f&quot;Class labels: {train_generator.class_indices}&quot;)"/>
   <cells xsi:type="notebookMM:MarkdownCell" cellType="MARKDOWN" id="cell_6" content="## Model Architecture"/>
