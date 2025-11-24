@@ -1,6 +1,8 @@
 modeltype NotebookMM uses "http://www.g7.org/notebookMM";
 modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
+import CodeClassificationLib;
+
 transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : ProjectStuctureMM);
 
 // property NAME : TYPE = val; Consts
@@ -37,7 +39,8 @@ helper createFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
             name := MAIN_FILE_NAME;
             content := OrderedSet {
                 "i = 5\n",
-                "print(\"Hello, World! \" + i)\n"
+                "print(\"Hello, World! \" + i)\n",
+                getClassificationComment() + "\n"
             };
         }
     };
