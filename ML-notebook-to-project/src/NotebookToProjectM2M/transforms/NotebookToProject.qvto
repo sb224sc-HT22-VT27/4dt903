@@ -105,9 +105,9 @@ helper NotebookMM::NotebookModel::generateRequirementsContent() : OrderedSet(Str
 			var dotIdx : Integer := pkgPart.indexOf(".");
 			
 			var pkg : String := pkgPart;
-			if spaceIdx > 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
+			if spaceIdx >= 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
 				pkg := pkgPart.substring(1, spaceIdx);
-			} elif dotIdx > 0 then {
+			} elif dotIdx >= 0 then {
 				pkg := pkgPart.substring(1, dotIdx);
 			} endif;
 			
@@ -121,9 +121,9 @@ helper NotebookMM::NotebookModel::generateRequirementsContent() : OrderedSet(Str
 			var dotIdx : Integer := pkgPart.indexOf(".");
 			
 			var pkg : String := pkgPart;
-			if spaceIdx > 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
+			if spaceIdx >= 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
 				pkg := pkgPart.substring(1, spaceIdx);
-			} elif dotIdx > 0 then {
+			} elif dotIdx >= 0 then {
 				pkg := pkgPart.substring(1, dotIdx);
 			} endif;
 			
@@ -169,19 +169,19 @@ helper classifyCommandSimple(command : String) : String {
 	var lowerCmd : String := command.toLower();
 	
 	// Check for training keywords
-	if lowerCmd.indexOf("fit(") > 0 or lowerCmd.indexOf("fit_transform") > 0 or 
-	   lowerCmd.indexOf(".train") > 0 or lowerCmd.indexOf("compile(") > 0 then {
+	if lowerCmd.indexOf("fit(") >= 0 or lowerCmd.indexOf("fit_transform") >= 0 or 
+	   lowerCmd.indexOf(".train") >= 0 or lowerCmd.indexOf("compile(") >= 0 then {
 		return "TRAIN";
 	}
 	// Check for prediction keywords  
-	elif lowerCmd.indexOf("predict") > 0 or lowerCmd.indexOf("inference") > 0 or
-	     lowerCmd.indexOf("evaluate(") > 0 then {
+	elif lowerCmd.indexOf("predict") >= 0 or lowerCmd.indexOf("inference") >= 0 or
+	     lowerCmd.indexOf("evaluate(") >= 0 then {
 		return "PREDICT";
 	}
 	// Check for preprocessing keywords
-	elif lowerCmd.indexOf("preprocess") > 0 or lowerCmd.indexOf("scaler") > 0 or
-	     lowerCmd.indexOf("transform") > 0 or lowerCmd.indexOf("read_csv") > 0 or
-	     lowerCmd.indexOf("load") > 0 or lowerCmd.indexOf("fillna") > 0 then {
+	elif lowerCmd.indexOf("preprocess") >= 0 or lowerCmd.indexOf("scaler") >= 0 or
+	     lowerCmd.indexOf("transform") >= 0 or lowerCmd.indexOf("read_csv") >= 0 or
+	     lowerCmd.indexOf("load") >= 0 or lowerCmd.indexOf("fillna") >= 0 then {
 		return "PREPROCESS";
 	}
 	// Default

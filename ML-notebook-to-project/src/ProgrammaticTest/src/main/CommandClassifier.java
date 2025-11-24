@@ -14,9 +14,11 @@ public class CommandClassifier {
 	 * Classify a command into one of three categories.
 	 * Initially returns random classification for testing.
 	 * 
+	 * @deprecated Use {@link #classifyCommandWithHeuristics(String)} instead for more accurate classification
 	 * @param command The Python command to classify
 	 * @return One of "PREPROCESS", "TRAIN", or "PREDICT"
 	 */
+	@Deprecated
 	public static String classifyCommand(String command) {
 		// Random classification for initial testing
 		int category = random.nextInt(3);
