@@ -18,4 +18,128 @@
       </result>
     </result>
   </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toDirectory" package="NotebookToProject" module="NotebookToProject"/>
+    <context>
+      <context name="self" type="NotebookModel">
+        <value>
+          <modelElement href="../ProgrammaticTest/output/CNN-Image-Classifier/image_classification_cnn.notebook#/"/>
+        </value>
+      </context>
+    </context>
+    <parameters>
+      <parameters name="dirName" type="String">
+        <value primitiveValue="data" collectionType="String"/>
+      </parameters>
+    </parameters>
+    <result>
+      <result kind="OUT" name="result" type="Directory">
+        <value>
+          <modelElement href="NotebookToProject.projectStructureMM#/1"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toKeepFile" package="NotebookToProject" module="NotebookToProject"/>
+    <context>
+      <context name="self" type="NotebookModel">
+        <value>
+          <modelElement href="../ProgrammaticTest/output/CNN-Image-Classifier/image_classification_cnn.notebook#/"/>
+        </value>
+      </context>
+    </context>
+    <parameters/>
+    <result>
+      <result kind="OUT" name="result" type="File">
+        <value>
+          <modelElement href="NotebookToProject.projectStructureMM#/4/@filesystemelement.0"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toDirectory" package="NotebookToProject" module="NotebookToProject"/>
+    <context>
+      <context name="self" type="NotebookModel">
+        <value>
+          <modelElement href="../ProgrammaticTest/output/CNN-Image-Classifier/image_classification_cnn.notebook#/"/>
+        </value>
+      </context>
+    </context>
+    <parameters>
+      <parameters name="dirName" type="String">
+        <value primitiveValue="src" collectionType="String"/>
+      </parameters>
+    </parameters>
+    <result>
+      <result kind="OUT" name="result" type="Directory">
+        <value>
+          <modelElement href="NotebookToProject.projectStructureMM#/2"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toMainFile" package="NotebookToProject" module="NotebookToProject"/>
+    <context>
+      <context name="self" type="NotebookModel">
+        <value>
+          <modelElement href="../ProgrammaticTest/output/CNN-Image-Classifier/image_classification_cnn.notebook#/"/>
+        </value>
+      </context>
+    </context>
+    <parameters/>
+    <result>
+      <result kind="OUT" name="result" type="File">
+        <value>
+          <modelElement href="NotebookToProject.projectStructureMM#/2/@filesystemelement.0"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toDirectory" package="NotebookToProject" module="NotebookToProject"/>
+    <context>
+      <context name="self" type="NotebookModel">
+        <value>
+          <modelElement href="../ProgrammaticTest/output/CNN-Image-Classifier/image_classification_cnn.notebook#/"/>
+        </value>
+      </context>
+    </context>
+    <parameters>
+      <parameters name="dirName" type="String">
+        <value primitiveValue="models" collectionType="String"/>
+      </parameters>
+    </parameters>
+    <result>
+      <result kind="OUT" name="result" type="Directory">
+        <value>
+          <modelElement href="NotebookToProject.projectStructureMM#/3"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toDirectory" package="NotebookToProject" module="NotebookToProject"/>
+    <context>
+      <context name="self" type="NotebookModel">
+        <value>
+          <modelElement href="../ProgrammaticTest/output/CNN-Image-Classifier/image_classification_cnn.notebook#/"/>
+        </value>
+      </context>
+    </context>
+    <parameters>
+      <parameters name="dirName" type="String">
+        <value primitiveValue="outputs" collectionType="String"/>
+      </parameters>
+    </parameters>
+    <result>
+      <result kind="OUT" name="result" type="Directory">
+        <value>
+          <modelElement href="NotebookToProject.projectStructureMM#/4"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
 </trace:Trace>
