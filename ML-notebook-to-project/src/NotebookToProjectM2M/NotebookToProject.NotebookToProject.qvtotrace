@@ -5,7 +5,7 @@
     <context>
       <context name="self" type="NotebookModel">
         <value>
-          <modelElement href="../ProgrammaticTest/output/CNN.notebook#/"/>
+          <modelElement href="../ProgrammaticTest/output/CNN-Image-Classifier/image_classification_cnn.notebook#/"/>
         </value>
       </context>
     </context>
