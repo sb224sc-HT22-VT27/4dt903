@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 import notebookMM.CodeCell;
 import notebookMM.NotebookMMPackage;
+import notebookMM.util.AIClassificationService;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Code
@@ -43,6 +44,16 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	 * @ordered
 	 */
 	protected static final String SOURCE_EDEFAULT = null;
+
+	/**
+	 * Singleton instance of AI classification service
+	 */
+	private static AIClassificationService aiService = null;
+	
+	/**
+	 * Cached classification result to avoid redundant API calls
+	 */
+	private transient AIClassificationService.ClassificationResult cachedClassification = null;
 
 	/**
 	 * The cached value of the '{@link #getSource() <em>Source</em>}' attribute.
@@ -126,12 +137,13 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public void setSource(String newSource) {
 		String oldSource = source;
 		source = newSource;
+		invalidateCache(); // Invalidate cache when source changes
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, NotebookMMPackage.CODE_CELL__SOURCE, oldSource,
 					source));
@@ -346,19 +358,39 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	 */
 	@Override
 	public boolean isTrainingCode() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
+		AIClassificationService.ClassificationResult result = getClassification();
+		return result.isModelTraining();
+	}
 
-		if (getSource() == null)
-			return false;
-		String source = getSource().toLowerCase();
-
-		// Heuristics for training code
-		return source.contains("model.fit") || source.contains("model.train") || source.contains("trainer.train")
-				|| source.contains("fit_transform") || source.contains("cross_val_score")
-				|| source.matches(".*\\bfit\\s*\\(.*");
-
-		// throw new UnsupportedOperationException();
+	/**
+	 * Gets or initializes the AI classification service
+	 */
+	private static synchronized AIClassificationService getAIService() {
+		if (aiService == null) {
+			aiService = new AIClassificationService();
+		}
+		return aiService;
+	}
+	
+	/**
+	 * Gets classification result, using cache if available
+	 */
+	private AIClassificationService.ClassificationResult getClassification() {
+		if (cachedClassification == null) {
+			if (getSource() == null || getSource().trim().isEmpty()) {
+				cachedClassification = new AIClassificationService.ClassificationResult(false, false, false);
+			} else {
+				cachedClassification = getAIService().classifyCode(getSource());
+			}
+		}
+		return cachedClassification;
+	}
+	
+	/**
+	 * Invalidates the cached classification (should be called when source changes)
+	 */
+	private void invalidateCache() {
+		cachedClassification = null;
 	}
 
 	/**
@@ -368,18 +400,8 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	 */
 	@Override
 	public boolean isDataPreprocessing() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-
-		if (getSource() == null)
-			return false;
-		String source = getSource().toLowerCase();
-
-		return source.contains("preprocess") || source.contains("clean") || source.contains("transform")
-				|| source.contains("scaler") || source.contains("encoder") || source.contains("fillna")
-				|| source.contains("dropna") || source.contains("feature_engineer");
-
-		// throw new UnsupportedOperationException();
+		AIClassificationService.ClassificationResult result = getClassification();
+		return result.isDataPreprocessing();
 	}
 
 	/**
@@ -389,17 +411,8 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	 */
 	@Override
 	public boolean isPredictionCode() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-
-		if (getSource() == null)
-			return false;
-		String source = getSource().toLowerCase();
-
-		return source.contains("predict") || source.contains("inference") || source.contains("model.eval")
-				|| source.contains("predict_proba");
-
-		// throw new UnsupportedOperationException();
+		AIClassificationService.ClassificationResult result = getClassification();
+		return result.isPrediction();
 	}
 
 	/**
