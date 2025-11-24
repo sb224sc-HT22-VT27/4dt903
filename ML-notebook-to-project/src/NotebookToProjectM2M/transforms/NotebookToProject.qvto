@@ -5,6 +5,7 @@ transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : Pro
 
 // property NAME : TYPE = val; Consts
 property MAIN_FILE_NAME : String = "main.py";
+property REQUIREMENTS_FILE_NAME : String = "requirements.txt";
 property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outputs"};
 
 main() {
@@ -19,28 +20,174 @@ main() {
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
 	
-	result.filesystemelement := createDirectories();
+	result.filesystemelement := self.createDirectories();
 }
 
-helper createDirectories() : Sequence(ProjectStuctureMM::FileSystemElement) {
+helper NotebookMM::NotebookModel::createDirectories() : Sequence(ProjectStuctureMM::FileSystemElement) {
     return DIR_NAMES->collect(dirName |
         object ProjectStuctureMM::Directory {
             name := dirName;
-            filesystemelement := if dirName = 'src' then createFile() else createKeepFile() endif;
+            filesystemelement := if dirName = 'src' then self.createSrcFiles() else createKeepFile() endif;
         }
     );
 }
 
-helper createFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
+helper NotebookMM::NotebookModel::createSrcFiles() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
     return OrderedSet {
         object ProjectStuctureMM::File {
             name := MAIN_FILE_NAME;
-            content := OrderedSet {
-                "i = 5\n",
-                "print(\"Hello, World! \" + i)\n"
-            };
+            content := self.generateMainPyContent();
+        },
+        object ProjectStuctureMM::File {
+            name := REQUIREMENTS_FILE_NAME;
+            content := self.generateRequirementsContent();
         }
     };
+}
+
+helper NotebookMM::NotebookModel::generateMainPyContent() : OrderedSet(String) {
+	var lines : OrderedSet(String) := OrderedSet{};
+	
+	// Add a header comment
+	lines += "#!/usr/bin/env python3";
+	lines += "# Generated from notebook: " + self.name;
+	lines += "";
+	
+	// Add all imports
+	lines += "# Imports";
+	self.getAllImports()->forEach(imp) {
+		lines += imp;
+	};
+	lines += "";
+	
+	// Add constants from all code cells
+	lines += "# Constants";
+	self.getCodeCells()->forEach(cell) {
+		cell.extractConstants()->forEach(constant) {
+			lines += constant;
+		};
+	};
+	lines += "";
+	
+	// Add main function header
+	lines += "def main():";
+	lines += '    """Main execution function"""';
+	
+	// Add commands from all code cells with classification comments
+	self.getCodeCells()->forEach(cell) {
+		cell.extractCommands()->forEach(command) {
+			// Add classification comment before command
+			var classification : String := classifyCommandSimple(command);
+			lines += "    # " + classification;
+			lines += "    " + command;
+		};
+	};
+	
+	lines += "";
+	lines += "if __name__ == '__main__':";
+	lines += "    main()";
+	
+	return lines;
+}
+
+helper NotebookMM::NotebookModel::generateRequirementsContent() : OrderedSet(String) {
+	var requirements : OrderedSet(String) := OrderedSet{};
+	
+	// Common packages that should be included
+	var packages : Set(String) := Set{};
+	
+	// Get all imports and extract package names
+	self.getAllImports()->forEach(imp) {
+		// Simple extraction - get first word after "import" or after "from"
+		if imp.startsWith("import ") then {
+			var pkgPart : String := imp.substring(8);
+			var spaceIdx : Integer := pkgPart.indexOf(" ");
+			var dotIdx : Integer := pkgPart.indexOf(".");
+			
+			var pkg : String := pkgPart;
+			if spaceIdx > 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
+				pkg := pkgPart.substring(1, spaceIdx);
+			} elif dotIdx > 0 then {
+				pkg := pkgPart.substring(1, dotIdx);
+			} endif;
+			
+			// Skip standard library
+			if not isStandardLibrary(pkg) then {
+				packages += mapPackageName(pkg);
+			} endif;
+		} elif imp.startsWith("from ") then {
+			var pkgPart : String := imp.substring(6);
+			var spaceIdx : Integer := pkgPart.indexOf(" ");
+			var dotIdx : Integer := pkgPart.indexOf(".");
+			
+			var pkg : String := pkgPart;
+			if spaceIdx > 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
+				pkg := pkgPart.substring(1, spaceIdx);
+			} elif dotIdx > 0 then {
+				pkg := pkgPart.substring(1, dotIdx);
+			} endif;
+			
+			// Skip standard library
+			if not isStandardLibrary(pkg) then {
+				packages += mapPackageName(pkg);
+			} endif;
+		} endif;
+	};
+	
+	// Convert to sorted list
+	packages->forEach(pkg) {
+		requirements += pkg;
+	};
+	
+	return requirements;
+}
+
+helper isStandardLibrary(pkg : String) : Boolean {
+	// Common Python standard library modules
+	return pkg = "os" or pkg = "sys" or pkg = "io" or pkg = "json" or 
+	       pkg = "re" or pkg = "math" or pkg = "random" or pkg = "datetime" or
+	       pkg = "time" or pkg = "pathlib" or pkg = "collections" or 
+	       pkg = "itertools" or pkg = "functools" or pkg = "pickle" or
+	       pkg = "copy" or pkg = "typing";
+}
+
+helper mapPackageName(pkg : String) : String {
+	// Map import names to pip package names
+	if pkg = "sklearn" then {
+		return "scikit-learn";
+	} elif pkg = "cv2" then {
+		return "opencv-python";
+	} elif pkg = "PIL" then {
+		return "Pillow";
+	} else {
+		return pkg;
+	} endif;
+}
+
+helper classifyCommandSimple(command : String) : String {
+	// Simple heuristic-based classification
+	var lowerCmd : String := command.toLower();
+	
+	// Check for training keywords
+	if lowerCmd.indexOf("fit(") > 0 or lowerCmd.indexOf("fit_transform") > 0 or 
+	   lowerCmd.indexOf(".train") > 0 or lowerCmd.indexOf("compile(") > 0 then {
+		return "TRAIN";
+	}
+	// Check for prediction keywords  
+	elif lowerCmd.indexOf("predict") > 0 or lowerCmd.indexOf("inference") > 0 or
+	     lowerCmd.indexOf("evaluate(") > 0 then {
+		return "PREDICT";
+	}
+	// Check for preprocessing keywords
+	elif lowerCmd.indexOf("preprocess") > 0 or lowerCmd.indexOf("scaler") > 0 or
+	     lowerCmd.indexOf("transform") > 0 or lowerCmd.indexOf("read_csv") > 0 or
+	     lowerCmd.indexOf("load") > 0 or lowerCmd.indexOf("fillna") > 0 then {
+		return "PREPROCESS";
+	}
+	// Default
+	else {
+		return "PREPROCESS";
+	} endif;
 }
 
 helper createKeepFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
