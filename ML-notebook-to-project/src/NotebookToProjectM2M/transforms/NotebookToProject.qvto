@@ -19,28 +19,52 @@ main() {
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
 	
-	result.filesystemelement := createDirectories();
+	result.filesystemelement := createDirectories(self);
 }
 
-helper createDirectories() : Sequence(ProjectStuctureMM::FileSystemElement) {
+helper createDirectories(notebook : NotebookMM::NotebookModel) : Sequence(ProjectStuctureMM::FileSystemElement) {
     return DIR_NAMES->collect(dirName |
         object ProjectStuctureMM::Directory {
             name := dirName;
-            filesystemelement := if dirName = 'src' then createFile() else createKeepFile() endif;
+            filesystemelement := if dirName = 'src' then createFile(notebook) else createKeepFile() endif;
         }
     );
 }
 
-helper createFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
+helper createFile(notebook : NotebookMM::NotebookModel) : OrderedSet(ProjectStuctureMM::FileSystemElement) {
     return OrderedSet {
         object ProjectStuctureMM::File {
             name := MAIN_FILE_NAME;
-            content := OrderedSet {
-                "i = 5\n",
-                "print(\"Hello, World! \" + i)\n"
-            };
+            content := generateMainPyContent(notebook);
         }
     };
+}
+
+helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : OrderedSet(String) {
+    var contentLines : OrderedSet(String) := OrderedSet{};
+    
+    // Iterate through all cells in order
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::MarkdownCell) then {
+            // Convert markdown cell to Python docstring
+            var mdCell := cell.oclAsType(NotebookMM::MarkdownCell);
+            if mdCell.content <> null and mdCell.content <> '' then {
+                contentLines += '"""\n';
+                contentLines += mdCell.content + '\n';
+                contentLines += '"""\n\n';
+            } endif;
+        } endif;
+        
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            // Add code cell source as-is
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                contentLines += codeCell.source + '\n\n';
+            } endif;
+        } endif;
+    };
+    
+    return contentLines;
 }
 
 helper createKeepFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
