@@ -99,6 +99,7 @@ helper NotebookMM::NotebookModel::generateRequirementsContent() : OrderedSet(Str
 	// Get all imports and extract package names
 	self.getAllImports()->forEach(imp) {
 		// Simple extraction - get first word after "import" or after "from"
+		// Note: QVTO uses 1-based indexing for substring(start, end) inclusive
 		if imp.startsWith("import ") then {
 			var pkgPart : String := imp.substring(8);
 			var spaceIdx : Integer := pkgPart.indexOf(" ");
@@ -106,8 +107,10 @@ helper NotebookMM::NotebookModel::generateRequirementsContent() : OrderedSet(Str
 			
 			var pkg : String := pkgPart;
 			if spaceIdx >= 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
+				// Extract from position 1 to position before the space
 				pkg := pkgPart.substring(1, spaceIdx - 1);
 			} elif dotIdx >= 0 then {
+				// Extract from position 1 to position before the dot
 				pkg := pkgPart.substring(1, dotIdx - 1);
 			} endif;
 			
@@ -122,8 +125,10 @@ helper NotebookMM::NotebookModel::generateRequirementsContent() : OrderedSet(Str
 			
 			var pkg : String := pkgPart;
 			if spaceIdx >= 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
+				// Extract from position 1 to position before the space
 				pkg := pkgPart.substring(1, spaceIdx - 1);
 			} elif dotIdx >= 0 then {
+				// Extract from position 1 to position before the dot
 				pkg := pkgPart.substring(1, dotIdx - 1);
 			} endif;
 			

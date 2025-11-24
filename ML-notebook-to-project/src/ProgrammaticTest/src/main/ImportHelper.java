@@ -60,16 +60,16 @@ public class ImportHelper {
 		// Pattern: "import package" or "import package as alias"
 		if (trimmed.startsWith("import ")) {
 			String afterImport = trimmed.substring(7).trim();
-			// Remove " as alias" part
+			// Remove " as alias" part (Java uses 0-based indexOf)
 			int asIndex = afterImport.indexOf(" as ");
-			if (asIndex > 0) {
+			if (asIndex > 0) { // > 0 ensures valid content before " as "
 				packageName = afterImport.substring(0, asIndex).trim();
 			} else {
 				packageName = afterImport.split("\\s+")[0];
 			}
 			// Get root package (before first dot)
 			int dotIndex = packageName.indexOf('.');
-			if (dotIndex > 0) {
+			if (dotIndex > 0) { // > 0 ensures valid content before dot
 				packageName = packageName.substring(0, dotIndex);
 			}
 		}
@@ -77,11 +77,11 @@ public class ImportHelper {
 		else if (trimmed.startsWith("from ")) {
 			String afterFrom = trimmed.substring(5).trim();
 			int importIndex = afterFrom.indexOf(" import ");
-			if (importIndex > 0) {
+			if (importIndex > 0) { // > 0 ensures valid content before " import "
 				packageName = afterFrom.substring(0, importIndex).trim();
 				// Get root package (before first dot)
 				int dotIndex = packageName.indexOf('.');
-				if (dotIndex > 0) {
+				if (dotIndex > 0) { // > 0 ensures valid content before dot
 					packageName = packageName.substring(0, dotIndex);
 				}
 			}
