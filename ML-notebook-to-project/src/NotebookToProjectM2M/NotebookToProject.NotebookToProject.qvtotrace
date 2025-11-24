@@ -142,4 +142,22 @@
       </result>
     </result>
   </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toRequirementsFile" package="NotebookToProject" module="NotebookToProject"/>
+    <context>
+      <context name="self" type="NotebookModel">
+        <value>
+          <modelElement href="../ProgrammaticTest/output/CNN-Image-Classifier/image_classification_cnn.notebook#/"/>
+        </value>
+      </context>
+    </context>
+    <parameters/>
+    <result>
+      <result kind="OUT" name="result" type="File">
+        <value>
+          <modelElement href="NotebookToProject.projectStructureMM#/5"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
 </trace:Trace>

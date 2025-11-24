@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:projectStructureMM="http://www.g7.org/projectStructureMM" xsi:schemaLocation="http://www.g7.org/projectStructureMM ../ProjectStructureMM/model/projectStructureMM.ecore">
-  <projectStructureMM:ProjectStructure name="image_classification_cnn" filesystemelement="/1 /2 /3 /4"/>
+  <projectStructureMM:ProjectStructure name="image_classification_cnn" filesystemelement="/1 /2 /3 /4 /5"/>
   <projectStructureMM:Directory name="data"/>
   <projectStructureMM:Directory name="src">
     <filesystemelement xsi:type="projectStructureMM:File" name="main.py">
@@ -339,4 +339,5 @@ print(f&quot;Confidence: {conf:.4f}&quot;)
   <projectStructureMM:Directory name="outputs">
     <filesystemelement xsi:type="projectStructureMM:File" name=".keep"/>
   </projectStructureMM:Directory>
+  <projectStructureMM:File name="requirements.txt"/>
 </xmi:XMI>
