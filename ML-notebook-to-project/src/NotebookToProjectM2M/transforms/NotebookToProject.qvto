@@ -1,3 +1,6 @@
+import CodeClassificationLib;
+//import transformationutils.CodeBlockClassifier;
+
 modeltype NotebookMM uses "http://www.g7.org/notebookMM";
 modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
@@ -12,7 +15,7 @@ main() {
 	// [MetaModel::Attribute]
 	// log(srcModel.rootObjects()[NotebookMM::NotebookModel]->asOrderedSet()->first().toString());
 	srcModel.rootObjects()[NotebookMM::NotebookModel] -> map toProjectStructure();
-		
+	//log(classifyCodeBlock());
 	log("Notebook transformed to Project!");
 	
 }
@@ -60,7 +63,7 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(St
             // Add code cell source as-is
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
-                contentLines += codeCell.source + '\n\n';
+                contentLines += codeCell.source + CodeClassificationLib::getClassificationComment() + '\n\n';
             } endif;
         } endif endif;
     };

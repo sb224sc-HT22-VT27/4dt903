@@ -1,0 +1,19 @@
+import transformationutils.CodeBlockClassifier;	
+
+library CodeClassificationLib;
+
+/**
+ * Returns a random classification for a code block.
+ * @return One of: PREPROCESS, TRAIN, or PREDICT
+ */
+helper classifyCodeBlock() : String {
+	return CodeBlockClassifier::classifyCodeBlock();
+}
+
+/**
+ * Returns a comment with the classification.
+ * @return A comment string with the classification
+ */
+helper getClassificationComment() : String {
+	return CodeBlockClassifier::getClassificationComment();
+}

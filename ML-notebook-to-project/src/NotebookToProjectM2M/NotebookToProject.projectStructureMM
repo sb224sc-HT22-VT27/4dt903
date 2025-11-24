@@ -23,6 +23,8 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 import json
+# Classification: TRAIN
+
 
 </content>
       <content>## Configuration
@@ -43,6 +45,8 @@ HISTORY_PATH = 'output/training_history.json'
 
 print(f&quot;Using TensorFlow version: {tf.__version__}&quot;)
 print(f&quot;GPU Available: {tf.config.list_physical_devices('GPU')}&quot;)
+# Classification: PREPROCESS
+
 
 </content>
       <content>## Data Loading and Augmentation
@@ -90,6 +94,8 @@ print(f&quot;Training samples: {train_generator.samples}&quot;)
 print(f&quot;Validation samples: {val_generator.samples}&quot;)
 print(f&quot;Test samples: {test_generator.samples}&quot;)
 print(f&quot;Class labels: {train_generator.class_indices}&quot;)
+# Classification: PREDICT
+
 
 </content>
       <content>## Model Architecture
@@ -142,6 +148,8 @@ model = build_cnn_model(
 )
 
 model.summary()
+# Classification: PREDICT
+
 
 </content>
       <content>## Compile Model
@@ -156,6 +164,8 @@ model.compile(
 )
 
 print(&quot;Model compiled successfully!&quot;)
+# Classification: TRAIN
+
 
 </content>
       <content>## Callbacks
@@ -183,6 +193,8 @@ checkpoint = keras.callbacks.ModelCheckpoint(
 )
 
 callbacks = [early_stopping, reduce_lr, checkpoint]
+# Classification: PREDICT
+
 
 </content>
       <content>## Train Model
@@ -197,6 +209,8 @@ history = model.fit(
 )
 
 print(&quot;Training completed!&quot;)
+# Classification: PREDICT
+
 
 </content>
       <content>## Plot Training History
@@ -225,6 +239,8 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig('output/training_history.png')
 plt.show()
+# Classification: TRAIN
+
 
 </content>
       <content>## Evaluate on Test Set
@@ -244,6 +260,8 @@ y_true = test_generator.classes
 class_names = list(test_generator.class_indices.keys())
 print(&quot;\nClassification Report:&quot;)
 print(classification_report(y_true, y_pred, target_names=class_names))
+# Classification: TRAIN
+
 
 </content>
       <content>## Confusion Matrix
@@ -261,6 +279,8 @@ plt.xlabel('Predicted Label')
 plt.tight_layout()
 plt.savefig('output/confusion_matrix.png')
 plt.show()
+# Classification: PREDICT
+
 
 </content>
       <content>## Save Model and Metadata
@@ -290,6 +310,8 @@ with open('models/model_metadata.json', 'w') as f:
     json.dump(metadata, f, indent=2)
 
 print(&quot;Metadata saved!&quot;)
+# Classification: TRAIN
+
 
 </content>
       <content>## Inference Function
@@ -331,6 +353,8 @@ label, conf, probs = predict_image(test_image)
 print(f&quot;\nPredicted class: {label}&quot;)
 print(f&quot;Confidence: {conf:.4f}&quot;)
 # print(f&quot;Probs: {probs}&quot;)
+# Classification: PREDICT
+
 
 </content>
     </filesystemelement>
