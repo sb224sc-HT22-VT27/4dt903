@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 
-import notebookMM.CodeCell;
 import notebookMM.MarkdownCell;
 import notebookMM.NotebookModel;
 import notebookMM.util.NotebookJSONParser;
@@ -77,29 +76,21 @@ public class NotebookAnalyzer {
 					System.out.println(notebook.getName() + "\n");
 
 				// Print all imports
-				System.out.println("=== All Imports ===");
-				for (String imp : notebook.getAllImports()) {
-					System.out.println(imp);
-				}
-
-				// Analyze code cells
-				System.out.println("\n=== Code Analysis ===");
-				for (CodeCell cell : notebook.getCodeCells()) {
-					System.out.println("Cell " + cell.getId() + ":");
-					if (cell.isDataPreprocessing())
-						System.out.println("  -> Data Preprocessing");
-					if (cell.isTrainingCode())
-						System.out.println("  -> Model Training");
-					if (cell.isPredictionCode())
-						System.out.println("  -> Prediction/Inference");
+				if (notebook.getAllImports().size() != 0) {
+					System.out.println("=== All Imports ===");
+					for (String imp : notebook.getAllImports()) {
+						System.out.println(imp);
+					}
 				}
 
 				// Extract section headers
-				System.out.println("\n=== Notebook Structure ===");
-				for (MarkdownCell cell : notebook.getMarkdownCells()) {
-					if (cell.isHeader()) {
-						String indent = "  ".repeat(cell.getHeaderLevel() - 1);
-						System.out.println(indent + cell.extractTitle());
+				if (notebook.getMarkdownCells().size() != 0) {
+					System.out.println("\n=== Notebook Structure ===");
+					for (MarkdownCell cell : notebook.getMarkdownCells()) {
+						if (cell.isHeader()) {
+							String indent = "  ".repeat(cell.getHeaderLevel() - 1);
+							System.out.println(indent + cell.extractTitle());
+						}
 					}
 				}
 
