@@ -40,8 +40,8 @@ helper createFile(notebook : NotebookMM::NotebookModel) : OrderedSet(ProjectStuc
     };
 }
 
-helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : OrderedSet(String) {
-    var contentLines : OrderedSet(String) := OrderedSet{};
+helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
     
     // Iterate through all cells in order
     notebook.cells->forEach(cell) {
@@ -53,15 +53,13 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : OrderedSet(
                 contentLines += mdCell.content + '\n';
                 contentLines += '"""\n\n';
             } endif;
-        } endif;
-        
-        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+        } else if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
             // Add code cell source as-is
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
                 contentLines += codeCell.source + '\n\n';
             } endif;
-        } endif;
+        } endif endif;
     };
     
     return contentLines;
