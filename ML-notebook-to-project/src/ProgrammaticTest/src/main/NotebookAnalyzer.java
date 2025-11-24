@@ -1,8 +1,12 @@
 package main;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
@@ -22,92 +26,108 @@ import notebookMM.util.NotebookJSONParser;
 public class NotebookAnalyzer {
 	private static ResourceSet rs;
 	private static final String inputDir = "../../input/";
-	private static final String[] fileName = { "Customer-Churn-Prediction/simple_classification",
-			"CNN-Image-Classifier/image_classification_cnn" };
-	private static final int inputFile = 1;
+	private static String[] fileName;
 
 	public static void main(String[] args) {
+
+		// Step 1: Find all .ipynb files
+		try {
+			fileName = findIpynbFiles(inputDir);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		if (fileName.length == 0) {
+			System.err.println("No .ipynb files found in " + inputDir);
+			return;
+		}
+
+		// Print all found files
+		System.out.println("Found notebooks:");
+		for (String f : fileName) {
+			System.out.println(f);
+		}
+
 		NotebookJSONParser parser = new NotebookJSONParser();
 
-		try {
-			// Parse .ipynb file
-			NotebookModel notebook = parser.parseNotebook(inputDir + fileName[inputFile] + ".ipynb");
+		// Process each notebook
+		for (String fullPath : fileName) {
+			System.out.println("\nProcessing: " + fullPath);
 
-			// Validate
-			if (!notebook.validate()) {
-				System.err.println("Invalid notebook structure!");
-				return;
-			}
+			try {
+				// Parse the notebook
+				NotebookModel notebook = parser.parseNotebook(fullPath);
 
-			// Check if Python
-			if (!notebook.getMetadata().isPythonKernel()) {
-				System.err.println("Only Python notebooks supported!");
-				return;
-			}
+				// Validate notebook
+				if (!notebook.validate()) {
+					System.err.println("Invalid notebook structure: " + fullPath);
+					continue;
+				}
 
-			// Model Name / Project Name
-			System.out.println("=== Name ===");
-			if (notebook.getName() != null)
-				System.out.println(notebook.getName() + "\n");
+				// Only Python notebooks
+				if (!notebook.getMetadata().isPythonKernel()) {
+					System.err.println("Skipping non-Python notebook: " + fullPath);
+					continue;
+				}
 
-			// Analyze imports
-			System.out.println("=== All Imports ===");
-			for (String imp : notebook.getAllImports()) {
-				System.out.println(imp);
-			}
+				// Print notebook name
+				System.out.println("=== Name ===");
+				if (notebook.getName() != null)
+					System.out.println(notebook.getName() + "\n");
 
-			// Analyze constants and commands for each code cell
-			System.out.println("\n=== Constants ===");
-			for (CodeCell cell : notebook.getCodeCells()) {
-				// System.out.println("Cell " + cell.getId() + ":");
+				// Print all imports
+				System.out.println("=== All Imports ===");
+				for (String imp : notebook.getAllImports()) {
+					System.out.println(imp);
+				}
 
-				// Extract and display constants
-				if (cell.hasConstants()) {
-					// System.out.println(" Constants:");
-					for (String constant : cell.extractConstants()) {
-						System.out.println(constant);
+				// Analyze code cells
+				System.out.println("\n=== Code Analysis ===");
+				for (CodeCell cell : notebook.getCodeCells()) {
+					System.out.println("Cell " + cell.getId() + ":");
+					if (cell.isDataPreprocessing())
+						System.out.println("  -> Data Preprocessing");
+					if (cell.isTrainingCode())
+						System.out.println("  -> Model Training");
+					if (cell.isPredictionCode())
+						System.out.println("  -> Prediction/Inference");
+				}
+
+				// Extract section headers
+				System.out.println("\n=== Notebook Structure ===");
+				for (MarkdownCell cell : notebook.getMarkdownCells()) {
+					if (cell.isHeader()) {
+						String indent = "  ".repeat(cell.getHeaderLevel() - 1);
+						System.out.println(indent + cell.extractTitle());
 					}
 				}
 
-				// Extract and display commands
-//				if (cell.hasCommands()) {
-//					System.out.println("  Commands:");
-//					for (String command : cell.extractCommands()) {
-//						System.out.println("    " + command);
-//					}
-//				}
+				// Setup EMF resource
+				setupResource();
+
+				// Ensure output directory exists
+				Files.createDirectories(Paths.get("output"));
+
+				// Compute path relative to inputDir
+				Path inputRoot = Paths.get(inputDir).toAbsolutePath().normalize();
+				Path notebookPath = Paths.get(fullPath).toAbsolutePath().normalize();
+				Path relativePath = inputRoot.relativize(notebookPath);
+
+				// Replace .ipynb with .notebook and prepend output directory
+				Path outputPath = Paths.get("output").resolve(relativePath);
+				outputPath = Paths.get(outputPath.toString().replaceAll("\\.ipynb$", ".notebook"));
+
+				// Ensure output directories exist
+				Files.createDirectories(outputPath.getParent());
+
+				// Save notebook using the correct path
+				save(notebook, outputPath.toString());
+				System.out.println("Saved notebook as: " + outputPath);
+			} catch (Exception e) {
+				System.err.println("Error processing notebook: " + fullPath);
+				e.printStackTrace();
 			}
-
-			// Categorize code cells
-			System.out.println("\n=== Code Analysis ===");
-			for (CodeCell cell : notebook.getCodeCells()) {
-				System.out.println("Cell " + cell.getId() + ":");
-				if (cell.isDataPreprocessing()) {
-					System.out.println("  -> Data Preprocessing");
-				}
-				if (cell.isTrainingCode()) {
-					System.out.println("  -> Model Training");
-				}
-				if (cell.isPredictionCode()) {
-					System.out.println("  -> Prediction/Inference");
-				}
-			}
-
-			// Extract section headers
-			System.out.println("\n=== Notebook Structure ===");
-			for (MarkdownCell cell : notebook.getMarkdownCells()) {
-				if (cell.isHeader()) {
-					String indent = "  ".repeat(cell.getHeaderLevel() - 1);
-					System.out.println(indent + cell.extractTitle());
-				}
-			}
-
-			setupResource();
-
-			save(notebook, "output/" + fileName[inputFile] + ".notebook");
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -137,6 +157,19 @@ public class NotebookAnalyzer {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
 
+	private static String[] findIpynbFiles(String directory) throws IOException {
+		List<String> results = new ArrayList<>();
+
+		try {
+			Files.walk(Paths.get(directory)).filter(Files::isRegularFile)
+					.filter(path -> path.toString().endsWith(".ipynb"))
+					.forEach(path -> results.add(path.toAbsolutePath().toString()));
+		} catch (IOException e) {
+			throw new IOException("Error reading directory: " + directory, e);
+		}
+
+		return results.toArray(new String[0]);
 	}
 }
