@@ -106,9 +106,9 @@ helper NotebookMM::NotebookModel::generateRequirementsContent() : OrderedSet(Str
 			
 			var pkg : String := pkgPart;
 			if spaceIdx >= 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
-				pkg := pkgPart.substring(1, spaceIdx);
+				pkg := pkgPart.substring(1, spaceIdx - 1);
 			} elif dotIdx >= 0 then {
-				pkg := pkgPart.substring(1, dotIdx);
+				pkg := pkgPart.substring(1, dotIdx - 1);
 			} endif;
 			
 			// Skip standard library
@@ -122,9 +122,9 @@ helper NotebookMM::NotebookModel::generateRequirementsContent() : OrderedSet(Str
 			
 			var pkg : String := pkgPart;
 			if spaceIdx >= 0 and (dotIdx < 0 or spaceIdx < dotIdx) then {
-				pkg := pkgPart.substring(1, spaceIdx);
+				pkg := pkgPart.substring(1, spaceIdx - 1);
 			} elif dotIdx >= 0 then {
-				pkg := pkgPart.substring(1, dotIdx);
+				pkg := pkgPart.substring(1, dotIdx - 1);
 			} endif;
 			
 			// Skip standard library
