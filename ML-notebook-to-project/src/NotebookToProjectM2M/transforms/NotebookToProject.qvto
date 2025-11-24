@@ -19,25 +19,17 @@ main() {
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
 	
-	result.filesystemelement := createDirectories(self);
+	result.filesystemelement := DIR_NAMES->collect(dirName | self.map toDirectory(dirName));
 }
 
-helper createDirectories(notebook : NotebookMM::NotebookModel) : Sequence(ProjectStuctureMM::FileSystemElement) {
-    return DIR_NAMES->collect(dirName |
-        object ProjectStuctureMM::Directory {
-            name := dirName;
-            filesystemelement := if dirName = 'src' then createFile(notebook) else createKeepFile() endif;
-        }
-    );
+mapping NotebookMM::NotebookModel::toDirectory(dirName : String) : ProjectStuctureMM::Directory {
+    result.name := dirName;
+    result.filesystemelement := if dirName = 'src' then OrderedSet{self.map toMainFile()} else OrderedSet{self.map toKeepFile()} endif;
 }
 
-helper createFile(notebook : NotebookMM::NotebookModel) : OrderedSet(ProjectStuctureMM::FileSystemElement) {
-    return OrderedSet {
-        object ProjectStuctureMM::File {
-            name := MAIN_FILE_NAME;
-            content := generateMainPyContent(notebook);
-        }
-    };
+mapping NotebookMM::NotebookModel::toMainFile() : ProjectStuctureMM::File {
+    result.name := MAIN_FILE_NAME;
+    result.content := generateMainPyContent(self);
 }
 
 helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
@@ -65,11 +57,7 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(St
     return contentLines;
 }
 
-helper createKeepFile() : OrderedSet(ProjectStuctureMM::FileSystemElement) {
-	return OrderedSet{
-		object ProjectStuctureMM::File {
-			name := ".keep";
-			content := OrderedSet{};
-		}
-	};
+mapping NotebookMM::NotebookModel::toKeepFile() : ProjectStuctureMM::File {
+	result.name := ".keep";
+	result.content := OrderedSet{};
 }

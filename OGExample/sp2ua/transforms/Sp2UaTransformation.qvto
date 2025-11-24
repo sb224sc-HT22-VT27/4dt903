@@ -14,7 +14,7 @@ main() {
 mapping StudyProgramMM::StudyProgram::toUniversityActivities() : UniversityActivitiesMM::UniversityActivities {
 	result.studyProgram := self.name;
 	result.lectures := self.courses -> map toLectures();
-	result.assignments := self.courses -> map toAssigns() -> flatten();
+	result.assignments := self.courses -> map toAssignments() -> flatten();
 	result.exams := self.courses -> select(c | c.hasWrittenExam) -> map toExams(UniversityActivitiesMM::ExamType::writtenExam);
 	result.exams += self.courses -> select(c | c.hasOralExam) -> map toExams(UniversityActivitiesMM::ExamType::oralExam);
 }
@@ -26,8 +26,10 @@ mapping StudyProgramMM::Course::toLectures() : UniversityActivitiesMM::Lecture {
 	result.requiredExams := self.prerequisites -> late resolve(UniversityActivitiesMM::Exam);
 }
 
-helper StudyProgramMM::Course::toAssigns() : OrderedSet(UniversityActivitiesMM::Assignment) {
-	return Sequence{1..self.numOfAssignments} -> collect(i | self.map toAssign(i)) -> asOrderedSet();
+mapping StudyProgramMM::Course::toAssignments() : OrderedSet(UniversityActivitiesMM::Assignment) {
+	init {
+		result := Sequence{1..self.numOfAssignments} -> collect(i | self.map toAssign(i)) -> asOrderedSet();
+	}
 }
 
 mapping StudyProgramMM::Course::toAssign(assignNum : Integer) : UniversityActivitiesMM::Assignment {
