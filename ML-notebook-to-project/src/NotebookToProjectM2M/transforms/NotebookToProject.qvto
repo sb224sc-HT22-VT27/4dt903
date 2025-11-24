@@ -79,83 +79,83 @@ helper mapImportToPackage(importStmt : String) : String {
 	// This handles both "import module" and "from module import ..." patterns
 	
 	// sklearn / scikit-learn (check for 'sklearn' in the import)
-	if (importStmt.indexOf('sklearn') > 0) then {
+	if (importStmt.indexOf('sklearn') >= 0) then {
 		return 'scikit-learn';
 	}
 	// OpenCV (check for 'cv2')
-	else if (importStmt.indexOf('cv2') > 0) then {
+	else if (importStmt.indexOf('cv2') >= 0) then {
 		return 'opencv-python';
 	}
 	// PIL / Pillow
-	else if (importStmt.indexOf('PIL') > 0) then {
+	else if (importStmt.indexOf('PIL') >= 0) then {
 		return 'Pillow';
 	}
 	// pandas
-	else if (importStmt.indexOf('pandas') > 0) then {
+	else if (importStmt.indexOf('pandas') >= 0) then {
 		return 'pandas';
 	}
 	// numpy
-	else if (importStmt.indexOf('numpy') > 0) then {
+	else if (importStmt.indexOf('numpy') >= 0) then {
 		return 'numpy';
 	}
 	// matplotlib
-	else if (importStmt.indexOf('matplotlib') > 0) then {
+	else if (importStmt.indexOf('matplotlib') >= 0) then {
 		return 'matplotlib';
 	}
 	// scipy
-	else if (importStmt.indexOf('scipy') > 0) then {
+	else if (importStmt.indexOf('scipy') >= 0) then {
 		return 'scipy';
 	}
 	// seaborn
-	else if (importStmt.indexOf('seaborn') > 0) then {
+	else if (importStmt.indexOf('seaborn') >= 0) then {
 		return 'seaborn';
 	}
 	// joblib
-	else if (importStmt.indexOf('joblib') > 0) then {
+	else if (importStmt.indexOf('joblib') >= 0) then {
 		return 'joblib';
 	}
 	// tensorflow
-	else if (importStmt.indexOf('tensorflow') > 0) then {
+	else if (importStmt.indexOf('tensorflow') >= 0) then {
 		return 'tensorflow';
 	}
 	// torch / pytorch
-	else if (importStmt.indexOf('torch') > 0) then {
+	else if (importStmt.indexOf('torch') >= 0) then {
 		return 'torch';
 	}
 	// keras
-	else if (importStmt.indexOf('keras') > 0) then {
+	else if (importStmt.indexOf('keras') >= 0) then {
 		return 'keras';
 	}
 	// flask
-	else if (importStmt.indexOf('flask') > 0) then {
+	else if (importStmt.indexOf('flask') >= 0) then {
 		return 'flask';
 	}
 	// django
-	else if (importStmt.indexOf('django') > 0) then {
+	else if (importStmt.indexOf('django') >= 0) then {
 		return 'django';
 	}
 	// requests
-	else if (importStmt.indexOf('requests') > 0) then {
+	else if (importStmt.indexOf('requests') >= 0) then {
 		return 'requests';
 	}
 	// sqlalchemy
-	else if (importStmt.indexOf('sqlalchemy') > 0) then {
+	else if (importStmt.indexOf('sqlalchemy') >= 0) then {
 		return 'sqlalchemy';
 	}
 	// pytest
-	else if (importStmt.indexOf('pytest') > 0) then {
+	else if (importStmt.indexOf('pytest') >= 0) then {
 		return 'pytest';
 	}
 	// yaml / PyYAML
-	else if (importStmt.indexOf('yaml') > 0) then {
+	else if (importStmt.indexOf('yaml') >= 0) then {
 		return 'PyYAML';
 	}
 	// beautifulsoup4
-	else if (importStmt.indexOf('bs4') > 0) then {
+	else if (importStmt.indexOf('bs4') >= 0) then {
 		return 'beautifulsoup4';
 	}
 	// python-dateutil
-	else if (importStmt.indexOf('dateutil') > 0) then {
+	else if (importStmt.indexOf('dateutil') >= 0) then {
 		return 'python-dateutil';
 	} endif;
 	
