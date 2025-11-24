@@ -6,6 +6,7 @@ transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : Pro
 // property NAME : TYPE = val; Consts
 property MAIN_FILE_NAME : String = "main.py";
 property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outputs"};
+property REQUIREMENTS_FILE_NAME : String = "requirements.txt";
 
 main() {
 	// [MetaModel::Attribute]
@@ -19,7 +20,7 @@ main() {
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
 	
-	result.filesystemelement := DIR_NAMES->collect(dirName | self.map toDirectory(dirName));
+	result.filesystemelement := DIR_NAMES->collect(dirName | self.map toDirectory(dirName))->union(Sequence{self.map toRequirementsFile()});
 }
 
 mapping NotebookMM::NotebookModel::toDirectory(dirName : String) : ProjectStuctureMM::Directory {
@@ -30,6 +31,11 @@ mapping NotebookMM::NotebookModel::toDirectory(dirName : String) : ProjectStuctu
 mapping NotebookMM::NotebookModel::toMainFile() : ProjectStuctureMM::File {
     result.name := MAIN_FILE_NAME;
     result.content := generateMainPyContent(self);
+}
+
+mapping NotebookMM::NotebookModel::toRequirementsFile() : ProjectStuctureMM::File {
+	result.name := REQUIREMENTS_FILE_NAME;
+	result.content := extractPackageNames(self);
 }
 
 mapping NotebookMM::NotebookModel::toKeepFile() : ProjectStuctureMM::File {
@@ -60,4 +66,63 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(St
     };
 
     return contentLines;
+}
+
+helper extractPackageNames(notebook : NotebookMM::NotebookModel) : OrderedSet(String) {
+	var imports : OrderedSet(String) := notebook.getAllImports();
+	var packages : OrderedSet(String) := 
+		imports 
+		->collect(importStmt | mapImportToPackage(importStmt)) 
+		->select(pkg | pkg <> '') 
+		->asOrderedSet(); 
+	
+	return packages;
+}
+
+helper mapImportToPackage(importStmt : String) : String {
+	if importStmt.indexOf('sklearn') >= 0 then
+	return 'scikit-learn'
+	elif importStmt.indexOf('cv2') >= 0 then
+	return 'opencv-python'
+	elif importStmt.indexOf('PIL') >= 0 then
+	return 'Pillow'
+	elif importStmt.indexOf('pandas') >= 0 then
+	return 'pandas'
+	elif importStmt.indexOf('numpy') >= 0 then
+	return 'numpy'
+	elif importStmt.indexOf('matplotlib') >= 0 then
+	return 'matplotlib'
+	elif importStmt.indexOf('scipy') >= 0 then
+	return 'scipy'
+	elif importStmt.indexOf('seaborn') >= 0 then
+	return 'seaborn'
+	elif importStmt.indexOf('joblib') >= 0 then
+	return 'joblib'
+	elif importStmt.indexOf('tensorflow') >= 0 then
+	return 'tensorflow'
+	elif importStmt.indexOf('torch') >= 0 then
+	return 'torch'
+	elif importStmt.indexOf('keras') >= 0 then
+	return 'keras'
+	elif importStmt.indexOf('flask') >= 0 then
+	return 'flask'
+	elif importStmt.indexOf('django') >= 0 then
+	return 'django'
+	elif importStmt.indexOf('requests') >= 0 then
+	return 'requests'
+	elif importStmt.indexOf('sqlalchemy') >= 0 then
+	return 'sqlalchemy'
+	elif importStmt.indexOf('pytest') >= 0 then
+	return 'pytest'
+	elif importStmt.indexOf('yaml') >= 0 then
+	return 'PyYAML'
+	elif importStmt.indexOf('bs4') >= 0 then
+	return 'beautifulsoup4'
+	elif importStmt.indexOf('dateutil') >= 0 then
+	return 'python-dateutil'
+	else
+	return ''
+	endif
+	
+	
 }
