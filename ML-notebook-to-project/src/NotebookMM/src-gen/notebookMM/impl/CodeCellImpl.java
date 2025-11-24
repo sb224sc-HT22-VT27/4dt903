@@ -46,9 +46,9 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected static final String SOURCE_EDEFAULT = null;
 
 	/**
-	 * Singleton instance of AI classification service
+	 * Singleton instance of AI classification service (volatile for thread-safety)
 	 */
-	private static AIClassificationService aiService = null;
+	private static volatile AIClassificationService aiService = null;
 	
 	/**
 	 * Cached classification result to avoid redundant API calls
@@ -363,11 +363,15 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	}
 
 	/**
-	 * Gets or initializes the AI classification service
+	 * Gets or initializes the AI classification service using double-checked locking
 	 */
-	private static synchronized AIClassificationService getAIService() {
+	private static AIClassificationService getAIService() {
 		if (aiService == null) {
-			aiService = new AIClassificationService();
+			synchronized (CodeCellImpl.class) {
+				if (aiService == null) {
+					aiService = new AIClassificationService();
+				}
+			}
 		}
 		return aiService;
 	}

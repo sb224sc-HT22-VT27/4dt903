@@ -150,8 +150,8 @@ public class AIClassificationService {
 			}
 		}
 		
-		// If parsing fails, fall back to heuristics
-		return fallbackClassification("");
+		// If parsing fails, return no classification
+		return new ClassificationResult(false, false, false);
 	}
 	
 	/**
@@ -169,7 +169,7 @@ public class AIClassificationService {
 		                    lowerCode.contains("trainer.train") ||
 		                    lowerCode.contains("fit_transform") || 
 		                    lowerCode.contains("cross_val_score") ||
-		                    lowerCode.matches(".*\\bfit\\s*\\(.*");
+		                    lowerCode.contains(".fit(");
 		
 		boolean isPreprocessing = lowerCode.contains("preprocess") || 
 		                         lowerCode.contains("clean") || 
