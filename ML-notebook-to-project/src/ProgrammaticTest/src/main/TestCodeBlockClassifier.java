@@ -11,6 +11,8 @@ public class TestCodeBlockClassifier {
 		System.out.println("Testing CodeBlockClassifier...");
 		System.out.println("=====================================");
 		
+		boolean allTestsPassed = true;
+		
 		// Test classifyCodeBlock method
 		System.out.println("\nTesting classifyCodeBlock():");
 		for (int i = 0; i < 10; i++) {
@@ -22,7 +24,7 @@ public class TestCodeBlockClassifier {
 			    !classification.equals("TRAIN") && 
 			    !classification.equals("PREDICT")) {
 				System.err.println("ERROR: Unexpected classification: " + classification);
-				System.exit(1);
+				allTestsPassed = false;
 			}
 		}
 		
@@ -35,11 +37,16 @@ public class TestCodeBlockClassifier {
 			// Verify it starts with the expected prefix
 			if (!comment.startsWith("# Classification: ")) {
 				System.err.println("ERROR: Comment doesn't have expected format: " + comment);
-				System.exit(1);
+				allTestsPassed = false;
 			}
 		}
 		
 		System.out.println("\n=====================================");
-		System.out.println("All tests passed successfully!");
+		if (allTestsPassed) {
+			System.out.println("All tests passed successfully!");
+		} else {
+			System.err.println("Some tests FAILED!");
+			System.exit(1);
+		}
 	}
 }

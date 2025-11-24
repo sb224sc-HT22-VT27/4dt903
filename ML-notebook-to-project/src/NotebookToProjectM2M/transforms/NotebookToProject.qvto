@@ -1,6 +1,7 @@
 modeltype NotebookMM uses "http://www.g7.org/notebookMM";
 modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
+// Import library for code block classification (calls Java helper to classify code blocks)
 import CodeClassificationLib;
 
 transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : ProjectStuctureMM);
