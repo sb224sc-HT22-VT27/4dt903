@@ -8,7 +8,13 @@ Require-Bundle: org.eclipse.swt,
  org.eclipse.emf.ecore,
  NotebookMM,
  ProjectStructureMM,
- NotebookToProjectM2M
+ NotebookToProjectM2M,
+ ProjectStructureM2T,
+ org.eclipse.m2m.qvt.oml,
+ org.eclipse.m2m.qvt.oml.common,
+ org.eclipse.m2m.qvt.oml.runtime,
+ org.eclipse.acceleo.engine,
+ org.eclipse.acceleo.common
 Automatic-Module-Name: ProgrammaticTest
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Import-Package: org.eclipse.emf.ecore.xmi;version="[2.39.0,3.0.0)",
