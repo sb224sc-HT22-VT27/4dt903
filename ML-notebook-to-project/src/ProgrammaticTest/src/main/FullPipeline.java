@@ -5,23 +5,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
 
-import notebookMM.Cell;
-import notebookMM.CodeCell;
-import notebookMM.MarkdownCell;
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.qvt.oml.BasicModelExtent;
+import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
+import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
+import org.eclipse.m2m.qvt.oml.ModelExtent;
+import org.eclipse.m2m.qvt.oml.TransformationExecutor;
+
+import notebookMM.NotebookMMPackage;
 import notebookMM.NotebookModel;
 import notebookMM.util.NotebookJSONParser;
 import projectStructureMM.Directory;
 import projectStructureMM.File;
 import projectStructureMM.FileSystemElement;
 import projectStructureMM.ProjectStructure;
-import projectStructureMM.ProjectStructureMMFactory;
+import projectStructureMM.ProjectStructureMMPackage;
 
 /**
  * Full Pipeline: T2M -> M2M -> M2T
@@ -29,50 +31,22 @@ import projectStructureMM.ProjectStructureMMFactory;
  * This class connects the pipeline from Text-to-Model (T2M), Model-to-Model
  * (M2M), and Model-to-Text (M2T) into one seamless execution.
  * 
- * T2M: Parses .ipynb files to NotebookModel M2M: Transforms NotebookModel to
- * ProjectStructure M2T: Generates Python project files from ProjectStructure
+ * T2M: Parses .ipynb files to NotebookModel 
+ * M2M: Uses NotebookToProject.qvto to transform NotebookModel to ProjectStructure 
+ * M2T: Generates Python project files from ProjectStructure
  */
 public class FullPipeline {
 
-	private static final String[] DIR_NAMES = { "data", "src", "models", "outputs" };
-	private static final String MAIN_FILE_NAME = "main.py";
-	private static final String REQUIREMENTS_FILE_NAME = "requirements.txt";
-
-	/**
-	 * Static mapping from Python module names to pip package names. Uses word
-	 * boundary patterns to avoid false positives (e.g., 'sklearn_extra' won't match
-	 * 'sklearn').
-	 */
-	private static final Map<Pattern, String> IMPORT_TO_PACKAGE_MAP = new HashMap<>();
-	static {
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bsklearn\\b"), "scikit-learn");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bcv2\\b"), "opencv-python");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bPIL\\b"), "Pillow");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bpandas\\b"), "pandas");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bnumpy\\b"), "numpy");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bmatplotlib\\b"), "matplotlib");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bscipy\\b"), "scipy");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bseaborn\\b"), "seaborn");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bjoblib\\b"), "joblib");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\btensorflow\\b"), "tensorflow");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\btorch\\b"), "torch");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bkeras\\b"), "keras");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bflask\\b"), "flask");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bdjango\\b"), "django");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\brequests\\b"), "requests");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bsqlalchemy\\b"), "sqlalchemy");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bpytest\\b"), "pytest");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\byaml\\b"), "PyYAML");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bbs4\\b"), "beautifulsoup4");
-		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bdateutil\\b"), "python-dateutil");
-	}
+	/** Path to the QVT-O transformation file */
+	private static final String QVTO_TRANSFORMATION_PATH = "../NotebookToProjectM2M/transforms/NotebookToProject.qvto";
 
 	private final NotebookJSONParser parser;
-	private final ProjectStructureMMFactory factory;
 
 	public FullPipeline() {
 		this.parser = new NotebookJSONParser();
-		this.factory = ProjectStructureMMFactory.eINSTANCE;
+		// Register EMF packages
+		NotebookMMPackage.eINSTANCE.eClass();
+		ProjectStructureMMPackage.eINSTANCE.eClass();
 	}
 
 	/**
@@ -167,111 +141,55 @@ public class FullPipeline {
 	// ==================== M2M: Model to Model ====================
 
 	/**
-	 * M2M: Transform NotebookModel to ProjectStructure This replicates the logic
-	 * from NotebookToProject.qvto
+	 * M2M: Transform NotebookModel to ProjectStructure using QVT-O transformation.
+	 * This executes the NotebookToProject.qvto transformation file.
 	 */
-	private ProjectStructure modelToModel(NotebookModel notebook) {
-		ProjectStructure project = factory.createProjectStructure();
-		project.setName(notebook.getName());
-
-		// Create directory structure
-		for (String dirName : DIR_NAMES) {
-			Directory dir = createDirectory(dirName, notebook);
-			project.getFilesystemelement().add(dir);
+	private ProjectStructure modelToModel(NotebookModel notebook) throws IOException {
+		// Resolve and validate the QVT-O transformation path
+		Path transformationPath = Paths.get(QVTO_TRANSFORMATION_PATH).toAbsolutePath().normalize();
+		if (!Files.exists(transformationPath)) {
+			throw new IOException("QVT-O transformation file not found: " + transformationPath);
 		}
 
-		// Create requirements.txt
-		File requirementsFile = createRequirementsFile(notebook);
-		project.getFilesystemelement().add(requirementsFile);
+		// Load the QVT-O transformation
+		URI transformationURI = URI.createFileURI(transformationPath.toString());
+		
+		TransformationExecutor executor = new TransformationExecutor(transformationURI);
 
-		return project;
-	}
+		// Create input extent with the NotebookModel
+		List<EObject> inputObjects = new ArrayList<>();
+		inputObjects.add(notebook);
+		ModelExtent input = new BasicModelExtent(inputObjects);
 
-	/**
-	 * Create a directory with appropriate content
-	 */
-	private Directory createDirectory(String dirName, NotebookModel notebook) {
-		Directory dir = factory.createDirectory();
-		dir.setName(dirName);
+		// Create output extent for the ProjectStructure
+		ModelExtent output = new BasicModelExtent();
 
-		if ("src".equals(dirName)) {
-			// Create main.py in src directory
-			File mainFile = createMainFile(notebook);
-			dir.getFilesystemelement().add(mainFile);
-		} else {
-			// Create .keep file in other directories
-			File keepFile = factory.createFile();
-			keepFile.setName(".keep");
-			dir.getFilesystemelement().add(keepFile);
+		// Create execution context
+		ExecutionContextImpl context = new ExecutionContextImpl();
+		context.setConfigProperty("keepModeling", true);
+
+		// Execute the transformation
+		ExecutionDiagnostic result = executor.execute(context, input, output);
+
+		// Check for errors
+		if (result.getSeverity() != Diagnostic.OK) {
+			throw new IOException("QVT-O transformation failed: " + result.getMessage());
 		}
 
-		return dir;
-	}
+		// Get the output ProjectStructure
+		List<EObject> outputObjects = output.getContents();
+		if (outputObjects.isEmpty()) {
+			throw new IOException("QVT-O transformation produced no output");
+		}
 
-	/**
-	 * Create the main.py file with content from notebook cells
-	 */
-	private File createMainFile(NotebookModel notebook) {
-		File mainFile = factory.createFile();
-		mainFile.setName(MAIN_FILE_NAME);
-
-		// Generate content from cells
-		for (Cell cell : notebook.getCells()) {
-			if (cell instanceof MarkdownCell) {
-				MarkdownCell mdCell = (MarkdownCell) cell;
-				if (mdCell.getContent() != null && !mdCell.getContent().isEmpty()) {
-					mainFile.getContent().add("\"\"\"");
-					mainFile.getContent().add(mdCell.getContent());
-					mainFile.getContent().add("\"\"\"");
-					mainFile.getContent().add("");
-				}
-			} else if (cell instanceof CodeCell) {
-				CodeCell codeCell = (CodeCell) cell;
-				if (codeCell.getSource() != null && !codeCell.getSource().isEmpty()) {
-					mainFile.getContent().add(codeCell.getSource());
-					mainFile.getContent().add("");
-				}
+		// Find the ProjectStructure in the output
+		for (EObject obj : outputObjects) {
+			if (obj instanceof ProjectStructure) {
+				return (ProjectStructure) obj;
 			}
 		}
 
-		return mainFile;
-	}
-
-	/**
-	 * Create requirements.txt from notebook imports
-	 */
-	private File createRequirementsFile(NotebookModel notebook) {
-		File reqFile = factory.createFile();
-		reqFile.setName(REQUIREMENTS_FILE_NAME);
-
-		// Extract unique packages from imports
-		Set<String> packages = new HashSet<>();
-		for (String importStmt : notebook.getAllImports()) {
-			String pkg = mapImportToPackage(importStmt);
-			if (pkg != null && !pkg.isEmpty()) {
-				packages.add(pkg);
-			}
-		}
-
-		// Add packages to file content
-		for (String pkg : packages) {
-			reqFile.getContent().add(pkg);
-		}
-
-		return reqFile;
-	}
-
-	/**
-	 * Map Python import statements to pip package names
-	 */
-	private String mapImportToPackage(String importStmt) {
-		for (Map.Entry<Pattern, String> entry : IMPORT_TO_PACKAGE_MAP.entrySet()) {
-			if (entry.getKey().matcher(importStmt).find()) {
-				return entry.getValue();
-			}
-		}
-
-		return null;
+		throw new IOException("QVT-O transformation did not produce a ProjectStructure");
 	}
 
 	// ==================== M2T: Model to Text ====================
