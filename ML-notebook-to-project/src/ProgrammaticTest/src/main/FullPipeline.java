@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import notebookMM.Cell;
 import notebookMM.CodeCell;
@@ -36,6 +37,35 @@ public class FullPipeline {
 	private static final String[] DIR_NAMES = { "data", "src", "models", "outputs" };
 	private static final String MAIN_FILE_NAME = "main.py";
 	private static final String REQUIREMENTS_FILE_NAME = "requirements.txt";
+
+	/**
+	 * Static mapping from Python module names to pip package names. Uses word
+	 * boundary patterns to avoid false positives (e.g., 'sklearn_extra' won't match
+	 * 'sklearn').
+	 */
+	private static final Map<Pattern, String> IMPORT_TO_PACKAGE_MAP = new HashMap<>();
+	static {
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bsklearn\\b"), "scikit-learn");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bcv2\\b"), "opencv-python");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bPIL\\b"), "Pillow");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bpandas\\b"), "pandas");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bnumpy\\b"), "numpy");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bmatplotlib\\b"), "matplotlib");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bscipy\\b"), "scipy");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bseaborn\\b"), "seaborn");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bjoblib\\b"), "joblib");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\btensorflow\\b"), "tensorflow");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\btorch\\b"), "torch");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bkeras\\b"), "keras");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bflask\\b"), "flask");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bdjango\\b"), "django");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\brequests\\b"), "requests");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bsqlalchemy\\b"), "sqlalchemy");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bpytest\\b"), "pytest");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\byaml\\b"), "PyYAML");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bbs4\\b"), "beautifulsoup4");
+		IMPORT_TO_PACKAGE_MAP.put(Pattern.compile("\\bdateutil\\b"), "python-dateutil");
+	}
 
 	private final NotebookJSONParser parser;
 	private final ProjectStructureMMFactory factory;
@@ -235,30 +265,8 @@ public class FullPipeline {
 	 * Map Python import statements to pip package names
 	 */
 	private String mapImportToPackage(String importStmt) {
-		Map<String, String> mapping = new HashMap<>();
-		mapping.put("sklearn", "scikit-learn");
-		mapping.put("cv2", "opencv-python");
-		mapping.put("PIL", "Pillow");
-		mapping.put("pandas", "pandas");
-		mapping.put("numpy", "numpy");
-		mapping.put("matplotlib", "matplotlib");
-		mapping.put("scipy", "scipy");
-		mapping.put("seaborn", "seaborn");
-		mapping.put("joblib", "joblib");
-		mapping.put("tensorflow", "tensorflow");
-		mapping.put("torch", "torch");
-		mapping.put("keras", "keras");
-		mapping.put("flask", "flask");
-		mapping.put("django", "django");
-		mapping.put("requests", "requests");
-		mapping.put("sqlalchemy", "sqlalchemy");
-		mapping.put("pytest", "pytest");
-		mapping.put("yaml", "PyYAML");
-		mapping.put("bs4", "beautifulsoup4");
-		mapping.put("dateutil", "python-dateutil");
-
-		for (Map.Entry<String, String> entry : mapping.entrySet()) {
-			if (importStmt.contains(entry.getKey())) {
+		for (Map.Entry<Pattern, String> entry : IMPORT_TO_PACKAGE_MAP.entrySet()) {
+			if (entry.getKey().matcher(importStmt).find()) {
 				return entry.getValue();
 			}
 		}
