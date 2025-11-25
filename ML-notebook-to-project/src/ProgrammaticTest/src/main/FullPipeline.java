@@ -173,6 +173,12 @@ public class FullPipeline {
 		}
 
 		try {
+			// Register the Java blackbox module for CodeBlockClassifier
+			// This allows the QVT-O transformation to resolve the blackbox import
+			// Parameters: (1) moduleClass, (2) moduleName (null=use class name), (3) packageURIs (null=use @Module annotation)
+			org.eclipse.m2m.qvt.oml.blackbox.java.JavaBlackboxProvider.INSTANCE
+				.registerModule(transformationutils.CodeBlockClassifier.class, null, null);
+
 			// Load the QVT-O transformation
 			URI transformationURI = URI.createFileURI(transformationPath.toString());
 			TransformationExecutor executor = new TransformationExecutor(transformationURI);
