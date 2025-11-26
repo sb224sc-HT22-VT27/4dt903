@@ -1,16 +1,16 @@
-		
+
 """
 # Assignment 6 vj222hx
 """
 
 
-		
+
 """
 Loading and plotting the MNIST dataset
 """
 
 
-		
+
 from tensorflow.keras.datasets.mnist import load_data 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
@@ -25,17 +25,17 @@ for i in range(25):
     plt.imshow(x_test[i], cmap=plt.get_cmap('gray'))
 
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 Setting the sceene for image classification
 """
 
 
-		
+
 from numpy import zeros
 from numpy import unique
 from numpy import argmax
@@ -49,36 +49,36 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.callbacks import EarlyStopping 
 from tensorflow.keras import Input
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		
+
 orig_shape = x_train.shape[1:]
 x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], x_train.shape[2], 1))
 x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], x_test.shape[2], 1))
 in_shape = x_train.shape[1:]
 print("Before: {0}".format(orig_shape))
 print("After: {0}".format(in_shape))
-# Classification: TRAIN
-
-
-
-		
-n_classes = len(unique(y_train)) 
-print("Classes: {0}".format(n_classes))
 # Classification: PREPROCESS
 
 
 
-		
+
+n_classes = len(unique(y_train)) 
+print("Classes: {0}".format(n_classes))
+# Classification: PREDICT
+
+
+
+
 x_train = x_train.astype('float32') / 255.0
 x_test = x_test.astype('float32') / 255.0
 # Classification: TRAIN
 
 
 
-		
+
 EPOCHS = 10
 BATCH_SIZE = 128
 early_stopping = EarlyStopping(
@@ -88,11 +88,11 @@ early_stopping = EarlyStopping(
     mode='max', 
     restore_best_weights=True)
 it = round(60000/BATCH_SIZE)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 def plot_metrics(history):
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color'] 
     metrics = ['loss', 'accuracy'] 
@@ -113,7 +113,7 @@ def plot_metrics(history):
 
 
 
-		
+
 def print_res(model): 
     err = 0
     i_range = 10
@@ -141,11 +141,11 @@ def print_res(model):
                 print(f"{bcolors.FAIL}%d {bcolors.ENDC}" % y, end = '') 
         print()
     return err
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 """
 ## Model without data augmentation
 
@@ -153,7 +153,7 @@ I will begin by tuning the parameters without data augmentation. I will do this 
 """
 
 
-		
+
 def make_model1(add_dense=False):
     model = Sequential()
     model.add(Input(shape=in_shape))
@@ -173,7 +173,7 @@ model.summary()
 
 
 
-		
+
 model_history = model.fit(
     x_train,
     y_train,
@@ -181,11 +181,11 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		
+
 plot_metrics(model_history)
 loss, acc = model.evaluate(x_test, y_test, verbose=0)
 print('Accuracy: %.3f' % acc)
@@ -194,7 +194,7 @@ err = print_res(model)
 
 
 
-		
+
 """
 After playing around with parameters I found that the dense layer has very little impact so I removed it all together. For the other parameters I found that having a depth of 32, a CNN kernel width of 9 and a pool stride of 4 gave a good result, giving me an accuracy of 0.990 with a parameter count of 10634 which is roughly 50x less than the teacher. Adding an additional layer added parameter count with no increase in accuracy
 
@@ -204,7 +204,7 @@ When adding data augmentation I might have to add parameters and potentially bri
 """
 
 
-		
+
 def make_model2(add_dense=False):
     model = Sequential()
     model.add(Input(shape=in_shape))
@@ -227,7 +227,7 @@ model.summary()
 
 
 
-		
+
 # data Augmentation
 datagen = ImageDataGenerator(
     zoom_range=0.1,
@@ -243,11 +243,11 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		
+
 plot_metrics(model_history)
 loss, acc = model.evaluate(x_test, y_test, verbose=0)
 print('Accuracy: %.3f' % acc)
@@ -256,7 +256,7 @@ err = print_res(model)
 
 
 
-		
+
 """
 When using data augmentation I didn't manage to get as good of an accuracy and it is using more parameters. However the best score I managed to get does use two CNN layers with different parameters and the dense layer.
 """

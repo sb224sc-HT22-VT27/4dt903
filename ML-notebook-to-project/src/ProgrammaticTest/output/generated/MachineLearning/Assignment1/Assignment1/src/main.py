@@ -1,96 +1,96 @@
-		
+
 """
 Assignmen 1 vj222hx
 """
 
 
-		
+
 """
 Add imports
 """
 
 
-		
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 """
 Load the Wage.csv file
 """
 
 
-		
+
 csvFile = pd.read_csv("Wage.csv", index_col=0)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 Display the number of features and their names:
 """
 
 
-		
+
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 Delete the feature ‘logwage’ and display the number of features and their names again:
 """
 
 
-		
+
 csvFile = csvFile.drop("logwage", axis=1)
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		
+
 """
 Display the number of data points:
 """
 
 
-		
+
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 """
 Display the data in a table
 """
 
 
-		
+
 print(csvFile.head(20))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 """
 Print a statistic summary of the features
 """
 
 
-		
+
 print("year\n", csvFile["year"].describe(), "\n")
 print("age\n", csvFile["age"].describe(), "\n")
 print(csvFile['maritl'].value_counts(), "\n")
@@ -101,30 +101,30 @@ print(csvFile['jobclass'].value_counts(), "\n")
 print(csvFile['health'].value_counts(), "\n")
 print(csvFile['health_ins'].value_counts(), "\n")
 print("wage\n", csvFile['wage'].describe())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		
+
 """
 Plot wage compared to age
 """
 
 
-		
+
 sns.regplot(x="age", y="wage", data=csvFile,  scatter_kws={'s': 5, 'color': 'black'}, line_kws={'color': 'black'})
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		
+
 """
 Perform Shapiro-Wilk normality test
 """
 
 
-		
+
 stat, p_value = stats.shapiro(csvFile['age'])
 print(f"Age: W = {stat}, p-value = {p_value}")
 stat, p_value = stats.shapiro(csvFile['wage'])
@@ -139,21 +139,21 @@ plt.ylabel("Wage")
 
 
 
-		
+
 """
 Pearson correlation test
 """
 
 
-		
+
 corr_coef, p_value = stats.pearsonr(csvFile['age'], csvFile['wage'])
 print(f"Correlation Coefficient: {corr_coef}")
 print(f"p-value: {p_value}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 Interpretation of results:
 From the Shapiro-Wilk test we can conclude that the data is not normally distributed with a 95% confidence interval since both the age and wage p-values are < 0.05. This can also be seen in the qq-plots where the age data is skewed to include more from the younger ages, around 20 years and the wage has some significant outliers towards the higher wages. The pearson correlation test shows the correlation between age and wage. The correlation coefficient is ≈ 0.2 meaning there is some positive correlation between age and wage. The p-value for this test is < 0.05 which means there is statistically significance in this correlation with a 95% confidence. 
@@ -164,24 +164,24 @@ All Values:
 """
 
 
-		
+
 colNames = csvFile.columns.tolist()
 
 for metric in colNames:
     if metric == "year" or metric == "age" or metric == "wage":
         continue
     print(metric + ":", csvFile[metric].unique().tolist())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 Box plots:
 """
 
 
-		
+
 for metric in colNames:
     if metric == "year" or metric == "age" or metric == "wage":
         continue
@@ -195,13 +195,13 @@ for metric in colNames:
 
 
 
-		
+
 """
 Perform ANOVA test:
 """
 
 
-		
+
 for metric in colNames:
     if metric == "region" or metric == "year" or metric == "age" or metric == "wage":
         continue
@@ -210,11 +210,11 @@ for metric in colNames:
         groups.append(group["wage"].values)
     f_stat, p_value = stats.f_oneway(*groups)
     print(metric + ":", f_stat, p_value)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 """
 In the ANOVA test we can see that all values are < 0.05 which means that there is a signifiant correlation between wage and the different metrics.
 

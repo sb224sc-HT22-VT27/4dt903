@@ -1,4 +1,4 @@
-		
+
 """
 # Variational Inference using VAEs and Normalizing Flows
 
@@ -55,7 +55,7 @@ Then, we maximize the average ELBO.
 """
 
 
-		
+
 """
 ## Differences in a Variational Autoencoder
 
@@ -74,7 +74,7 @@ A VAE has these components:
 """
 
 
-		
+
 """
 <pre>
 Input X --> Encoder Network (phi)  --> Latent variables Z ~ q_{phi}(Z|X) -->
@@ -83,7 +83,7 @@ Input X --> Encoder Network (phi)  --> Latent variables Z ~ q_{phi}(Z|X) -->
 """
 
 
-		
+
 """
 Notice how our **prior** belief relates now to hoe each $z_i$ is distributed.
 Again, here we will assume $p(\mathbf{Z})\sim\mathcal{N}(0,I)$.
@@ -103,7 +103,7 @@ The encoder network naturally shares (has the same set of) parameters across all
 """
 
 
-		
+
 """
 ## Implementation
 
@@ -115,7 +115,7 @@ Choose one architecture that works best for you (dense *or* convolutional).
 """
 
 
-		
+
 import torch
 from torch import nn, Tensor
 from torch.distributions.normal import Normal
@@ -177,11 +177,11 @@ class MyVAE(nn.Module):
         z = self.prior.sample((n,))
         return self.decoder(z)
     
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 # Part 2: Enhance VAE with a Normalizing Flow
 
@@ -200,7 +200,7 @@ But things change a little, because we kind of use the flow "backwards":
 """
 
 
-		
+
 """
 ----
 
@@ -216,7 +216,7 @@ $$
 """
 
 
-		
+
 """
 ## Define the Flow Model
 
@@ -225,7 +225,7 @@ Even if you choose something else, perhaps you want to conceptually construct yo
 """
 
 
-		
+
 from normflows import NormalizingFlow
 from normflows.flows import Flow, AutoregressiveRationalQuadraticSpline, LULinearPermute
 from typing import override
@@ -279,7 +279,7 @@ class MyVAEwithNF(MyVAE):
 
 
 
-		
+
 """
 # Training
 
@@ -288,13 +288,13 @@ The goal is to train either architecture and then to compare the results.
 """
 
 
-		
+
 """
 ## Download and Prepare the Data
 """
 
 
-		
+
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
@@ -309,17 +309,17 @@ train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, drop_las
 # Load MNIST test set
 test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=True)
 test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, drop_last=True, shuffle=False)
-# Classification: PREPROCESS
-
-
-
-		
-train_dataset.data.shape, test_dataset.data.shape
 # Classification: PREDICT
 
 
 
-		
+
+train_dataset.data.shape, test_dataset.data.shape
+# Classification: TRAIN
+
+
+
+
 """
 ## Using ELBO
 
@@ -350,7 +350,7 @@ $$
 """
 
 
-		
+
 """
 ## The Vanilla VAE
 
@@ -359,7 +359,7 @@ It is perhaps easiest to use the same training routine for either model (with/wi
 """
 
 
-		
+
 import numpy as np
 from torch import device
 from torch.optim import Adam
@@ -407,11 +407,11 @@ for epoch in range(EPOCHS):
     reconLosses.append(epochRecon / len(train_loader))
     klDivs.append(epochKl / len(train_loader))
     print(f"Epoch: {epoch+1}, Recon Loss: {reconLosses[-1]:.4f}, KL: {klDivs[-1]:.4f}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		
+
 """
 ### Evaluation
 
@@ -431,7 +431,7 @@ Please provide **4** kinds of plots now:
 """
 
 
-		
+
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 
@@ -496,11 +496,11 @@ plt.title('t-SNE of Encoded Test Images')
 plt.xlabel('t-SNE 1')
 plt.ylabel('t-SNE 2')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		
+
 """
 ## Answers for questions
 
@@ -512,7 +512,7 @@ plt.show()
 """
 
 
-		
+
 """
 ## The NF-backed VAE
 
@@ -521,7 +521,7 @@ However, we have to plug in our more flexible variational distribution (which is
 """
 
 
-		
+
 """
 Recall that ($z_0$ being the output of the encoder):
 
@@ -536,7 +536,7 @@ $$
 """
 
 
-		
+
 """
 
 $$
@@ -561,7 +561,7 @@ $$
 """
 
 
-		
+
 """
 The fraction of computing the determinant flips according to the logarithm laws (determinants satisfy precisely the reciprocal relationship $\operatorname{det}(\frac{a}{b})=\left(\operatorname{det}\frac{b}{a}\right)^{-1}$).
 
@@ -581,7 +581,7 @@ The NF-backed VAE in a nutshell:
 """
 
 
-		
+
 """
 ### Training
 
@@ -591,7 +591,7 @@ In order to get comparable results, do **not** alter the number of latent dimens
 """
 
 
-		
+
 LEARNING_RATE = 0.001
 EPOCHS = 10
 KL_DIV_BETA = 1.5
@@ -635,13 +635,13 @@ for epoch in range(EPOCHS):
 
 
 
-		
+
 """
 ### Evaluation
 """
 
 
-		
+
 plt.figure(figsize=(10,4))
 plt.subplot(1,2,1)
 plt.plot(reconLossesNf, label='Reconstruction Loss')
@@ -704,11 +704,11 @@ plt.title('t-SNE of Encoded Test Images (NF-backed VAE)')
 plt.xlabel('t-SNE 1')
 plt.ylabel('t-SNE 2')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 """
 ## Answers for questions
 

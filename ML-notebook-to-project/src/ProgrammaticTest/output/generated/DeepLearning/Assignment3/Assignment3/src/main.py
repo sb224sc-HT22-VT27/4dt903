@@ -1,17 +1,17 @@
-		
+
 import numpy as np
 import matplotlib.pyplot as plt
 # Classification: PREPROCESS
 
 
 
-		
+
 """
 Define needed functions and their derivatives
 """
 
 
-		
+
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
@@ -28,13 +28,13 @@ def mse_derivative(y_true, y_pred):
 
 
 
-		
+
 """
 Initialize training data
 """
 
 
-		
+
 X = np.array([
     [0, 0],
     [0, 1],
@@ -42,17 +42,17 @@ X = np.array([
     [1, 1]
 ])
 Y = np.array([[0], [1], [1], [0]])
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 """
 Initialize random weights and train network
 """
 
 
-		
+
 np.random.seed(42)
 
 input_size = 2
@@ -92,17 +92,17 @@ for epoch_idx in range(epochs):
     biases_2 -= learning_rate * db_2
     weights_1 -= learning_rate * dW_1
     biases_1 -= learning_rate * db_1
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 Evaluate network
 """
 
 
-		
+
 print("\nFinal outputs after training:")
 z1 = X @ weights_1 + biases_1
 a1 = sigmoid(z1)
@@ -141,7 +141,7 @@ plt.show()
 
 
 
-		
+
 """
 The network successfully learned XOR :)
 

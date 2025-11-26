@@ -1,24 +1,24 @@
-		
+
 """
 # Assignment 5 vj222hx
 """
 
 
-		
+
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 """
 Implement mse, grad_mse and grad_desc_mse form XOR assignment
 """
 
 
-		
+
 np.random.seed(1)
 
 def mse(ws, m, X, Y):
@@ -56,17 +56,17 @@ def grad_desc_mse(K, ws, learning_eps, loss, grad_loss):
         history.append(ws)
     
     return ws, np.array(history)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 ### 1.2 Setting the scene
 """
 
 
-		
+
 N = 100
 XX = np.empty((N**2,2))
 i = 0
@@ -106,17 +106,17 @@ ax.plot_surface(A, B, Z, cmap='viridis')
 ax.set_xlabel('X1')
 ax.set_ylabel('X2')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 """
 Here we are generating a plane of size NxN with some random noise
 """
 
 
-		
+
 def m1(ws, x):
     return ws[0] * x[0] + ws[1] * x[1]
 
@@ -129,17 +129,17 @@ limit = (6 / (in_ + out))**0.5
 ws0 = np.random.rand(2) * 2 * limit - limit
 print(f"initial weights: {ws0}")
 print(f"Initial mse: {mse1(ws0)}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		
+
 """
 Here we are defining the function for the simple neural net and initilizing random weights. 
 """
 
 
-		
+
 def grad1(ws, x):
     return x[0]
 
@@ -147,11 +147,11 @@ def grad2(ws, x):
     return x[1]
 
 gradients1 = [grad1, grad2]
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		
+
 def f(a, b):
     return mse1([a, b])
 
@@ -177,7 +177,7 @@ plt.show()
 
 
 
-		
+
 mseHistory = []
 
 for i in history:
@@ -185,23 +185,23 @@ for i in history:
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		
+
 """
 Here we are training the model and then plotting the descent path and the loss history
 """
 
 
-		
+
 """
 ### 1.3 Stochastic Gradient Descent (SGD)
 """
 
 
-		
+
 def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
     batch_size = int(N * 0.01)
     history = [ws]
@@ -217,17 +217,17 @@ def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
         history.append(ws)
 
     return ws, np.array(history)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		
+
 """
 Here we are doing stochastic gradient descent where we are making an approximation of the gradient direction based on a sample of size "batch_size" of the dataset. 
 """
 
 
-		
+
 def grad_loss2(ws, randices):
     XX_batch = XX[randices, :]
     Y_batch = Y[randices]
@@ -246,11 +246,11 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 mseHistory = []
 
 for i in history:
@@ -262,19 +262,19 @@ plt.show()
 
 
 
-		
+
 """
 Here we are doing the same as before and it takes less than half the time but with a higher final loss so more iterations might have to be made for it to have the same loss
 """
 
 
-		
+
 """
 ### 1.4 SGD with adaptive learning rate
 """
 
 
-		
+
 def stochastic_adaptive_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N, alpha):
     batch_size = int(N * 0.01)
     history = [ws]
@@ -314,23 +314,35 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
+# Classification: PREPROCESS
+
+
+
+
+mseHistory = []
+
+for i in history:
+    mseHistory.append(mse1(i))
+
+plt.plot(range(len(mseHistory)), mseHistory)
+plt.show()
 # Classification: TRAIN
 
 
 
-		
+
 """
 Here we are doing stochastic gradient descent with adaptive learning rate. The learning rate is decreasing by a factor of alpha for each iteration. This is done because we are assuming that we are getting closer to the point with each iteration thus decreasing the step size. We test different values for alpha and learning rate and with the best one we are getting a worse loss than with just SGD.
 """
 
 
-		
+
 """
 ### 1.5 SGD with momentum
 """
 
 
-		
+
 def stochastic_momentum_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N, mass):
     batch_size = int(N * 0.01)
     history = [ws]
@@ -372,11 +384,11 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 """
 Here we are doing stochastic gradient descent with momentum. How far we step each time is dependent on the momentum (mass * velocity) where velocity is a function of the previous velocity and gradient. Here we get a significant decrease in loss over the prevouis best with a better time. 
 """

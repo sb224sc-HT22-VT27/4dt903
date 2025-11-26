@@ -1,10 +1,10 @@
-		
+
 """
 # Assignment 7 vj222hx
 """
 
 
-		
+
 """
 ## Conceptual
 1. SVM aims to create a hyperplane which seperates two classes which tries to maximize the margin to the closest point in each class. If a hyperplane cannot be created between the classes, a slack variable can be added or you can add dimensions to the points which makes it easier to make a hyperplane seperating the classes.
@@ -12,19 +12,19 @@
 """
 
 
-		
+
 """
 # Practical
 """
 
 
-		
+
 """
 Add imports
 """
 
 
-		
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -35,13 +35,13 @@ from sklearn.metrics import confusion_matrix
 
 
 
-		
+
 """
 Generate 20 random points in two classes
 """
 
 
-		
+
 np.random.seed(1)
 x = np.random.randn(20, 2)
 y = np.concatenate([-np.ones(10), np.ones(10)])
@@ -56,7 +56,7 @@ print(y)
 
 
 
-		
+
 dat = pd.DataFrame({'X1': x[:, 0], 'X2': x[:, 1], 'y': y.astype(int)})
 print(dat)
 
@@ -77,18 +77,18 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 support_vector_indices = svm.support_
 print(support_vector_indices)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 svm = SVC(kernel="linear", C=0.1)
 svm.fit(dat[['X1', 'X2']], dat['y'])
 
@@ -106,17 +106,17 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		
+
 """
 The smaller value of C makes it allow for a larger error but also reduces the risk of overfitting. 
 """
 
 
-		
+
 param_grid = {'C': [0.001, 0.01, 0.1, 1, 5, 10, 100]}
 
 grid_search = GridSearchCV(SVC(kernel="linear"), param_grid, cv=10)
@@ -127,11 +127,11 @@ print(cv_results)
 
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Accuracy:", grid_search.best_score_)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 """
 Here we are getting a 95% accuracy with a C value of 0.001
 
@@ -139,7 +139,7 @@ Fit a model with the C value
 """
 
 
-		
+
 np.random.seed(1)
 svm = SVC(kernel="linear", C=0.001)
 svm.fit(dat[['X1', 'X2']], dat['y'])
@@ -150,17 +150,17 @@ xtest[ytest == 1] += 1
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		
+
 """
 With the newly generated datapoints we are getting an accuracy of 80%
 """
 
 
-		
+
 np.random.seed(1)
 x = np.random.randn(200, 2)
 x[:100] += 2
@@ -177,11 +177,11 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 np.random.seed(1)
 train_indices = np.random.choice(200, 100, replace=False)
 
@@ -203,11 +203,11 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		
+
 train_indices = np.random.choice(200, 100, replace=False)
 
 train_data = dat.iloc[train_indices]
@@ -228,11 +228,11 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [0.5, 1]}
 
 grid_search = GridSearchCV(SVC(kernel="rbf"), param_grid, cv=10)
@@ -244,17 +244,17 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 """
 Here we got an accuracy of 94% with a C of 1 and a gamma of 0.5
 """
 
 
-		
+
 svm = SVC(kernel="rbf", C=1, gamma=0.5)
 svm.fit(dat[['X1', 'X2']], dat['y'])
 
@@ -266,17 +266,17 @@ ytest = np.concatenate([-np.ones(75), np.ones(25)])
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		
+
 """
 When trying with the test data, we get an accuracy 82% on the training data
 """
 
 
-		
+
 x = np.vstack([x, np.random.randn(50, 2)])
 y = np.concatenate([y, np.zeros(50)])
 
@@ -291,11 +291,11 @@ plt.ylabel("X2")
 plt.show()
 
 print(dat)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		
+
 np.random.seed(1)
 train_indices = np.random.choice(250, 125, replace=False)
 
@@ -320,11 +320,11 @@ plt.xlabel("X1")
 plt.ylabel("X2")
 plt.title("SVM Decision Boundaries for Multi-Class Classification")
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		
+
 param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [0.5, 1, 2, 3, 4]}
 
 
@@ -337,33 +337,33 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 svm = SVC(kernel="rbf", C=1, gamma=0.5)
 svm.fit(train_data[['X1', 'X2']], train_data['y'])
 y_pred = svm.predict(test_data[['X1', 'X2']])
 cm = confusion_matrix(test_data['y'], y_pred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		
+
 """
 Here we are getting a 93% accuracy using the training data
 """
 
 
-		
+
 """
 Load the datasets
 """
 
 
-		
+
 xtrain = pd.read_csv("Khan_xtrain.csv", index_col=0)
 xtest = pd.read_csv("Khan_xtest.csv", index_col=0)
 ytrain = pd.read_csv("Khan_ytrain.csv", index_col=0)
@@ -371,11 +371,11 @@ ytest = pd.read_csv("Khan_ytest.csv", index_col=0)
 
 print(len(xtrain), len(xtrain.columns.tolist()))
 print(len(xtest), len(xtest.columns.tolist()))
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		
+
 ytrain = ytrain.iloc[:, 0]
 
 svm_model = SVC(kernel="linear", C=10)
@@ -383,31 +383,31 @@ svm_model.fit(xtrain, ytrain)
 
 print("Number of Support:", svm_model.n_support_)
 print("Number of classes:", svm_model.classes_)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		
+
 y_train_pred = svm_model.predict(xtrain)
 conf_matrix = confusion_matrix(ytrain, y_train_pred)
 conf_matrix_df = pd.DataFrame(conf_matrix, index=svm_model.classes_, columns=svm_model.classes_)
 
 print(conf_matrix_df)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		
+
 y_test_pred = svm_model.predict(xtest)
 conf_matrix_test = confusion_matrix(ytest, y_test_pred)
 
 conf_matrix_test_df = pd.DataFrame(conf_matrix_test, index=svm_model.classes_, columns=svm_model.classes_)
 print(conf_matrix_test_df)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		
+
 """
 Here, we are only getting two predictions wrong which leads to a 90% accuracy
 """
