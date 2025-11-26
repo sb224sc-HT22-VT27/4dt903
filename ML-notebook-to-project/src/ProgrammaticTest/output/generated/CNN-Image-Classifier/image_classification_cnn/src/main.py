@@ -1,10 +1,7 @@
 		
 """
-
-		# Image Classification with CNN
+# Image Classification with CNN
 Training a convolutional neural network for product category classification
-
-		
 """
 
 
@@ -24,7 +21,11 @@ import json
 
 
 
-		## Configuration
+		
+"""
+## Configuration
+"""
+
 
 		
 # Hyperparameters
@@ -43,11 +44,15 @@ HISTORY_PATH = 'output/training_history.json'
 
 print(f"Using TensorFlow version: {tf.__version__}")
 print(f"GPU Available: {tf.config.list_physical_devices('GPU')}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		## Data Loading and Augmentation
+		
+"""
+## Data Loading and Augmentation
+"""
+
 
 		
 # Data augmentation for training
@@ -97,7 +102,11 @@ print(f"Class labels: {train_generator.class_indices}")
 
 
 
-		## Model Architecture
+		
+"""
+## Model Architecture
+"""
+
 
 		
 def build_cnn_model(input_shape, num_classes):
@@ -148,11 +157,15 @@ model = build_cnn_model(
 )
 
 model.summary()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		## Compile Model
+		
+"""
+## Compile Model
+"""
+
 
 		
 # Compile model
@@ -169,7 +182,11 @@ print("Model compiled successfully!")
 
 
 
-		## Callbacks
+		
+"""
+## Callbacks
+"""
+
 
 		
 # Early stopping
@@ -195,11 +212,15 @@ checkpoint = keras.callbacks.ModelCheckpoint(
 )
 
 callbacks = [early_stopping, reduce_lr, checkpoint]
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		## Train Model
+		
+"""
+## Train Model
+"""
+
 
 		
 # Train the model
@@ -212,11 +233,15 @@ history = model.fit(
 )
 
 print("Training completed!")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		## Plot Training History
+		
+"""
+## Plot Training History
+"""
+
 
 		
 # Plot training & validation accuracy
@@ -247,7 +272,11 @@ plt.show()
 
 
 
-		## Evaluate on Test Set
+		
+"""
+## Evaluate on Test Set
+"""
+
 
 		
 # Evaluate on test set
@@ -265,11 +294,15 @@ y_true = test_generator.classes
 class_names = list(test_generator.class_indices.keys())
 print("\nClassification Report:")
 print(classification_report(y_true, y_pred, target_names=class_names))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		## Confusion Matrix
+		
+"""
+## Confusion Matrix
+"""
+
 
 		
 # Plot confusion matrix
@@ -285,11 +318,15 @@ plt.xlabel('Predicted Label')
 plt.tight_layout()
 plt.savefig('output/confusion_matrix.png')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		## Save Model and Metadata
+		
+"""
+## Save Model and Metadata
+"""
+
 
 		
 # Save final model
@@ -321,7 +358,11 @@ print("Metadata saved!")
 
 
 
-		## Inference Function
+		
+"""
+## Inference Function
+"""
+
 
 		
 def predict_image(image_path, model_path='models/product_classifier.keras'):
@@ -361,7 +402,7 @@ label, conf, probs = predict_image(test_image)
 print(f"\nPredicted class: {label}")
 print(f"Confidence: {conf:.4f}")
 # print(f"Probs: {probs}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

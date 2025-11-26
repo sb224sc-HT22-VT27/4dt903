@@ -1,13 +1,14 @@
 		
 """
-
-		# Assignment 6 vj222hx
-
-		
+# Assignment 6 vj222hx
 """
 
 
-		Loading and plotting the MNIST dataset
+		
+"""
+Loading and plotting the MNIST dataset
+"""
+
 
 		
 from tensorflow.keras.datasets.mnist import load_data 
@@ -24,11 +25,15 @@ for i in range(25):
     plt.imshow(x_test[i], cmap=plt.get_cmap('gray'))
 
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		Setting the sceene for image classification
+		
+"""
+Setting the sceene for image classification
+"""
+
 
 		
 from numpy import zeros
@@ -44,7 +49,7 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.callbacks import EarlyStopping 
 from tensorflow.keras import Input
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -62,7 +67,7 @@ print("After: {0}".format(in_shape))
 		
 n_classes = len(unique(y_train)) 
 print("Classes: {0}".format(n_classes))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -83,7 +88,7 @@ early_stopping = EarlyStopping(
     mode='max', 
     restore_best_weights=True)
 it = round(60000/BATCH_SIZE)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -104,7 +109,7 @@ def plot_metrics(history):
         else:
             plt.ylim([-0.1,1.1])
         plt.legend()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -140,9 +145,13 @@ def print_res(model):
 
 
 
-		## Model without data augmentation
+		
+"""
+## Model without data augmentation
 
 I will begin by tuning the parameters without data augmentation. I will do this by reducing the parameter count in the dense layer and add it to the CNN layer and playing around with the pooling layer. I will also try adding a nother CNN and pooling layer and tuning the parameters here. I do this because the dense layer has a lot of parameters per points of accuracy increase and then I will use the other parts to compensate. 
+"""
+
 
 		
 def make_model1(add_dense=False):
@@ -160,7 +169,7 @@ def make_model1(add_dense=False):
 
 model = make_model1(False)
 model.summary()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -181,15 +190,19 @@ plot_metrics(model_history)
 loss, acc = model.evaluate(x_test, y_test, verbose=0)
 print('Accuracy: %.3f' % acc)
 err = print_res(model)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		After playing around with parameters I found that the dense layer has very little impact so I removed it all together. For the other parameters I found that having a depth of 32, a CNN kernel width of 9 and a pool stride of 4 gave a good result, giving me an accuracy of 0.990 with a parameter count of 10634 which is roughly 50x less than the teacher. Adding an additional layer added parameter count with no increase in accuracy
+		
+"""
+After playing around with parameters I found that the dense layer has very little impact so I removed it all together. For the other parameters I found that having a depth of 32, a CNN kernel width of 9 and a pool stride of 4 gave a good result, giving me an accuracy of 0.990 with a parameter count of 10634 which is roughly 50x less than the teacher. Adding an additional layer added parameter count with no increase in accuracy
 
 ## Model with data augmentation
 
 When adding data augmentation I might have to add parameters and potentially bring back the dense layer to compensate for a wider variaty of data. Data augmentation takes the training data and adds variation to it by applying random zoom, rotation and flips it. This creates a lot of new training data to hopefully improve performance.  
+"""
+
 
 		
 def make_model2(add_dense=False):
@@ -210,7 +223,7 @@ def make_model2(add_dense=False):
 # 32, 7, 4
 model = make_model2(True)
 model.summary()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -230,9 +243,22 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		When using data augmentation I didn't manage to get as good of an accuracy and it is using more parameters. However the best score I managed to get does use two CNN layers with different parameters and the dense layer.
+		
+plot_metrics(model_history)
+loss, acc = model.evaluate(x_test, y_test, verbose=0)
+print('Accuracy: %.3f' % acc)
+err = print_res(model)
+# Classification: PREDICT
+
+
+
+		
+"""
+When using data augmentation I didn't manage to get as good of an accuracy and it is using more parameters. However the best score I managed to get does use two CNN layers with different parameters and the dense layer.
+"""
+
 

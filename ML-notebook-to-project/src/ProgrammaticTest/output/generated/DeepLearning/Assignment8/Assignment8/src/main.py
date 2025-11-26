@@ -1,7 +1,6 @@
 		
 """
-
-		# Variational Inference using VAEs and Normalizing Flows
+# Variational Inference using VAEs and Normalizing Flows
 
 ## Setting the Scene
 
@@ -53,12 +52,12 @@ Since we optimize the current $\mu,\sigma$ of our variational distribution, it n
 Recall that $w=\mu+\sigma\cdot\epsilon$.
 So, in order to average the effect of many different $w^{(s)}\in W$, we compute the mean of our model's predictions using these varying parameters.
 Then, we maximize the average ELBO.
-
-		
 """
 
 
-		## Differences in a Variational Autoencoder
+		
+"""
+## Differences in a Variational Autoencoder
 
 Now, in a vanilla variational autoencoder (VAE), we **quantify uncertainty in the latent variables, per individial observation**.
 Here, we will make use of so-called **amortized inference**.
@@ -72,13 +71,21 @@ A VAE has these components:
 - A set of latent variables (denoted $\mathbf{Z}$). Usually the dimensionality of $\mathbf{Z}$ is lower than that of the input, $X$.
 - A **Decoder** Network.
     * Given $\mathbf{Z}$, learns to predict a reconstructed $\mathbf{X}'\approx\mathbf{X}$.
+"""
 
-		<pre>
+
+		
+"""
+<pre>
 Input X --> Encoder Network (phi)  --> Latent variables Z ~ q_{phi}(Z|X) -->
     Decoder Network (theta)  -->  Reconstructed X (X').
 </pre>
+"""
 
-		Notice how our **prior** belief relates now to hoe each $z_i$ is distributed.
+
+		
+"""
+Notice how our **prior** belief relates now to hoe each $z_i$ is distributed.
 Again, here we will assume $p(\mathbf{Z})\sim\mathcal{N}(0,I)$.
 During training, we will minimize again the Kullback-Leibler divergence between this prior belief and our mean-field approximation:
 
@@ -93,14 +100,20 @@ If we now add a reconstruction term, it will constitute the ELBO loss.
 Since each observation constitutes itw own Gaussian in latent space, $q_{\phi}(z|x)$ differs for each x.
 Therefore, only the **aggregate** distribution $q_{\phi}(z)$ matches the prior.
 The encoder network naturally shares (has the same set of) parameters across all observations, making it generalize to the dataset.
+"""
 
-		## Implementation
+
+		
+"""
+## Implementation
 
 The following is a skeleton for a PyTorch-based implementation.
 
 You may or may not follow this skeleton, it is just a suggestion.
 
 Choose one architecture that works best for you (dense *or* convolutional).
+"""
+
 
 		
 import torch
@@ -164,11 +177,13 @@ class MyVAE(nn.Module):
         z = self.prior.sample((n,))
         return self.decoder(z)
     
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		# Part 2: Enhance VAE with a Normalizing Flow
+		
+"""
+# Part 2: Enhance VAE with a Normalizing Flow
 
 When we change our the variational distribution of a VAE to be a Normalizing Flow, we still use the same ELBO.
 But things change a little, because we kind of use the flow "backwards":
@@ -182,8 +197,12 @@ But things change a little, because we kind of use the flow "backwards":
     * The variational distribution is now $q_{\phi}(z_K\vert x)$.
 4. $z_K$ is now fed into the decoder, that is, $x'\sim p_{\theta}(x\vert z_K)$, which shall reconstruct the original inputs $x$.
 
+"""
 
-		----
+
+		
+"""
+----
 
 Since we assume a diagonal normal as base distribution for our normalizing flow here ($\psi$), the change-of-variables formula is defined as:
 
@@ -194,11 +213,17 @@ $$
 $$
 
 ----
+"""
 
-		## Define the Flow Model
+
+		
+"""
+## Define the Flow Model
 
 Below is some boilerplate code for constructing a Normalizing Flow using the `normflows` package.
 Even if you choose something else, perhaps you want to conceptually construct your flow similar to how it's done here.
+"""
+
 
 		
 from normflows import NormalizingFlow
@@ -250,16 +275,24 @@ class MyVAEwithNF(MyVAE):
     
         xRecon = self.decoder(zK)
         return xRecon, kl, zK
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		# Training
+		
+"""
+# Training
 
 We will train on grayscale MNIST handwritten digits.
 The goal is to train either architecture and then to compare the results.
+"""
 
-		## Download and Prepare the Data
+
+		
+"""
+## Download and Prepare the Data
+"""
+
 
 		
 from torchvision import datasets, transforms
@@ -276,7 +309,7 @@ train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, drop_las
 # Load MNIST test set
 test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=True)
 test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, drop_last=True, shuffle=False)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -286,7 +319,9 @@ train_dataset.data.shape, test_dataset.data.shape
 
 
 
-		## Using ELBO
+		
+"""
+## Using ELBO
 
 Recall that the ELBO is essentially the expectation of the log-likelihood of the data under our currently parameterized model minus the KL-divergence of the variational distribution and the prior belief.
 
@@ -312,11 +347,17 @@ $$
     \mathcal{J}(\theta,\phi;x)&=\underbrace{\mathbb{E}_{q_{\phi}(z|x)}\left[\left\|x-\mu_{\theta}(z)\right\|^2\right]}_{\text{expected (mean) reconstr. error}} + D_{\text{KL}}\left(q_{\phi}(z|x)\,\|\,p(z)\right)\nonumber.
 \end{align}
 $$
+"""
 
-		## The Vanilla VAE
+
+		
+"""
+## The Vanilla VAE
 
 Let's train this model first.
 It is perhaps easiest to use the same training routine for either model (with/without NF).
+"""
+
 
 		
 import numpy as np
@@ -366,11 +407,13 @@ for epoch in range(EPOCHS):
     reconLosses.append(epochRecon / len(train_loader))
     klDivs.append(epochKl / len(train_loader))
     print(f"Epoch: {epoch+1}, Recon Loss: {reconLosses[-1]:.4f}, KL: {klDivs[-1]:.4f}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		### Evaluation
+		
+"""
+### Evaluation
 
 Please provide **4** kinds of plots now:
 
@@ -385,6 +428,8 @@ Please provide **4** kinds of plots now:
 **Question**: What is your qualitative evaluation of the samples from the 3rd plot?
 
 **Question**: What is your interpretation of the 4th plot? Has the model learned something useful?
+"""
+
 
 		
 import matplotlib.pyplot as plt
@@ -455,20 +500,30 @@ plt.show()
 
 
 
-		## Answers for questions
+		
+"""
+## Answers for questions
 
 1. The animation shows that as you vary the first latent dimension, the generated digit morphs smoothly from one style to another. This shows that the first latent dimension has learned to encode a feature. The smooth transitions mean the latent space is well-structured and the model is using this dimension effectively.
 
 2. The samples are clearly digit-like and diverse. Most images are recognizable as MNIST digits, but some are a bit blurry or ambiguous. This suggests the model has learned a good mapping from latent space to image space, and can produce plausible new digits.
 
 3. The TSNE plot shows well-separated clusters, each corresponding to a different digit. This means the encoder is mapping images of the same digit close together in the latent space, and different digits are mapped to distinct regions. This is evidence that the model has learned useful, discriminative features in its latent space.
+"""
 
-		## The NF-backed VAE
+
+		
+"""
+## The NF-backed VAE
 
 The ELBO stays the exact same.
 However, we have to plug in our more flexible variational distribution (which is calculated using the NF's chosen base-distribution and the determinant of the transformation).
+"""
 
-		Recall that ($z_0$ being the output of the encoder):
+
+		
+"""
+Recall that ($z_0$ being the output of the encoder):
 
 $$
 \begin{align}
@@ -478,8 +533,12 @@ $$
 
 \end{align}
 $$
+"""
+
 
 		
+"""
+
 $$
 \begin{align}
     \text{ELBO}(\theta,\phi;x)&=\mathbb{E}_{q_{\phi}(z_K\vert x)}\left[\log{\left(p_{\theta}(z_K\vert x)\right)}\right]-D_{\text{KL}}\left[q_{\phi}(z\vert x)\,\|\,p(z)\right],
@@ -499,8 +558,12 @@ $$
     \text{Notice that}&\text{ $\mathcal{R}$ is the reconstruction loss.}\nonumber
 \end{align}
 $$
+"""
 
-		The fraction of computing the determinant flips according to the logarithm laws (determinants satisfy precisely the reciprocal relationship $\operatorname{det}(\frac{a}{b})=\left(\operatorname{det}\frac{b}{a}\right)^{-1}$).
+
+		
+"""
+The fraction of computing the determinant flips according to the logarithm laws (determinants satisfy precisely the reciprocal relationship $\operatorname{det}(\frac{a}{b})=\left(\operatorname{det}\frac{b}{a}\right)^{-1}$).
 
 Therefore, we have $\log{\left\lvert\operatorname{det}(a/b)\right\rvert}=-\log{\left\lvert\operatorname{det}(b/a)\right\rvert}$.
 We have to flip it because usually we would transform $z_0$ to $z_K$, giving us the determinant for that transformation.
@@ -515,12 +578,18 @@ The NF-backed VAE in a nutshell:
     * For a discrete normalizing flow with $K$ transformations.
 - $z_K\mapsto\approx x$
     * Use the decoder to reconstruct the original $x\approx x'$.
+"""
 
-		### Training
+
+		
+"""
+### Training
 
 Here, train your NF-backed VAE with the optimal parameters found by you.
 
 In order to get comparable results, do **not** alter the number of latent dimensions.
+"""
+
 
 		
 LEARNING_RATE = 0.001
@@ -562,11 +631,15 @@ for epoch in range(EPOCHS):
     reconLossesNf.append(epochRecon / len(train_loader))
     klDivsNf.append(epochKl / len(train_loader))
     print(f"Epoch: {epoch+1}, Recon Loss: {reconLossesNf[-1]:.4f}, KL: {klDivsNf[-1]:.4f}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		### Evaluation
+		
+"""
+### Evaluation
+"""
+
 
 		
 plt.figure(figsize=(10,4))
@@ -635,7 +708,9 @@ plt.show()
 
 
 
-		## Answers for questions
+		
+"""
+## Answers for questions
 
 1. The animation shows that as you vary the first latent dimension, the generated digit morphs smoothly from one style to another, in the case of this random seed, a 6 to a 9. This shows that the first latent dimension has learned to encode a feature. The smooth transitions mean the latent space is well-structured and the model is using this dimension effectively.
 
@@ -644,4 +719,6 @@ plt.show()
 3. The TSNE plot shows decently separated clusters, each corresponding to a different digit. This means the encoder is mapping images of the same digit close together in the latent space, and different digits are mapped to distinct regions. This is evidence that the model has learned useful, discriminative features in its latent space. The clusters however are not quite as seperated as in the first model which could explain the slightly more blurry images from the samples. 
 
 **Another Question**: The vanilla VAE seems to perform better than the NF-backed VAE. The vanilla VAE produces clearer and more recognizable digit samples, while the NF-backed VAE samples are somewhat blurrier and less distinct. The t-SNE visualization of the latent space shows that the vanilla VAE achieves better-separated clusters for different digits, showing it has a better seperation in the latent space. 90 86. The vanilla VAE also has a lower final loss of 86 compared to 90 for the NF backed model which is a quantitative way of showing that it is better.
+"""
+
 

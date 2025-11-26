@@ -1,9 +1,6 @@
 		
 """
-
-		# Assignment 2 vj222hx
-
-		
+# Assignment 2 vj222hx
 """
 
 
@@ -34,11 +31,15 @@ Y_pred = model.predict(X_with_const)
 
 plt.plot(X, Y_pred, color='b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		Here we are making a line with Y = 2X - 3 in green. Then we are adding some noise to the data, a random offset in the y axis and fitting a linear regression model to it in blue. A seed is used for reproducibility. 
+		
+"""
+Here we are making a line with Y = 2X - 3 in green. Then we are adding some noise to the data, a random offset in the y axis and fitting a linear regression model to it in blue. A seed is used for reproducibility. 
+"""
+
 
 		
 def rss2(a, b, X, Y):
@@ -59,11 +60,15 @@ ax.set_xlabel('a')
 ax.set_ylabel('b')
 ax.set_zlabel('RSS')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		Here is what the residual sum of squares would be for different combinations of a and b. The goal is mimimize the RSS so we would do gradient decent on this to achive that. 
+		
+"""
+Here is what the residual sum of squares would be for different combinations of a and b. The goal is mimimize the RSS so we would do gradient decent on this to achive that. 
+"""
+
 
 		
 plt.contour(A, B, Z, cmap='viridis')
@@ -71,11 +76,15 @@ plt.plot(a0, b0, '+', markersize=10)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		Here we are making a level curve of the same plot and marking the dot we are trying to predict. We can see that the prediction will not be fully accurate since the center of the levels are not at the dot.
+		
+"""
+Here we are making a level curve of the same plot and marking the dot we are trying to predict. We can see that the prediction will not be fully accurate since the center of the levels are not at the dot.
+"""
+
 
 		
 def grad_rss2(a, b, X, Y):
@@ -115,11 +124,15 @@ plt.ylim(b_orig - 2, b_orig + 2)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		Here we are doing gradiant decent starting at (2, -3). We are doing this in "K" iterations where each iteration we look att which way it is decending the most and then take a step of "learning_eps" in that direction. 
+		
+"""
+Here we are doing gradiant decent starting at (2, -3). We are doing this in "K" iterations where each iteration we look att which way it is decending the most and then take a step of "learning_eps" in that direction. 
+"""
+
 
 		
 final_loss = f(a_orig, b_orig)
@@ -133,13 +146,21 @@ plt.xlabel('X')
 plt.ylabel('Y')
 plt.show()
 
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		Here is the plot of the actual value in green and the predicted value in blue with the final loss printed above the plot.
+		
+"""
+Here is the plot of the actual value in green and the predicted value in blue with the final loss printed above the plot.
+"""
 
-		## Regularization with the $L^2$ Norm
+
+		
+"""
+## Regularization with the $L^2$ Norm
+"""
+
 
 		
 alpha = 1
@@ -157,11 +178,15 @@ plt.contour(A, B, Z, cmap='viridis')
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		Here we are adding a penalty L2 of $\alpha(a^2+b^2)$
+		
+"""
+Here we are adding a penalty L2 of $\alpha(a^2+b^2)$
+"""
+
 
 		
 def ffL2(a, b):
@@ -184,7 +209,11 @@ plt.show()
 
 
 
-		Now we performed gradient decent again but with the new penalty function
+		
+"""
+Now we performed gradient decent again but with the new penalty function
+"""
+
 
 		
 final_loss = fL2(a_orig, b_orig)
@@ -201,11 +230,23 @@ plt.show()
 
 
 
-		Here we can see the predicted point above the graph with the acutal line in green and the predicted line in blue with the final loss printed above the graph. 
+		
+"""
+Here we can see the predicted point above the graph with the acutal line in green and the predicted line in blue with the final loss printed above the graph. 
+"""
 
-		## Parameter Tying with the $L^2$ Norm
 
-		For parameter Tying we are using the same code as with regularization but with a different loss function and gradient loss
+		
+"""
+## Parameter Tying with the $L^2$ Norm
+"""
+
+
+		
+"""
+For parameter Tying we are using the same code as with regularization but with a different loss function and gradient loss
+"""
+
 
 		
 alpha = 1
@@ -223,7 +264,7 @@ plt.contour(A, B, Z, cmap='viridis')
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -248,9 +289,32 @@ plt.show()
 
 
 
-		As expected this is slightly better than without parameter tying
+		
+final_loss = fL2(a_orig, b_orig)
 
-		### 4.2 Regularization with the $L^2$ Norm inequality constraint
+print(f"Orig: a = {a_orig:.2f}, b = {b_orig:.2f}, loss = {final_loss:.2f}")
+
+plt.scatter(X, Y, marker='+', label='Data')
+plt.plot(X, a0 * X + b0, color='g')
+plt.plot(X, a_orig * X + b_orig, color='b')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.show()
+# Classification: TRAIN
+
+
+
+		
+"""
+As expected this is slightly better than without parameter tying
+"""
+
+
+		
+"""
+### 4.2 Regularization with the $L^2$ Norm inequality constraint
+"""
+
 
 		
 def grad_rss3(a, b, alpha, s, c, X, Y):
@@ -262,11 +326,15 @@ def grad_rss3(a, b, alpha, s, c, X, Y):
     grad_alpha = a**2 + b**2 - c + s**2
     grad_s = 2 * alpha * s
     return np.array([grad_a, grad_b, grad_alpha, grad_s])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Here we make a new gradient loss function with a constraint. We also add a slack variabel to the constraint to ensure it is positive. The slack variable is squared to also ensure it is always positive. 
+		
+"""
+Here we make a new gradient loss function with a constraint. We also add a slack variabel to the constraint to ensure it is positive. The slack variable is squared to also ensure it is always positive. 
+"""
+
 
 		
 def grad_desc_rss3(K, a0, b0, alpha0, s0, learning_eps, f_orig, f, ff, verbose=False):
@@ -307,7 +375,7 @@ def grad_desc_rss3(K, a0, b0, alpha0, s0, learning_eps, f_orig, f, ff, verbose=F
         plt.show()
 
     return as_hist, bs_hist, alphas_hist, ss_hist
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -329,7 +397,11 @@ as_hist, bs_hist, alphas_hist, ss_hist = grad_desc_rss3(K, a0, b0, alpha0, s0, l
 
 
 
-		Here we are doing gradient dencent with the previously made gradient loss function (grad_rss3) where we cant go outside a circle of $\sqrt{c}$
+		
+"""
+Here we are doing gradient dencent with the previously made gradient loss function (grad_rss3) where we cant go outside a circle of $\sqrt{c}$
+"""
+
 
 		
 final_loss = fL2(as_hist[-1], bs_hist[-1])
@@ -342,13 +414,21 @@ plt.plot(X, as_hist[-1] * X + as_hist[-1], color='b')
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		Here we found the a new point in blue with the ground truth in green and all the final values above the plot. Since alpha > 0 and a^2 + b^2 - c < 0 we are violating the KKT condition meaning that we are not at a local minimum.
+		
+"""
+Here we found the a new point in blue with the ground truth in green and all the final values above the plot. Since alpha > 0 and a^2 + b^2 - c < 0 we are violating the KKT condition meaning that we are not at a local minimum.
+"""
 
-		Case 3a
+
+		
+"""
+Case 3a
+"""
+
 
 		
 c = 25
@@ -356,11 +436,15 @@ c = 25
 print(f"a_orig = {a_orig:.4f}")
 print(f"b_orig = {b_orig:.4f}")
 print(a_orig**2 + b_orig**2 - c)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		In the case of the random seed set in this notebook we get an answer of -17 < 0 which means that the unconstrained problem is feasible and thus giving us a local optimum
+		
+"""
+In the case of the random seed set in this notebook we get an answer of -17 < 0 which means that the unconstrained problem is feasible and thus giving us a local optimum
+"""
+
 
 		
 ettor = np.ones(len(X))
@@ -382,7 +466,11 @@ print(f"alpha_hat = {alpha_hat.evalf():.4f}")
 
 
 
-		Here we are only getting one solution
+		
+"""
+Here we are only getting one solution
+"""
+
 
 		
 rss = rss2(a_hat, b_hat, X, Y)
@@ -398,5 +486,9 @@ plt.show()
 
 
 
-		Here we have a feasible solution on the contraint line.
+		
+"""
+Here we have a feasible solution on the contraint line.
+"""
+
 

@@ -18,9 +18,7 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(St
             // Convert markdown cell to Python docstring
             var mdCell := cell.oclAsType(NotebookMM::MarkdownCell);
             if mdCell.content <> null and mdCell.content <> '' then {
-                contentLines += '\n"""\n';
-                contentLines += mdCell.content + '\n';
-                contentLines += '\n"""\n\n';
+                contentLines += '\n"""\n' + mdCell.content + '\n"""\n\n';
             } endif;
         } else if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
             // Add code cell source as-is

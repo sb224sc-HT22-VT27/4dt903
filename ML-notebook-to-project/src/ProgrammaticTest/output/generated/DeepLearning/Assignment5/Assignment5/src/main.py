@@ -1,9 +1,6 @@
 		
 """
-
-		# Assignment 5 vj222hx
-
-		
+# Assignment 5 vj222hx
 """
 
 
@@ -11,11 +8,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Implement mse, grad_mse and grad_desc_mse form XOR assignment
+		
+"""
+Implement mse, grad_mse and grad_desc_mse form XOR assignment
+"""
+
 
 		
 np.random.seed(1)
@@ -59,7 +60,11 @@ def grad_desc_mse(K, ws, learning_eps, loss, grad_loss):
 
 
 
-		### 1.2 Setting the scene
+		
+"""
+### 1.2 Setting the scene
+"""
+
 
 		
 N = 100
@@ -105,7 +110,11 @@ plt.show()
 
 
 
-		Here we are generating a plane of size NxN with some random noise
+		
+"""
+Here we are generating a plane of size NxN with some random noise
+"""
+
 
 		
 def m1(ws, x):
@@ -124,7 +133,11 @@ print(f"Initial mse: {mse1(ws0)}")
 
 
 
-		Here we are defining the function for the simple neural net and initilizing random weights. 
+		
+"""
+Here we are defining the function for the simple neural net and initilizing random weights. 
+"""
+
 
 		
 def grad1(ws, x):
@@ -134,7 +147,7 @@ def grad2(ws, x):
     return x[1]
 
 gradients1 = [grad1, grad2]
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -160,7 +173,7 @@ plt.ylim(ws[1] - 40, ws[1] + 40)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -172,13 +185,21 @@ for i in history:
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		Here we are training the model and then plotting the descent path and the loss history
+		
+"""
+Here we are training the model and then plotting the descent path and the loss history
+"""
 
-		### 1.3 Stochastic Gradient Descent (SGD)
+
+		
+"""
+### 1.3 Stochastic Gradient Descent (SGD)
+"""
+
 
 		
 def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
@@ -200,7 +221,11 @@ def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
 
 
 
-		Here we are doing stochastic gradient descent where we are making an approximation of the gradient direction based on a sample of size "batch_size" of the dataset. 
+		
+"""
+Here we are doing stochastic gradient descent where we are making an approximation of the gradient direction based on a sample of size "batch_size" of the dataset. 
+"""
+
 
 		
 def grad_loss2(ws, randices):
@@ -221,7 +246,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -233,13 +258,21 @@ for i in history:
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Here we are doing the same as before and it takes less than half the time but with a higher final loss so more iterations might have to be made for it to have the same loss
+		
+"""
+Here we are doing the same as before and it takes less than half the time but with a higher final loss so more iterations might have to be made for it to have the same loss
+"""
 
-		### 1.4 SGD with adaptive learning rate
+
+		
+"""
+### 1.4 SGD with adaptive learning rate
+"""
+
 
 		
 def stochastic_adaptive_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N, alpha):
@@ -281,25 +314,21 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
-
-
-
-		
-mseHistory = []
-
-for i in history:
-    mseHistory.append(mse1(i))
-
-plt.plot(range(len(mseHistory)), mseHistory)
-plt.show()
 # Classification: TRAIN
 
 
 
-		Here we are doing stochastic gradient descent with adaptive learning rate. The learning rate is decreasing by a factor of alpha for each iteration. This is done because we are assuming that we are getting closer to the point with each iteration thus decreasing the step size. We test different values for alpha and learning rate and with the best one we are getting a worse loss than with just SGD.
+		
+"""
+Here we are doing stochastic gradient descent with adaptive learning rate. The learning rate is decreasing by a factor of alpha for each iteration. This is done because we are assuming that we are getting closer to the point with each iteration thus decreasing the step size. We test different values for alpha and learning rate and with the best one we are getting a worse loss than with just SGD.
+"""
 
-		### 1.5 SGD with momentum
+
+		
+"""
+### 1.5 SGD with momentum
+"""
+
 
 		
 def stochastic_momentum_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N, mass):
@@ -343,9 +372,13 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Here we are doing stochastic gradient descent with momentum. How far we step each time is dependent on the momentum (mass * velocity) where velocity is a function of the previous velocity and gradient. Here we get a significant decrease in loss over the prevouis best with a better time. 
+		
+"""
+Here we are doing stochastic gradient descent with momentum. How far we step each time is dependent on the momentum (mass * velocity) where velocity is a function of the previous velocity and gradient. Here we get a significant decrease in loss over the prevouis best with a better time. 
+"""
+
 

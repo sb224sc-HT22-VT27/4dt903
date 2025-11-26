@@ -1,16 +1,13 @@
 		
 import numpy as np
 import matplotlib.pyplot as plt
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 		
 """
-
-		Define needed functions and their derivatives
-
-		
+Define needed functions and their derivatives
 """
 
 
@@ -31,7 +28,11 @@ def mse_derivative(y_true, y_pred):
 
 
 
-		Initialize training data
+		
+"""
+Initialize training data
+"""
+
 
 		
 X = np.array([
@@ -41,11 +42,15 @@ X = np.array([
     [1, 1]
 ])
 Y = np.array([[0], [1], [1], [0]])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Initialize random weights and train network
+		
+"""
+Initialize random weights and train network
+"""
+
 
 		
 np.random.seed(42)
@@ -91,7 +96,11 @@ for epoch_idx in range(epochs):
 
 
 
-		Evaluate network
+		
+"""
+Evaluate network
+"""
+
 
 		
 print("\nFinal outputs after training:")
@@ -128,11 +137,15 @@ ax.set_xlabel("W2[0,0]")
 ax.set_ylabel("W2[1,0]")
 ax.set_zlabel("Loss")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		The network successfully learned XOR :)
+		
+"""
+The network successfully learned XOR :)
 
 In the first plot we can see how the network progressed over time. In the seed chosen, it learned very little in the first 3000 epochs and then suddenly got down to almost 0 loss after that. This could indicate that the network randomly initialized to a relativly stable region before it got unstable and suddenly dropped down to a different stable region. The second plot show how sensitive the network is to changes in two weights where the valley is better. A smooth gradient shows that it is easier for the network to converge. 
+"""
+
 

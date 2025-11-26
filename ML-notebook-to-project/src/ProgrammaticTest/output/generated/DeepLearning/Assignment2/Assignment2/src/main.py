@@ -1,24 +1,29 @@
 		
 """
-
-		# Assignment 2 vj222hx
-
-		
+# Assignment 2 vj222hx
 """
 
 
-		Add imports
+		
+"""
+Add imports
+"""
+
 
 		
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sympy import Matrix
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		### Generate bi-variate normal random numbers
+		
+"""
+### Generate bi-variate normal random numbers
+"""
+
 
 		
 mu = [2, 3]
@@ -33,7 +38,11 @@ plt.show()
 
 
 
-		Check variance and correlation
+		
+"""
+Check variance and correlation
+"""
+
 
 		
 Sample_cov = np.cov(R, rowvar=False)
@@ -42,19 +51,27 @@ Cor = np.corrcoef(R, rowvar=False)
 
 print("Sample covariance:\n", Sample_cov)
 print("\nCorrelation:\n", Cor)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		Double check cor
+		
+"""
+Double check cor
+"""
+
 
 		
 print(1.5552 / (2.0479**0.5 * 4.2666**0.5))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		###  Perform PCA on the bi-variate normal random numbers
+		
+"""
+###  Perform PCA on the bi-variate normal random numbers
+"""
+
 
 		
 pca = PCA()
@@ -74,7 +91,11 @@ print("\nVariance explained:\n", variability_explained)
 
 
 
-		Check correlation
+		
+"""
+Check correlation
+"""
+
 
 		
 print(np.corrcoef(score, rowvar=False))
@@ -86,7 +107,7 @@ print(np.corrcoef(score, rowvar=False))
 print("PC1:", np.linalg.norm(loading_vector[:, 0]))
 print("PC2:", np.linalg.norm(loading_vector[:, 1]))
 print("Dot prod:", np.dot(loading_vector[:, 0], loading_vector[:, 1]))
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -100,11 +121,15 @@ plt.xlabel("PC1")
 plt.ylabel("PC2")
 plt.grid(True)
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		### Perform PCA step-by-step
+		
+"""
+### Perform PCA step-by-step
+"""
+
 
 		
 data = R
@@ -114,7 +139,7 @@ data[:, 1] = (R[:, 1] - np.mean(R[:, 1])) / np.sqrt(4.2666)
 Cov = np.cov(data, rowvar=False)
 
 print(Cov)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -122,16 +147,20 @@ print(Cov)
 eigenvals, eigenvectors = np.linalg.eig(Cov)
 print("eigenvectors\n", eigenvectors)
 print("eigenvalues\n", eigenvals)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Check eigenvalues
+		
+"""
+Check eigenvalues
+"""
+
 
 		
 print(Cov @ eigenvectors[:, 0] - eigenvals[0] * eigenvectors[:, 0])
 print(Cov @ eigenvectors[:, 1] - eigenvals[1] * eigenvectors[:, 1])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -139,7 +168,7 @@ print(Cov @ eigenvectors[:, 1] - eigenvals[1] * eigenvectors[:, 1])
 print(np.linalg.norm(eigenvectors[:, 0]))
 print(np.linalg.norm(eigenvectors[:, 1]))
 print(np.dot(eigenvectors[:, 0], eigenvectors[:, 1]))
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -159,7 +188,7 @@ plt.xlabel("PC1")
 plt.ylabel("PC2")
 plt.grid(True)
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -167,11 +196,15 @@ plt.show()
 variances = np.var(score, axis=0)
 print("Variances:", variances)
 print("Explained variance ratio:", variances / sum(variances))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Eigenvectors can be negated and that is probably why my arrows are pointing down while they are pointing up in the matlab example, the fix is just to negate the eigenvectors, below is the fixed version
+		
+"""
+Eigenvectors can be negated and that is probably why my arrows are pointing down while they are pointing up in the matlab example, the fix is just to negate the eigenvectors, below is the fixed version
+"""
+
 
 		
 plt.scatter(score[:, 0], score[:, 1])
@@ -182,7 +215,7 @@ plt.xlabel("PC1")
 plt.ylabel("PC2")
 plt.grid(True)
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -194,7 +227,7 @@ c = Cov[0, 0] * Cov[1, 1] - Cov[0, 1] * Cov[1, 0]
 
 eigenvalues = np.roots([a, b, c])
 print("Eigenvalues\n", eigenvalues)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -207,7 +240,7 @@ print(np.linalg.det(Char1))
 lambda2 = np.diag([eigenvalues[1], eigenvalues[1]])
 Char2 = Cov - lambda2
 print(np.linalg.det(Char2))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -226,7 +259,7 @@ print("RREF A1:\n", rref)
 		
 v1 = np.array([-rref[0, 1], 1])
 print("Eigenvector 1:", v1 / np.linalg.norm(v1))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -235,7 +268,7 @@ A2 = Cov - lambda2
 rref2 = np.array(Matrix(np.round(A2, 5)).rref()[0]).astype(np.float64)
 v2 = np.array([-rref2[0, 1], 1])
 print("Eigenvector 2:", v2 / np.linalg.norm(v2))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

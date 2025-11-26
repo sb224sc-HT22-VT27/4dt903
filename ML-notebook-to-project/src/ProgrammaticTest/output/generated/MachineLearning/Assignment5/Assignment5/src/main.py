@@ -1,21 +1,26 @@
 		
 """
-
-		# Assignmen 5 vj222hx
-
-		
+# Assignmen 5 vj222hx
 """
 
 
-		## Conceptual
+		
+"""
+## Conceptual
 1. The data is split into K equally sized parts, usually 5 or 10. First, one part is used for testing and the remaining parts for training, then this is done for all the parts. Then the final result will be the average of the K tests. 
 
 2. i. Validation set is faster to perform as kfold is essentially validation set approach but doing it k times however validation set is also less reliable and has a higher chance of overfitting.
 
 2. ii. LOOCV is an exctreme case of K-Fold which is really computationally expensive since it is K-Fold where K=N. LOOCV however has a low chance of overfitting.
+"""
 
-		## Practical
+
+		
+"""
+## Practical
 Add imports
+"""
+
 
 		
 import pandas as pd
@@ -27,7 +32,11 @@ import numpy as np
 
 
 
-		Load Auto dataset
+		
+"""
+Load Auto dataset
+"""
+
 
 		
 csvFile = pd.read_csv("Auto.csv", index_col=0)
@@ -35,7 +44,11 @@ csvFile = pd.read_csv("Auto.csv", index_col=0)
 
 
 
-		Display the number of features and their names:
+		
+"""
+Display the number of features and their names:
+"""
+
 
 		
 colNames = csvFile.columns.tolist()
@@ -45,7 +58,11 @@ print(f"Column Names: {colNames}")
 
 
 
-		Print a statistic summary of the predictors and the response:
+		
+"""
+Print a statistic summary of the predictors and the response:
+"""
+
 
 		
 print(csvFile.describe(), "\n")
@@ -54,32 +71,48 @@ print(csvFile['name'].value_counts())
 
 
 
-		Display the number of datapoints
+		
+"""
+Display the number of datapoints
+"""
+
 
 		
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Display the data in a table
+		
+"""
+Display the data in a table
+"""
+
 
 		
 print(csvFile.head(20))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		Correlation Plot
+		
+"""
+Correlation Plot
+"""
+
 
 		
 sns.heatmap(csvFile.drop(columns=['name']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		Estimating accuracy of lin reg model
+		
+"""
+Estimating accuracy of lin reg model
+"""
+
 
 		
 def boot_fn(data, index):
@@ -89,20 +122,20 @@ def boot_fn(data, index):
     X = sm.add_constant(X)
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 		
 print(boot_fn(csvFile, range(392)))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
 		
 np.random.seed(1)
 print(boot_fn(csvFile, np.random.choice(392, 392, replace=True)))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -119,7 +152,7 @@ for i in range(1000):
     boot_results[i, :] = boot_fn(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -130,11 +163,15 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		The standard errors in the statistics estimate are 0.717 and 0.006. The standard errors in the bootstrap are 0.825 and 0.007. Here we can see that the bootstrap estimate has a slightly higher standard error which is expected since it is an estimate over many different subsets, so the regular estimate is better according these numbers but it is probably because it is slightly overfitted. 
+		
+"""
+The standard errors in the statistics estimate are 0.717 and 0.006. The standard errors in the bootstrap are 0.825 and 0.007. Here we can see that the bootstrap estimate has a slightly higher standard error which is expected since it is an estimate over many different subsets, so the regular estimate is better according these numbers but it is probably because it is slightly overfitted. 
+"""
+
 
 		
 def boot_fn_quadratic(data, index):
@@ -145,7 +182,7 @@ def boot_fn_quadratic(data, index):
     y = sample['mpg']
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -157,7 +194,7 @@ for i in range(1000):
     boot_results[i, :] = boot_fn_quadratic(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -169,13 +206,17 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		Bootstrap standard errors: 2.10, 0.034, 0.00012
+		
+"""
+Bootstrap standard errors: 2.10, 0.034, 0.00012
 
 Statistical standard errors: 1.8, 0.031, 0.000
 
 Here we can see that bootstrap once again has a higher standard error for the same reason as in the linear case. 
+"""
+
 

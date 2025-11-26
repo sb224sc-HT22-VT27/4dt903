@@ -1,19 +1,28 @@
 		
 """
-
-		# Assignment 7 vj222hx
-
-		
+# Assignment 7 vj222hx
 """
 
 
-		## Conceptual
+		
+"""
+## Conceptual
 1. SVM aims to create a hyperplane which seperates two classes which tries to maximize the margin to the closest point in each class. If a hyperplane cannot be created between the classes, a slack variable can be added or you can add dimensions to the points which makes it easier to make a hyperplane seperating the classes.
 2. SVMs are generally quite robust to overfitting however noisy data can lead to overfitting. Certain kernels such as rbf can be more accurate than linear, but is more susceptible to overfitting. Small values for C allows for some missclassification which reduces overfitting. 
+"""
 
-		# Practical
 
-		Add imports
+		
+"""
+# Practical
+"""
+
+
+		
+"""
+Add imports
+"""
+
 
 		
 import numpy as np
@@ -26,7 +35,11 @@ from sklearn.metrics import confusion_matrix
 
 
 
-		Generate 20 random points in two classes
+		
+"""
+Generate 20 random points in two classes
+"""
+
 
 		
 np.random.seed(1)
@@ -39,7 +52,7 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -64,14 +77,14 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 		
 support_vector_indices = svm.support_
 print(support_vector_indices)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -93,11 +106,15 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		The smaller value of C makes it allow for a larger error but also reduces the risk of overfitting. 
+		
+"""
+The smaller value of C makes it allow for a larger error but also reduces the risk of overfitting. 
+"""
+
 
 		
 param_grid = {'C': [0.001, 0.01, 0.1, 1, 5, 10, 100]}
@@ -110,13 +127,17 @@ print(cv_results)
 
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Accuracy:", grid_search.best_score_)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		Here we are getting a 95% accuracy with a C value of 0.001
+		
+"""
+Here we are getting a 95% accuracy with a C value of 0.001
 
 Fit a model with the C value
+"""
+
 
 		
 np.random.seed(1)
@@ -129,11 +150,15 @@ xtest[ytest == 1] += 1
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		With the newly generated datapoints we are getting an accuracy of 80%
+		
+"""
+With the newly generated datapoints we are getting an accuracy of 80%
+"""
+
 
 		
 np.random.seed(1)
@@ -152,7 +177,7 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -203,7 +228,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -219,11 +244,15 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		Here we got an accuracy of 94% with a C of 1 and a gamma of 0.5
+		
+"""
+Here we got an accuracy of 94% with a C of 1 and a gamma of 0.5
+"""
+
 
 		
 svm = SVC(kernel="rbf", C=1, gamma=0.5)
@@ -237,11 +266,15 @@ ytest = np.concatenate([-np.ones(75), np.ones(25)])
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		When trying with the test data, we get an accuracy 82% on the training data
+		
+"""
+When trying with the test data, we get an accuracy 82% on the training data
+"""
+
 
 		
 x = np.vstack([x, np.random.randn(50, 2)])
@@ -258,7 +291,7 @@ plt.ylabel("X2")
 plt.show()
 
 print(dat)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -287,7 +320,7 @@ plt.xlabel("X1")
 plt.ylabel("X2")
 plt.title("SVM Decision Boundaries for Multi-Class Classification")
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -304,7 +337,7 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -314,13 +347,21 @@ svm.fit(train_data[['X1', 'X2']], train_data['y'])
 y_pred = svm.predict(test_data[['X1', 'X2']])
 cm = confusion_matrix(test_data['y'], y_pred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		Here we are getting a 93% accuracy using the training data
+		
+"""
+Here we are getting a 93% accuracy using the training data
+"""
 
-		Load the datasets
+
+		
+"""
+Load the datasets
+"""
+
 
 		
 xtrain = pd.read_csv("Khan_xtrain.csv", index_col=0)
@@ -330,7 +371,7 @@ ytest = pd.read_csv("Khan_ytest.csv", index_col=0)
 
 print(len(xtrain), len(xtrain.columns.tolist()))
 print(len(xtest), len(xtest.columns.tolist()))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -342,7 +383,7 @@ svm_model.fit(xtrain, ytrain)
 
 print("Number of Support:", svm_model.n_support_)
 print("Number of classes:", svm_model.classes_)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -362,9 +403,13 @@ conf_matrix_test = confusion_matrix(ytest, y_test_pred)
 
 conf_matrix_test_df = pd.DataFrame(conf_matrix_test, index=svm_model.classes_, columns=svm_model.classes_)
 print(conf_matrix_test_df)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
-		Here, we are only getting two predictions wrong which leads to a 90% accuracy
+		
+"""
+Here, we are only getting two predictions wrong which leads to a 90% accuracy
+"""
+
 
