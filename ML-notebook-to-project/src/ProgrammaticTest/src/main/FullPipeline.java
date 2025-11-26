@@ -59,7 +59,7 @@ public class FullPipeline {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("projectStructureMM",
 				new XMIResourceFactoryImpl());
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("notebook",
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("notebookMM",
 				new XMIResourceFactoryImpl());
 		resourceSet.getPackageRegistry().put(NotebookMMPackage.eNS_URI, NotebookMMPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ProjectStructureMMPackage.eNS_URI, ProjectStructureMMPackage.eINSTANCE);
@@ -126,14 +126,14 @@ public class FullPipeline {
 
 				execute(notebookPath, projectOutputDir);
 				System.out.println();
+
 			} catch (Exception e) {
 				System.err.println("Error processing: " + notebookPath);
 				e.printStackTrace();
 			}
+			break; // TODO: Remove
 		}
 	}
-
-	// ==================== T2M: Text to Model (EMF) ====================
 
 	/**
 	 * T2M: Parse a Jupyter notebook file to NotebookModel using EMF
@@ -153,8 +153,6 @@ public class FullPipeline {
 
 		return notebook;
 	}
-
-	// ==================== M2M: Model to Model (QVT-O) ====================
 
 	/**
 	 * M2M: Transform NotebookModel to ProjectStructure using QVT-O transformation.
@@ -228,8 +226,6 @@ public class FullPipeline {
 		}
 	}
 
-	// ==================== M2T: Model to Text (Acceleo) ====================
-
 	/**
 	 * M2T: Generate files from ProjectStructure using Acceleo (generate.mtl). Uses
 	 * the existing Generate class from ProjectStructureM2T.
@@ -261,8 +257,6 @@ public class FullPipeline {
 		}
 	}
 
-	// ==================== Utility Methods ====================
-
 	/**
 	 * Find all .ipynb files in a directory recursively
 	 */
@@ -274,8 +268,6 @@ public class FullPipeline {
 
 		return results;
 	}
-
-	// ==================== Main Entry Point ====================
 
 	public static void main(String[] args) {
 		FullPipeline pipeline = new FullPipeline();
