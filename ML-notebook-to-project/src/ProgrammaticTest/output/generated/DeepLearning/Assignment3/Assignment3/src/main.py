@@ -137,7 +137,7 @@ ax.set_xlabel("W2[0,0]")
 ax.set_ylabel("W2[1,0]")
 ax.set_zlabel("Loss")
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

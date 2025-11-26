@@ -60,7 +60,7 @@ x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], x_test.shape[2], 1))
 in_shape = x_train.shape[1:]
 print("Before: {0}".format(orig_shape))
 print("After: {0}".format(in_shape))
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -109,7 +109,7 @@ def plot_metrics(history):
         else:
             plt.ylim([-0.1,1.1])
         plt.legend()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -181,7 +181,7 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -190,7 +190,7 @@ plot_metrics(model_history)
 loss, acc = model.evaluate(x_test, y_test, verbose=0)
 print('Accuracy: %.3f' % acc)
 err = print_res(model)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -243,16 +243,7 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: PREPROCESS
-
-
-
-
-plot_metrics(model_history)
-loss, acc = model.evaluate(x_test, y_test, verbose=0)
-print('Accuracy: %.3f' % acc)
-err = print_res(model)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

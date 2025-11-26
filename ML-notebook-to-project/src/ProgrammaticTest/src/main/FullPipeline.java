@@ -2,11 +2,15 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -41,6 +45,15 @@ import projectStructureMM.ProjectStructureMMPackage;
  */
 public class FullPipeline {
 	private static final String QVTO_TRANSFORMATION_PATH = "../NotebookToProjectM2M/transforms/NotebookToProject.qvto";
+
+	/**
+	 * Supported data file extensions to copy to the generated projects data
+	 * directory
+	 * 
+	 * Note: Currently five somewhat random extensions/based on input notebook data
+	 * files
+	 */
+	private static final Set<String> DATA_FILE_EXTENSIONS = Set.of("json", "csv", "yaml", "jpg", "txt");
 
 	private final NotebookJSONParser parser;
 	private final ResourceSet resourceSet;
@@ -92,6 +105,11 @@ public class FullPipeline {
 		// Step 3: M2T - Generate files from ProjectStructure using Acceleo
 		System.out.println("Step 3: M2T - Generating project files using generate.mtl (Acceleo)...");
 		modelToText(projectStructure, outputPath);
+		System.out.println();
+
+		// Step 4: Copy data files from input to generated projects data directory
+		System.out.println("Step 4: Copying data files to generated project...");
+		copyDataFiles(inputPath, outputPath, projectStructure.getName());
 		System.out.println();
 
 		System.out.println("=== Pipeline Complete ===");
@@ -240,6 +258,92 @@ public class FullPipeline {
 
 		System.out.println("  Generated project at: " + outputDir.resolve(project.getName()));
 
+	}
+
+	/**
+	 * Copy data files from the input notebook's directory to the generated
+	 * project's data directory. Handles files with extensions: json, csv, yaml,
+	 * jpg, txt
+	 * 
+	 * Files are copied from two locations in order: 1. The notebook's parent
+	 * directory 2. A 'data' subdirectory (if it exists)
+	 * 
+	 * Note: If a file with the same name exists in both locations, the file from
+	 * the 'data' subdirectory takes precedence (overwrites the first copy).
+	 * 
+	 * @param inputPath   Path to the input .ipynb file
+	 * @param outputPath  Base directory for generated output
+	 * @param projectName Name of the generated project
+	 * @throws IOException if there is an error creating directories or copying
+	 *                     files
+	 */
+	private void copyDataFiles(String inputPath, String outputPath, String projectName) throws IOException {
+		Path inputFile = Paths.get(inputPath).toAbsolutePath().normalize();
+		Path inputDir = inputFile.getParent();
+		Path targetDataDir = Paths.get(outputPath).resolve(projectName).resolve("data");
+
+		// Ensure target data directory exists
+		Files.createDirectories(targetDataDir);
+
+		int copiedCount = 0;
+
+		// Copy data files from the same directory as the notebook
+		copiedCount += copyDataFilesFromDir(inputDir, targetDataDir);
+
+		// Copy data files from a 'data' subdirectory if it exists
+		Path inputDataDir = inputDir.resolve("data");
+		if (Files.exists(inputDataDir) && Files.isDirectory(inputDataDir)) {
+			copiedCount += copyDataFilesFromDir(inputDataDir, targetDataDir);
+		}
+
+		System.out.println("  Copied " + copiedCount + " data file(s) to " + targetDataDir);
+	}
+
+	/**
+	 * Copy data files from a source directory to a target directory.
+	 * 
+	 * @param sourceDir Source directory to copy from
+	 * @param targetDir Target directory to copy to
+	 * @return Number of files copied
+	 * @throws IOException if there is an error reading the directory or copying
+	 *                     files
+	 */
+	private int copyDataFilesFromDir(Path sourceDir, Path targetDir) throws IOException {
+		if (!Files.exists(sourceDir) || !Files.isDirectory(sourceDir)) {
+			return 0;
+		}
+
+		int count = 0;
+
+		try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(sourceDir)) {
+			for (Path file : dirStream) {
+				if (Files.isRegularFile(file) && isDataFile(file)) {
+					Path targetFile = targetDir.resolve(file.getFileName());
+					Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+					System.out.println("    Copied: " + file.getFileName());
+					count++;
+				}
+			}
+		}
+
+		return count;
+	}
+
+	/**
+	 * Check if a file is a data file based on its extension.
+	 * 
+	 * @param file Path to the file
+	 * @return true if the file has a supported data file extension
+	 */
+	private boolean isDataFile(Path file) {
+		String fileName = file.getFileName().toString().toLowerCase(Locale.ROOT);
+		int lastDot = fileName.lastIndexOf('.');
+		// Handle files without extension or ending with a dot
+		if (lastDot == -1 || lastDot == fileName.length() - 1) {
+			return false;
+		}
+		String extension = fileName.substring(lastDot + 1);
+		return DATA_FILE_EXTENSIONS.contains(extension);
 	}
 
 	/**

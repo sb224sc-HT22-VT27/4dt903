@@ -40,7 +40,7 @@ Load Auto dataset
 
 
 csvFile = pd.read_csv("Auto.csv", index_col=0)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -54,7 +54,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -79,7 +79,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -91,7 +91,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -104,7 +104,7 @@ Correlation Plot
 
 sns.heatmap(csvFile.drop(columns=['name']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -128,7 +128,7 @@ def boot_fn(data, index):
 
 
 print(boot_fn(csvFile, range(392)))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -152,7 +152,7 @@ for i in range(1000):
     boot_results[i, :] = boot_fn(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -163,7 +163,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -194,7 +194,7 @@ for i in range(1000):
     boot_results[i, :] = boot_fn_quadratic(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 

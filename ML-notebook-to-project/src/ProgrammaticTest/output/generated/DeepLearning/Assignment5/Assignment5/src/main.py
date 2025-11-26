@@ -8,7 +8,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -56,7 +56,7 @@ def grad_desc_mse(K, ws, learning_eps, loss, grad_loss):
         history.append(ws)
     
     return ws, np.array(history)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -173,7 +173,7 @@ plt.ylim(ws[1] - 40, ws[1] + 40)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -217,7 +217,7 @@ def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
         history.append(ws)
 
     return ws, np.array(history)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -245,18 +245,6 @@ plt.contour(A, B, Z, cmap='viridis')
 plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
-plt.show()
-# Classification: TRAIN
-
-
-
-
-mseHistory = []
-
-for i in history:
-    mseHistory.append(mse1(i))
-
-plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
 # Classification: PREPROCESS
 
@@ -314,7 +302,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -384,7 +372,19 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
+
+
+
+
+mseHistory = []
+
+for i in history:
+    mseHistory.append(mse1(i))
+
+plt.plot(range(len(mseHistory)), mseHistory)
+plt.show()
+# Classification: PREPROCESS
 
 
 

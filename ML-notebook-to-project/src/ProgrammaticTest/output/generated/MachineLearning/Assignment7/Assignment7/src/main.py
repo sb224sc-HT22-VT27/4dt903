@@ -31,7 +31,7 @@ import pandas as pd
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -77,14 +77,14 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 
 support_vector_indices = svm.support_
 print(support_vector_indices)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -106,7 +106,7 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -127,7 +127,7 @@ print(cv_results)
 
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Accuracy:", grid_search.best_score_)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -177,7 +177,7 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -203,7 +203,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -228,7 +228,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -320,7 +320,7 @@ plt.xlabel("X1")
 plt.ylabel("X2")
 plt.title("SVM Decision Boundaries for Multi-Class Classification")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -347,7 +347,7 @@ svm.fit(train_data[['X1', 'X2']], train_data['y'])
 y_pred = svm.predict(test_data[['X1', 'X2']])
 cm = confusion_matrix(test_data['y'], y_pred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -383,7 +383,7 @@ svm_model.fit(xtrain, ytrain)
 
 print("Number of Support:", svm_model.n_support_)
 print("Number of classes:", svm_model.classes_)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -403,7 +403,7 @@ conf_matrix_test = confusion_matrix(ytest, y_test_pred)
 
 conf_matrix_test_df = pd.DataFrame(conf_matrix_test, index=svm_model.classes_, columns=svm_model.classes_)
 print(conf_matrix_test_df)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 

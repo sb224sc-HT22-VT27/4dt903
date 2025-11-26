@@ -47,7 +47,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -59,7 +59,7 @@ Load the Boston.csv file
 
 
 csvFile = pd.read_csv("Boston.csv", index_col=0)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -97,7 +97,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -110,7 +110,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -127,7 +127,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -144,7 +144,7 @@ reg2 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["rm"])).fit()
 print(reg2.summary())
 reg3 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["age"])).fit()
 print(reg3.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -191,7 +191,7 @@ new_age = pd.DataFrame({'age': [25, 50, 75]})
 new_age = sm.add_constant(new_age)
 pred3 = reg3.get_prediction(new_age).summary_frame(alpha=0.05)
 print(pred3[['mean', 'obs_ci_lower', 'obs_ci_upper']])
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -204,7 +204,7 @@ The values inserted in the first regression is 5, 10 and 15. This means that an 
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -217,7 +217,7 @@ Here we can see that R-squared is 0.639 which means that 63.9% of the variance c
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
 print(reg.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -236,7 +236,7 @@ Correlation plot
 
 sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -284,7 +284,7 @@ X = sm.add_constant(X)
 model1 = sm.OLS(y, X).fit()
 
 print(model1.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -363,7 +363,7 @@ print(model4.summary())
 
 anova_results = sm.stats.anova_lm(model2, model4)
 print(anova_results)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -382,7 +382,7 @@ model5 = sm.OLS(y, X).fit()
 
 print(model5.summary())
 
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -411,7 +411,7 @@ print(csvFile2.describe(), "\n")
 print(csvFile2['ShelveLoc'].value_counts(), "\n")
 print(csvFile2['Urban'].value_counts(), "\n")
 print(csvFile2['US'].value_counts())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -426,7 +426,7 @@ y = csvFile2["Sales"]
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -450,7 +450,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -473,7 +473,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

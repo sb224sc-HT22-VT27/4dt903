@@ -15,7 +15,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -27,7 +27,7 @@ Load the Wage.csv file
 
 
 csvFile = pd.read_csv("Wage.csv", index_col=0)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -56,7 +56,7 @@ csvFile = csvFile.drop("logwage", axis=1)
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -80,7 +80,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -114,7 +114,7 @@ Plot wage compared to age
 
 sns.regplot(x="age", y="wage", data=csvFile,  scatter_kws={'s': 5, 'color': 'black'}, line_kws={'color': 'black'})
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -149,7 +149,7 @@ Pearson correlation test
 corr_coef, p_value = stats.pearsonr(csvFile['age'], csvFile['wage'])
 print(f"Correlation Coefficient: {corr_coef}")
 print(f"p-value: {p_value}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -171,7 +171,7 @@ for metric in colNames:
     if metric == "year" or metric == "age" or metric == "wage":
         continue
     print(metric + ":", csvFile[metric].unique().tolist())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -191,7 +191,7 @@ for metric in colNames:
     plt.show()
 
 
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -210,7 +210,7 @@ for metric in colNames:
         groups.append(group["wage"].values)
     f_stat, p_value = stats.f_oneway(*groups)
     print(metric + ":", f_stat, p_value)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
