@@ -8,8 +8,12 @@ transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : Pro
 
 // property NAME : TYPE = val; Consts
 property MAIN_FILE_NAME : String = "main.py";
+property PREPROCESS_FILE_NAME : String = "preprocess.py";
+property TRAIN_FILE_NAME : String = "train.py";
+property PREDICT_FILE_NAME : String = "predict.py";
 property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outputs"};
 property REQUIREMENTS_FILE_NAME : String = "requirements.txt";
+property RUN_SCRIPT_NAME : String = "run.sh";
 
 main() {
 	// [MetaModel::Attribute]
@@ -18,22 +22,53 @@ main() {
 
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
-	result.filesystemelement := DIR_NAMES->collect(dirName | self.map toDirectory(dirName))->union(Sequence{self.map toRequirementsFile()});
+	result.filesystemelement := DIR_NAMES->collect(dirName | self.map toDirectory(dirName))
+		->union(Sequence{self.map toRequirementsFile()})
+		->union(Sequence{self.map toRunScript()});
 }
 
 mapping NotebookMM::NotebookModel::toDirectory(dirName : String) : ProjectStuctureMM::Directory {
     result.name := dirName;
-    result.filesystemelement := if dirName = 'src' then OrderedSet{self.map toMainFile()} else OrderedSet{self.map toKeepFile()} endif;
+    result.filesystemelement := if dirName = 'src' then 
+    	OrderedSet{
+    		self.map toMainFile(),
+    		self.map toPreprocessFile(),
+    		self.map toTrainFile(),
+    		self.map toPredictFile()
+    	} 
+    else 
+    	OrderedSet{self.map toKeepFile()} 
+    endif;
 }
 
 mapping NotebookMM::NotebookModel::toMainFile() : ProjectStuctureMM::File {
     result.name := MAIN_FILE_NAME;
-    result.content := generateMainPyContent(self);
+    result.content := generateOrchestratorContent(self);
+}
+
+mapping NotebookMM::NotebookModel::toPreprocessFile() : ProjectStuctureMM::File {
+    result.name := PREPROCESS_FILE_NAME;
+    result.content := generatePreprocessContent(self);
+}
+
+mapping NotebookMM::NotebookModel::toTrainFile() : ProjectStuctureMM::File {
+    result.name := TRAIN_FILE_NAME;
+    result.content := generateTrainContent(self);
+}
+
+mapping NotebookMM::NotebookModel::toPredictFile() : ProjectStuctureMM::File {
+    result.name := PREDICT_FILE_NAME;
+    result.content := generatePredictContent(self);
 }
 
 mapping NotebookMM::NotebookModel::toRequirementsFile() : ProjectStuctureMM::File {
 	result.name := REQUIREMENTS_FILE_NAME;
 	result.content := extractPackageNames(self);
+}
+
+mapping NotebookMM::NotebookModel::toRunScript() : ProjectStuctureMM::File {
+	result.name := RUN_SCRIPT_NAME;
+	result.content := generateRunShContent(self);
 }
 
 mapping NotebookMM::NotebookModel::toKeepFile() : ProjectStuctureMM::File {

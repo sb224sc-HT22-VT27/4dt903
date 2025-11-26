@@ -3,6 +3,25 @@ import transformationutils.CodeBlockClassifier;
 library CodeClassificationLib;
 
 /**
+ * Classifies a code block based on its content.
+ * Uses heuristics to determine whether code is for preprocessing, training, or prediction.
+ * @param code The source code to classify
+ * @return One of: PREPROCESS, TRAIN, or PREDICT
+ */
+helper classifyCodeWithContent(code : String) : String {
+	return CodeBlockClassifier::classifyCodeBlockJava(code);
+}
+
+/**
+ * Returns a comment with the classification based on the provided code.
+ * @param code The source code that was classified
+ * @return A comment string with the classification
+ */
+helper getClassificationCommentForCode(code : String) : String {
+	return CodeBlockClassifier::getClassificationCommentJava(code);
+}
+
+/**
  * Returns a random classification for a code block.
  * @return One of: PREPROCESS, TRAIN, or PREDICT
  */

@@ -7,6 +7,7 @@ modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
 /**
  * Returns a Sequence of Strings representing the code of the given notebook.
+ * This is the legacy method that puts all code in main.py.
  * @return Sequence(String)
  */
 helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
@@ -24,11 +25,275 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(St
             // Add code cell source as-is
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
-                contentLines += '\n' + codeCell.source + CodeClassificationLib::getClassificationCommentQVTo() + '\n\n';
+                contentLines += '\n' + codeCell.source + CodeClassificationLib::getClassificationCommentForCode(codeCell.source) + '\n\n';
             } endif;
         } endif endif;
     };
 
+    return contentLines;
+}
+
+/**
+ * Generates content for the main.py orchestrator file.
+ * This file imports and calls functions from preprocess.py, train.py, and predict.py.
+ * @return Sequence(String)
+ */
+helper generateOrchestratorContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    
+    // Add header docstring
+    contentLines += '"""\nMain orchestrator for the ML pipeline.\nThis script coordinates preprocessing, training, and prediction stages.\n"""\n\n';
+    
+    // Add imports
+    contentLines += 'from preprocess import run_preprocessing\n';
+    contentLines += 'from train import run_training\n';
+    contentLines += 'from predict import run_prediction\n\n';
+    
+    // Add main function
+    contentLines += 'def main():\n';
+    contentLines += '    """Run the complete ML pipeline."""\n';
+    contentLines += '    print("Starting ML Pipeline...")\n';
+    contentLines += '    \n';
+    contentLines += '    # Step 1: Preprocess data\n';
+    contentLines += '    print("\\n=== Preprocessing ===\")\n';
+    contentLines += '    preprocessing_result = run_preprocessing()\n';
+    contentLines += '    \n';
+    contentLines += '    # Step 2: Train model\n';
+    contentLines += '    print("\\n=== Training ===\")\n';
+    contentLines += '    training_result = run_training(preprocessing_result)\n';
+    contentLines += '    \n';
+    contentLines += '    # Step 3: Make predictions\n';
+    contentLines += '    print("\\n=== Prediction ===\")\n';
+    contentLines += '    prediction_result = run_prediction(training_result)\n';
+    contentLines += '    \n';
+    contentLines += '    print("\\nML Pipeline completed successfully!")\n';
+    contentLines += '    return prediction_result\n\n';
+    
+    // Add if __name__ == "__main__"
+    contentLines += 'if __name__ == "__main__":\n';
+    contentLines += '    main()\n';
+    
+    return contentLines;
+}
+
+/**
+ * Generates content for preprocess.py containing preprocessing code.
+ * @return Sequence(String)
+ */
+helper generatePreprocessContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    var codeBlocks : Sequence(String) := Sequence{};
+    var hasImports : Boolean := false;
+    
+    // Add header
+    contentLines += '"""\nData preprocessing module.\nContains all data loading and preprocessing logic.\n"""\n\n';
+    
+    // Collect imports from all cells
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                var classification := CodeClassificationLib::classifyCodeWithContent(codeCell.source);
+                // Include imports in preprocessing file
+                if codeCell.source.indexOf('import ') > 0 and not hasImports then {
+                    contentLines += codeCell.source + '\n\n';
+                    hasImports := true;
+                } elif classification = 'PREPROCESS' then {
+                    codeBlocks += codeCell.source;
+                } endif endif;
+            } endif;
+        } endif;
+    };
+    
+    // Add function wrapper
+    contentLines += 'def run_preprocessing():\n';
+    contentLines += '    """Run all preprocessing steps and return processed data."""\n';
+    
+    // Add code blocks as function body (indented)
+    codeBlocks->forEach(block) {
+        // Indent the code block
+        var lines := block.tokenize('\n');
+        lines->forEach(line) {
+            if line <> '' then {
+                contentLines += '    ' + line + '\n';
+            } else {
+                contentLines += '\n';
+            } endif;
+        };
+        contentLines += '\n';
+    };
+    
+    // Add return statement placeholder
+    contentLines += '    # Return preprocessing results\n';
+    contentLines += '    return locals()\n';
+    
+    return contentLines;
+}
+
+/**
+ * Generates content for train.py containing training code.
+ * @return Sequence(String)
+ */
+helper generateTrainContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    var codeBlocks : Sequence(String) := Sequence{};
+    
+    // Add header
+    contentLines += '"""\nModel training module.\nContains all model training and evaluation logic.\n"""\n\n';
+    
+    // Collect imports
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                if codeCell.source.indexOf('import ') > 0 then {
+                    contentLines += codeCell.source + '\n\n';
+                } endif;
+            } endif;
+        } endif;
+    };
+    
+    // Collect training code
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                var classification := CodeClassificationLib::classifyCodeWithContent(codeCell.source);
+                if classification = 'TRAIN' and codeCell.source.indexOf('import ') <= 0 then {
+                    codeBlocks += codeCell.source;
+                } endif;
+            } endif;
+        } endif;
+    };
+    
+    // Add function wrapper
+    contentLines += 'def run_training(preprocess_data=None):\n';
+    contentLines += '    """Run model training and return trained model."""\n';
+    contentLines += '    if preprocess_data:\n';
+    contentLines += '        locals().update(preprocess_data)\n';
+    contentLines += '\n';
+    
+    // Add code blocks as function body (indented)
+    codeBlocks->forEach(block) {
+        var lines := block.tokenize('\n');
+        lines->forEach(line) {
+            if line <> '' then {
+                contentLines += '    ' + line + '\n';
+            } else {
+                contentLines += '\n';
+            } endif;
+        };
+        contentLines += '\n';
+    };
+    
+    // Add return statement
+    contentLines += '    # Return training results\n';
+    contentLines += '    return locals()\n';
+    
+    return contentLines;
+}
+
+/**
+ * Generates content for predict.py containing prediction code.
+ * @return Sequence(String)
+ */
+helper generatePredictContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    var codeBlocks : Sequence(String) := Sequence{};
+    
+    // Add header
+    contentLines += '"""\nPrediction module.\nContains all prediction and inference logic.\n"""\n\n';
+    
+    // Collect imports
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                if codeCell.source.indexOf('import ') > 0 then {
+                    contentLines += codeCell.source + '\n\n';
+                } endif;
+            } endif;
+        } endif;
+    };
+    
+    // Collect prediction code
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                var classification := CodeClassificationLib::classifyCodeWithContent(codeCell.source);
+                if classification = 'PREDICT' and codeCell.source.indexOf('import ') <= 0 then {
+                    codeBlocks += codeCell.source;
+                } endif;
+            } endif;
+        } endif;
+    };
+    
+    // Add function wrapper
+    contentLines += 'def run_prediction(train_data=None):\n';
+    contentLines += '    """Run predictions and return results."""\n';
+    contentLines += '    if train_data:\n';
+    contentLines += '        locals().update(train_data)\n';
+    contentLines += '\n';
+    
+    // Add code blocks as function body (indented)
+    codeBlocks->forEach(block) {
+        var lines := block.tokenize('\n');
+        lines->forEach(line) {
+            if line <> '' then {
+                contentLines += '    ' + line + '\n';
+            } else {
+                contentLines += '\n';
+            } endif;
+        };
+        contentLines += '\n';
+    };
+    
+    // Add return statement
+    contentLines += '    # Return prediction results\n';
+    contentLines += '    return locals()\n';
+    
+    return contentLines;
+}
+
+/**
+ * Generates content for run.sh script that sets up venv and runs the project.
+ * @return Sequence(String)
+ */
+helper generateRunShContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    
+    contentLines += '#!/bin/bash\n';
+    contentLines += '# Run script for the ML project\n';
+    contentLines += '# This script sets up a virtual environment, installs dependencies, and runs the main script.\n\n';
+    contentLines += 'set -e  # Exit on error\n\n';
+    contentLines += '# Get the directory where this script is located\n';
+    contentLines += 'SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"\n';
+    contentLines += 'cd "$SCRIPT_DIR"\n\n';
+    contentLines += '# Check if Python 3 is installed\n';
+    contentLines += 'if ! command -v python3 &> /dev/null; then\n';
+    contentLines += '    echo "Error: Python 3 is not installed"\n';
+    contentLines += '    exit 1\n';
+    contentLines += 'fi\n\n';
+    contentLines += '# Create virtual environment if it does not exist\n';
+    contentLines += 'if [ ! -d "venv" ]; then\n';
+    contentLines += '    echo "Creating virtual environment..."\n';
+    contentLines += '    python3 -m venv venv\n';
+    contentLines += 'fi\n\n';
+    contentLines += '# Activate virtual environment\n';
+    contentLines += 'echo "Activating virtual environment..."\n';
+    contentLines += 'source venv/bin/activate\n\n';
+    contentLines += '# Install requirements\n';
+    contentLines += 'echo "Installing requirements..."\n';
+    contentLines += 'pip install -r requirements.txt\n\n';
+    contentLines += '# Run the main script\n';
+    contentLines += 'echo "Running main.py..."\n';
+    contentLines += 'cd src\n';
+    contentLines += 'python main.py\n\n';
+    contentLines += '# Deactivate virtual environment\n';
+    contentLines += 'deactivate\n';
+    contentLines += 'echo "Done!"\n';
+    
     return contentLines;
 }
 

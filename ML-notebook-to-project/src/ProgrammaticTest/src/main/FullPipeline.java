@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import projectStructureMM.ProjectStructure;
 import projectStructureMM.ProjectStructureMMPackage;
 
 /**
- * Full Pipeline: T2M -> M2M -> M2T
+ * Full Pipeline: T2M -> M2M -> M2T + Data Copy
  * 
  * This class connects the pipeline from Text-to-Model (T2M), Model-to-Model
  * (M2M), and Model-to-Text (M2T) into one seamless execution.
@@ -38,6 +39,8 @@ import projectStructureMM.ProjectStructureMMPackage;
  * M2M: Executes NotebookToProject.qvto (QVT-O) to transform NotebookModel to
  * ProjectStructure M2T: Uses Generate.java (Acceleo) to generate Python project
  * files from ProjectStructure
+ * Data Copy: Copies data files from input notebook's data/ directory to output
+ * project's data/ directory
  */
 public class FullPipeline {
 	private static final String QVTO_TRANSFORMATION_PATH = "../NotebookToProjectM2M/transforms/NotebookToProject.qvto";
@@ -92,6 +95,11 @@ public class FullPipeline {
 		// Step 3: M2T - Generate files from ProjectStructure using Acceleo
 		System.out.println("Step 3: M2T - Generating project files using generate.mtl (Acceleo)...");
 		modelToText(projectStructure, outputPath);
+		System.out.println();
+
+		// Step 4: Copy data files from input directory to output project
+		System.out.println("Step 4: Copying data files...");
+		copyDataFiles(inputPath, outputPath, projectStructure.getName());
 		System.out.println();
 
 		System.out.println("=== Pipeline Complete ===");
@@ -240,6 +248,72 @@ public class FullPipeline {
 
 		System.out.println("  Generated project at: " + outputDir.resolve(project.getName()));
 
+	}
+
+	/**
+	 * Copy data files from the input notebook's directory to the output project's
+	 * data/ directory. This handles the requirement that data files alongside the
+	 * input .ipynb file should be copied to the generated project structure.
+	 * 
+	 * @param inputNotebookPath Path to the input .ipynb file
+	 * @param outputBaseDir     Base output directory
+	 * @param projectName       Name of the generated project
+	 */
+	private void copyDataFiles(String inputNotebookPath, String outputBaseDir, String projectName) throws IOException {
+		// Get the directory containing the input notebook
+		Path notebookPath = Paths.get(inputNotebookPath).toAbsolutePath().normalize();
+		Path inputDir = notebookPath.getParent();
+
+		// Look for a data/ directory in the input
+		Path inputDataDir = inputDir.resolve("data");
+
+		// Target data directory in the generated project
+		Path outputDataDir = Paths.get(outputBaseDir).resolve(projectName).resolve("data");
+
+		if (Files.exists(inputDataDir) && Files.isDirectory(inputDataDir)) {
+			System.out.println("  Found data directory: " + inputDataDir);
+
+			// Create output data directory if it doesn't exist
+			Files.createDirectories(outputDataDir);
+
+			// Copy all files from input data directory to output data directory
+			int filesCopied = copyDirectoryRecursively(inputDataDir, outputDataDir);
+			System.out.println("  Copied " + filesCopied + " data file(s) to: " + outputDataDir);
+		} else {
+			System.out.println("  No data directory found in input, skipping data copy.");
+		}
+	}
+
+	/**
+	 * Recursively copy a directory and its contents.
+	 * 
+	 * @param source      Source directory
+	 * @param destination Destination directory
+	 * @return Number of files copied
+	 */
+	private int copyDirectoryRecursively(Path source, Path destination) throws IOException {
+		int count = 0;
+
+		// Create destination directory
+		Files.createDirectories(destination);
+
+		// Walk through source directory
+		try (var stream = Files.walk(source)) {
+			for (Path sourcePath : (Iterable<Path>) stream::iterator) {
+				Path relativePath = source.relativize(sourcePath);
+				Path targetPath = destination.resolve(relativePath);
+
+				if (Files.isDirectory(sourcePath)) {
+					Files.createDirectories(targetPath);
+				} else {
+					// Copy file, replacing if it exists
+					Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+					count++;
+				}
+			}
+		}
+
+		return count;
 	}
 
 	/**
