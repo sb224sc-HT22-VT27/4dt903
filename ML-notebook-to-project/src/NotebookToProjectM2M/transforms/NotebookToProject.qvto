@@ -44,6 +44,6 @@ mapping NotebookMM::NotebookModel::toKeepFile() : ProjectStuctureMM::File {
 
 mapping NotebookMM::NotebookModel::toDockerfile() : ProjectStuctureMM::File {
 	result.name := DOCKERFILE_NAME;
-	result.content := generateDockerfileContent();
+	result.content := generateDockerfileContent(self);
 }
 

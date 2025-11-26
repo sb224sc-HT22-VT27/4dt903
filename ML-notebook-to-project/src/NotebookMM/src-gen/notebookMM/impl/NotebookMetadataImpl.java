@@ -114,6 +114,26 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 	protected int nbformatMinor = NBFORMAT_MINOR_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getPythonVersion() <em>Python Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPythonVersion()
+	 * @generated NOT
+	 * @ordered
+	 */
+	protected static final String PYTHON_VERSION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getPythonVersion() <em>Python Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPythonVersion()
+	 * @generated NOT
+	 * @ordered
+	 */
+	protected String pythonVersion = PYTHON_VERSION_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -226,6 +246,30 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT_MINOR,
 					oldNbformatMinor, nbformatMinor));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public String getPythonVersion() {
+		return pythonVersion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public void setPythonVersion(String newPythonVersion) {
+		String oldPythonVersion = pythonVersion;
+		pythonVersion = newPythonVersion;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, NotebookMMPackage.NOTEBOOK_METADATA__LANGUAGE,
+					oldPythonVersion, pythonVersion));
 	}
 
 	/**
@@ -357,7 +401,7 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String toString() {
@@ -369,6 +413,8 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 		result.append(kernelspec);
 		result.append(", language: ");
 		result.append(language);
+		result.append(", pythonVersion: ");
+		result.append(pythonVersion);
 		result.append(", nbformat: ");
 		result.append(nbformat);
 		result.append(", nbformatMinor: ");

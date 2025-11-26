@@ -113,6 +113,28 @@ public interface NotebookMetadata extends EObject {
 	void setNbformatMinor(int value);
 
 	/**
+	 * Returns the value of the '<em><b>Python Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Python Version</em>' attribute.
+	 * @see #setPythonVersion(String)
+	 * @see notebookMM.NotebookMMPackage#getNotebookMetadata_PythonVersion()
+	 * @model
+	 * @generated NOT
+	 */
+	String getPythonVersion();
+
+	/**
+	 * Sets the value of the '{@link notebookMM.NotebookMetadata#getPythonVersion <em>Python Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Python Version</em>' attribute.
+	 * @see #getPythonVersion()
+	 * @generated NOT
+	 */
+	void setPythonVersion(String value);
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation"

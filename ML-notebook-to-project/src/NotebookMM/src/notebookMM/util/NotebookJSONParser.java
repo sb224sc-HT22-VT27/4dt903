@@ -74,6 +74,10 @@ public class NotebookJSONParser {
 			if (metadata.getLanguage() == null || metadata.getLanguage().isEmpty()) {
 				metadata.setLanguage(langInfo.optString("name", ""));
 			}
+			// Extract Python version from language_info
+			if (langInfo.has("version")) {
+				metadata.setPythonVersion(langInfo.optString("version", ""));
+			}
 		}
 
 		metadata.setNbformat(metadataJson.optInt("nbformat", 4));
