@@ -1,4 +1,5 @@
-		"""
+		
+"""
 
 		# Variational Inference using VAEs and Normalizing Flows
 
@@ -53,7 +54,8 @@ Recall that $w=\mu+\sigma\cdot\epsilon$.
 So, in order to average the effect of many different $w^{(s)}\in W$, we compute the mean of our model's predictions using these varying parameters.
 Then, we maximize the average ELBO.
 
-		"""
+		
+"""
 
 
 		## Differences in a Variational Autoencoder
@@ -100,7 +102,8 @@ You may or may not follow this skeleton, it is just a suggestion.
 
 Choose one architecture that works best for you (dense *or* convolutional).
 
-		import torch
+		
+import torch
 from torch import nn, Tensor
 from torch.distributions.normal import Normal
 
@@ -161,7 +164,7 @@ class MyVAE(nn.Module):
         z = self.prior.sample((n,))
         return self.decoder(z)
     
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -197,7 +200,8 @@ $$
 Below is some boilerplate code for constructing a Normalizing Flow using the `normflows` package.
 Even if you choose something else, perhaps you want to conceptually construct your flow similar to how it's done here.
 
-		from normflows import NormalizingFlow
+		
+from normflows import NormalizingFlow
 from normflows.flows import Flow, AutoregressiveRationalQuadraticSpline, LULinearPermute
 from typing import override
 
@@ -246,7 +250,7 @@ class MyVAEwithNF(MyVAE):
     
         xRecon = self.decoder(zK)
         return xRecon, kl, zK
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -257,7 +261,8 @@ The goal is to train either architecture and then to compare the results.
 
 		## Download and Prepare the Data
 
-		from torchvision import datasets, transforms
+		
+from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 batch_size = 192
@@ -275,7 +280,8 @@ test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, drop_last=
 
 
 
-		train_dataset.data.shape, test_dataset.data.shape
+		
+train_dataset.data.shape, test_dataset.data.shape
 # Classification: PREDICT
 
 
@@ -312,7 +318,8 @@ $$
 Let's train this model first.
 It is perhaps easiest to use the same training routine for either model (with/without NF).
 
-		import numpy as np
+		
+import numpy as np
 from torch import device
 from torch.optim import Adam
 from torch.nn.functional import binary_cross_entropy
@@ -359,7 +366,7 @@ for epoch in range(EPOCHS):
     reconLosses.append(epochRecon / len(train_loader))
     klDivs.append(epochKl / len(train_loader))
     print(f"Epoch: {epoch+1}, Recon Loss: {reconLosses[-1]:.4f}, KL: {klDivs[-1]:.4f}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -379,7 +386,8 @@ Please provide **4** kinds of plots now:
 
 **Question**: What is your interpretation of the 4th plot? Has the model learned something useful?
 
-		import matplotlib.pyplot as plt
+		
+import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 
 plt.figure(figsize=(10,4))
@@ -443,7 +451,7 @@ plt.title('t-SNE of Encoded Test Images')
 plt.xlabel('t-SNE 1')
 plt.ylabel('t-SNE 2')
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -514,7 +522,8 @@ Here, train your NF-backed VAE with the optimal parameters found by you.
 
 In order to get comparable results, do **not** alter the number of latent dimensions.
 
-		LEARNING_RATE = 0.001
+		
+LEARNING_RATE = 0.001
 EPOCHS = 10
 KL_DIV_BETA = 1.5
 
@@ -553,13 +562,14 @@ for epoch in range(EPOCHS):
     reconLossesNf.append(epochRecon / len(train_loader))
     klDivsNf.append(epochKl / len(train_loader))
     print(f"Epoch: {epoch+1}, Recon Loss: {reconLossesNf[-1]:.4f}, KL: {klDivsNf[-1]:.4f}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 		### Evaluation
 
-		plt.figure(figsize=(10,4))
+		
+plt.figure(figsize=(10,4))
 plt.subplot(1,2,1)
 plt.plot(reconLossesNf, label='Reconstruction Loss')
 plt.xlabel('Epoch')
@@ -621,7 +631,7 @@ plt.title('t-SNE of Encoded Test Images (NF-backed VAE)')
 plt.xlabel('t-SNE 1')
 plt.ylabel('t-SNE 2')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

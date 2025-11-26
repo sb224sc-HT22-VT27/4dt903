@@ -1,8 +1,10 @@
-		"""
+		
+"""
 
 		# Assignmen 5 vj222hx
 
-		"""
+		
+"""
 
 
 		## Conceptual
@@ -15,56 +17,63 @@
 		## Practical
 Add imports
 
-		import pandas as pd
+		
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
 		Load Auto dataset
 
-		csvFile = pd.read_csv("Auto.csv", index_col=0)
+		
+csvFile = pd.read_csv("Auto.csv", index_col=0)
 # Classification: PREDICT
 
 
 
 		Display the number of features and their names:
 
-		colNames = csvFile.columns.tolist()
+		
+colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
 		Print a statistic summary of the predictors and the response:
 
-		print(csvFile.describe(), "\n")
+		
+print(csvFile.describe(), "\n")
 print(csvFile['name'].value_counts())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 		Display the number of datapoints
 
-		print(f"Number of datapoints {len(csvFile)}")
-# Classification: TRAIN
+		
+print(f"Number of datapoints {len(csvFile)}")
+# Classification: PREDICT
 
 
 
 		Display the data in a table
 
-		print(csvFile.head(20))
-# Classification: PREPROCESS
+		
+print(csvFile.head(20))
+# Classification: TRAIN
 
 
 
 		Correlation Plot
 
-		sns.heatmap(csvFile.drop(columns=['name']).corr(), annot=True, fmt=".2f", linewidths=0.5)
+		
+sns.heatmap(csvFile.drop(columns=['name']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
 # Classification: TRAIN
 
@@ -72,34 +81,39 @@ plt.show()
 
 		Estimating accuracy of lin reg model
 
-		def boot_fn(data, index):
+		
+def boot_fn(data, index):
     sample = data.iloc[index]
     X = sample['horsepower']
     y = sample['mpg']
     X = sm.add_constant(X)
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: TRAIN
-
-
-
-		print(boot_fn(csvFile, range(392)))
 # Classification: PREDICT
 
 
 
-		np.random.seed(1)
+		
+print(boot_fn(csvFile, range(392)))
+# Classification: PREPROCESS
+
+
+
+		
+np.random.seed(1)
+print(boot_fn(csvFile, np.random.choice(392, 392, replace=True)))
+# Classification: PREDICT
+
+
+
+		
 print(boot_fn(csvFile, np.random.choice(392, 392, replace=True)))
 # Classification: TRAIN
 
 
 
-		print(boot_fn(csvFile, np.random.choice(392, 392, replace=True)))
-# Classification: PREDICT
-
-
-
-		boot_results = np.zeros((1000, 2))
+		
+boot_results = np.zeros((1000, 2))
 for i in range(1000):
     indices = np.random.choice(392, 392, replace=True)  # Bootstrap resampling
     boot_results[i, :] = boot_fn(csvFile, indices)
@@ -109,19 +123,21 @@ print(f"standard errors: {boot_results.std(axis=0)}")
 
 
 
-		X = csvFile['horsepower']
+		
+X = csvFile['horsepower']
 y = csvFile['mpg']
 X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 		The standard errors in the statistics estimate are 0.717 and 0.006. The standard errors in the bootstrap are 0.825 and 0.007. Here we can see that the bootstrap estimate has a slightly higher standard error which is expected since it is an estimate over many different subsets, so the regular estimate is better according these numbers but it is probably because it is slightly overfitted. 
 
-		def boot_fn_quadratic(data, index):
+		
+def boot_fn_quadratic(data, index):
     sample = data.iloc[index]
     X = sample['horsepower']
     X = np.column_stack((X, X**2))
@@ -129,29 +145,31 @@ print(model.summary())
     y = sample['mpg']
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		np.random.seed(1)
+		
+np.random.seed(1)
 boot_results = np.zeros((1000, 3))
 for i in range(1000):
     indices = np.random.choice(392, 392, replace=True)
     boot_results[i, :] = boot_fn_quadratic(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		csvFile['horsepower_squared'] = csvFile['horsepower'] ** 2
+		
+csvFile['horsepower_squared'] = csvFile['horsepower'] ** 2
 X = csvFile[['horsepower', 'horsepower_squared']]
 y = csvFile['mpg']
 X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

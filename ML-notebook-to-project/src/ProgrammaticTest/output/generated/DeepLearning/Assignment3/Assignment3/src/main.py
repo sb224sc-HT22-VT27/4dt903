@@ -1,17 +1,21 @@
-		import numpy as np
+		
+import numpy as np
 import matplotlib.pyplot as plt
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		"""
+		
+"""
 
 		Define needed functions and their derivatives
 
-		"""
+		
+"""
 
 
-		def sigmoid(x):
+		
+def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 def sigmoid_derivative(x):
@@ -23,26 +27,28 @@ def mse(y_true, y_pred):
 
 def mse_derivative(y_true, y_pred):
     return (y_pred - y_true)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
 		Initialize training data
 
-		X = np.array([
+		
+X = np.array([
     [0, 0],
     [0, 1],
     [1, 0],
     [1, 1]
 ])
 Y = np.array([[0], [1], [1], [0]])
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
 		Initialize random weights and train network
 
-		np.random.seed(42)
+		
+np.random.seed(42)
 
 input_size = 2
 hidden_size = 5
@@ -81,13 +87,14 @@ for epoch_idx in range(epochs):
     biases_2 -= learning_rate * db_2
     weights_1 -= learning_rate * dW_1
     biases_1 -= learning_rate * db_1
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
 		Evaluate network
 
-		print("\nFinal outputs after training:")
+		
+print("\nFinal outputs after training:")
 z1 = X @ weights_1 + biases_1
 a1 = sigmoid(z1)
 z2 = a1 @ weights_2 + biases_2
@@ -121,7 +128,7 @@ ax.set_xlabel("W2[0,0]")
 ax.set_ylabel("W2[1,0]")
 ax.set_zlabel("Loss")
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

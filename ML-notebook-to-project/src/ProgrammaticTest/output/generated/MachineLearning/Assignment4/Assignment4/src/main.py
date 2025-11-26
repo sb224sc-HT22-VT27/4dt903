@@ -1,8 +1,10 @@
-		"""
+		
+"""
 
 		# Assignmen 4 vj222hx
 
-		"""
+		
+"""
 
 
 		## Conceptual
@@ -22,7 +24,8 @@ b) Curse of dimentionality referes to the issue with distance based algorithms t
 Add imports
 
 
-		import pandas as pd
+		
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -37,14 +40,16 @@ from sklearn.neighbors import KNeighborsClassifier as KNN
 
 		Load Smarket dataset
 
-		csvFile = pd.read_csv("Smarket.csv", index_col=0)
-# Classification: TRAIN
+		
+csvFile = pd.read_csv("Smarket.csv", index_col=0)
+# Classification: PREPROCESS
 
 
 
 		Display the number of features and their names:
 
-		colNames = csvFile.columns.tolist()
+		
+colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
 # Classification: TRAIN
@@ -53,39 +58,44 @@ print(f"Column Names: {colNames}")
 
 		Print a statistic summary of the predictors and the response:
 
-		print(csvFile.describe())
+		
+print(csvFile.describe())
 print(csvFile['Direction'].value_counts())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 		Display the number of datapoints
 
-		print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+		
+print(f"Number of datapoints {len(csvFile)}")
+# Classification: PREPROCESS
 
 
 
 		Display the data in a table
 
-		print(csvFile.head(20))
-# Classification: PREPROCESS
+		
+print(csvFile.head(20))
+# Classification: TRAIN
 
 
 
 		Correlation Plot
 
-		sns.heatmap(csvFile.drop(columns=['Direction']).corr(), annot=True, fmt=".2f", linewidths=0.5)
+		
+sns.heatmap(csvFile.drop(columns=['Direction']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
 		Here we can see that most values have very little to no correlation except for year and volume which have a correlation of 0.54. This means that an increase in year number correlates with an increase in volume. 
 
-		sns.scatterplot(data=csvFile, x='Year', y='Volume', color="black")
+		
+sns.scatterplot(data=csvFile, x='Year', y='Volume', color="black")
 sns.regplot(data=csvFile, x="Year", y="Volume", color="black")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -93,13 +103,14 @@ sns.regplot(data=csvFile, x="Year", y="Volume", color="black")
 
 		Logistics regression
 
-		X = csvFile[['Lag1', 'Lag2', 'Lag3', 'Lag4', 'Lag5', 'Volume']]
+		
+X = csvFile[['Lag1', 'Lag2', 'Lag3', 'Lag4', 'Lag5', 'Volume']]
 X = sm.add_constant(X)
 y = csvFile['Direction'].map({'Up': 1, 'Down': 0})
 model = sm.Logit(y, X).fit()
 
 print(model.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -107,7 +118,8 @@ print(model.summary())
 
 		Predict using the model
 
-		probs = model.predict()
+		
+probs = model.predict()
 
 for i in range(10):
     print(f"{i + 1}   {probs[i]}")
@@ -119,7 +131,8 @@ for i in range(10):
 
 		Confusion matrix
 
-		pred = []
+		
+pred = []
 for i in probs:
     if i > 0.5:
         pred.append("Up")
@@ -135,7 +148,8 @@ print(f"Model Accuracy: {accuracy}")
 
 		When we printed 10 values we can see that all values are close to 0.5 which indicates that it it not a confident prediction. This is reinforced with a model accuracy of 52.16% which is slightly better than a coin toss. 
 
-		X = csvFile[['Lag1', 'Lag2']]
+		
+X = csvFile[['Lag1', 'Lag2']]
 X = sm.add_constant(X)
 model = sm.Logit(y, X).fit()
 probs = model.predict(X)
@@ -150,13 +164,14 @@ for i in probs:
 print(pd.crosstab(pred, csvFile["Direction"]))
 accuracy = np.mean(pred == csvFile['Direction'])
 print(f"Model Accuracy: {accuracy}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
 		This shows that only using Lag1 and Lag2 gives a slightly better accuracy than having all the predictors, however we do not know if this is significant. 
 
-		X = csvFile[['Lag1', 'Lag2']]
+		
+X = csvFile[['Lag1', 'Lag2']]
 model = LDA()
 model.fit(X, y)
 print(f"Prior probabilities of groups: {model.priors_}")
@@ -187,7 +202,8 @@ plt.show()
 
 		From the first print we can see that there is 51.84% up in the data and the rest is down. From the second print we can see that the average value for Lag1 when the direction is down is 0.05, the average value for Lag2 when the direction is down is 0.03. Lag1 and Up is -0.04 and Lag2 and Up is -0.02. The last print shows that an increase in Lag1 or Lag2 will generally trend towards a down direction because the coefficients are negative. The graphs show that there is some overlap meaning that it might not be a good predictor of direction.
 
-		lda_class = model.predict(X)
+		
+lda_class = model.predict(X)
 conf_matrix = pd.crosstab(lda_class, y)
 accuracy = accuracy_score(y, lda_class)
 print("Confusion Matrix:\n", conf_matrix)
@@ -200,11 +216,12 @@ print("Accuracy:", accuracy)
 
 		QDA
 
-		model = QDA()
+		
+model = QDA()
 model.fit(X, y)
 print(f"Prior probabilities of groups: {model.priors_}")
 print(f"Group means:\n{model.means_}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -212,7 +229,8 @@ print(f"Group means:\n{model.means_}")
 
 		Predict using QDA
 
-		qda_class = model.predict(X)
+		
+qda_class = model.predict(X)
 
 conf_matrix = pd.crosstab(qda_class, y, rownames=['Predicted'], colnames=['Actual'])
 
@@ -221,7 +239,7 @@ accuracy = accuracy_score(y, qda_class)
 # Print results
 print("\nConfusion Matrix:\n", conf_matrix)
 print("\nAccuracy:", accuracy)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -229,13 +247,15 @@ print("\nAccuracy:", accuracy)
 
 		Use KNN clustering
 
-		train = csvFile['Year'] < 2005
+		
+train = csvFile['Year'] < 2005
 print(csvFile[~train].shape)
 # Classification: PREPROCESS
 
 
 
-		train_X = csvFile[['Lag1', 'Lag2']][train]
+		
+train_X = csvFile[['Lag1', 'Lag2']][train]
 test_X = csvFile[['Lag1', 'Lag2']][~train]
 
 train_direction = csvFile['Direction'][train]
@@ -252,11 +272,12 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		knn_model = KNN(n_neighbors=3)
+		
+knn_model = KNN(n_neighbors=3)
 knn_model.fit(train_X, train_direction)
 
 knn_pred = knn_model.predict(test_X)
@@ -267,7 +288,7 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

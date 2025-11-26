@@ -1,8 +1,10 @@
-		"""
+		
+"""
 
 		### Assignmen 2+3 vj222hx
 
-		"""
+		
+"""
 
 
 		## Conceptual questions
@@ -30,7 +32,8 @@ $Y_C = 50 + 20*4 + 0.07*110 + 35 + 0.01*4*110 - 10*4 = 137.1$ Which is $137100
 
 		Add imports
 
-		import pandas as pd
+		
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -41,45 +44,51 @@ import numpy as np
 
 		Load the Boston.csv file
 
-		csvFile = pd.read_csv("Boston.csv", index_col=0)
+		
+csvFile = pd.read_csv("Boston.csv", index_col=0)
 # Classification: PREDICT
 
 
 
 		Display the number of features and their names:
 
-		colNames = csvFile.columns.tolist()
+		
+colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
 		Print a statistic summary of the predictors and the response:
 
-		csvFile.describe()
-# Classification: TRAIN
+		
+csvFile.describe()
+# Classification: PREDICT
 
 
 
 		Display the number of datapoints
 
-		print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+		
+print(f"Number of datapoints {len(csvFile)}")
+# Classification: TRAIN
 
 
 
 		Display the data in a table
 
 
-		print(csvFile.head(20))
-# Classification: PREPROCESS
+		
+print(csvFile.head(20))
+# Classification: PREDICT
 
 
 
 		Plot lstat and rm
 
-		sns.scatterplot(x="lstat", y="medv", data=csvFile, color="black")
+		
+sns.scatterplot(x="lstat", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
@@ -91,13 +100,14 @@ plt.show()
 
 		Do linear regression
 
-		reg1 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["lstat"])).fit()
+		
+reg1 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["lstat"])).fit()
 print(reg1.summary())
 reg2 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["rm"])).fit()
 print(reg2.summary())
 reg3 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["age"])).fit()
 print(reg3.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -105,10 +115,11 @@ print(reg3.summary())
 
 The same interpretation can be made of the other values of 0.484 and 2.49e-74, and 0.142 and 1.57e-18 for the third one. All f-statistics are low enough to statistically significant. 
 
-		print(reg1.conf_int())
+		
+print(reg1.conf_int())
 print(reg2.conf_int())
 print(reg3.conf_int())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -116,7 +127,8 @@ print(reg3.conf_int())
 
 		Use the model
 
-		new_lstat = pd.DataFrame({'lstat': [5, 10, 15]})
+		
+new_lstat = pd.DataFrame({'lstat': [5, 10, 15]})
 new_lstat = sm.add_constant(new_lstat)
 pred1 = reg1.get_prediction(new_lstat).summary_frame(alpha=0.05)
 print(pred1[['mean', 'obs_ci_lower', 'obs_ci_upper']])
@@ -130,13 +142,14 @@ new_age = pd.DataFrame({'age': [25, 50, 75]})
 new_age = sm.add_constant(new_age)
 pred3 = reg3.get_prediction(new_age).summary_frame(alpha=0.05)
 print(pred3[['mean', 'obs_ci_lower', 'obs_ci_upper']])
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
 		The values inserted in the first regression is 5, 10 and 15. This means that an lstat of 5 will mean that it will have a medv of between 17.56 and 42.04 with a 95% probabilty. 10 and 15 will have a value between (12.82, 37.28) and (8.08, 32.53) respectivly with a 95% probaility. We also inserted 5, 6.5 and 8 into rm and the same values can be interpreted from the second matrix in the output. I also inserted 20, 50, and 75 into age and the same data can be read from the third matrix in the output.
 
-		reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
+		
+reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
 print(reg.summary())
 # Classification: TRAIN
 
@@ -144,9 +157,10 @@ print(reg.summary())
 
 		Here we can see that R-squared is 0.639 which means that 63.9% of the variance can be explained with the model. The prob f-statistics line of 1.2e-110 is very low which means it is highly statistically significant, a value of < 0.05 indicating that it is 95% statstically significant
 
-		reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
+		
+reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -154,9 +168,10 @@ print(reg.summary())
 
 		Correlation plot
 
-		sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+		
+sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -164,7 +179,8 @@ plt.show()
 
 		Use the multiple linear regression model to predict the medv values
 
-		selected_predictor_values = pd.DataFrame(pd.MultiIndex.from_product([[5, 10, 15], [5, 6.5, 8]], names=["lstat", "rm"]).to_frame(index=False))
+		
+selected_predictor_values = pd.DataFrame(pd.MultiIndex.from_product([[5, 10, 15], [5, 6.5, 8]], names=["lstat", "rm"]).to_frame(index=False))
 print(selected_predictor_values)
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm"]])).fit()
@@ -180,23 +196,25 @@ print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
 
 		## Assignment 3
 
-		X = csvFile[["lstat", "rm", "nox", "dis", "ptratio"]]
+		
+X = csvFile[["lstat", "rm", "nox", "dis", "ptratio"]]
 y = csvFile["medv"]
 X = sm.add_constant(X)
 model1 = sm.OLS(y, X).fit()
 
 print(model1.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		csvFile["lstat_rm"] = csvFile["lstat"] * csvFile["rm"]
+		
+csvFile["lstat_rm"] = csvFile["lstat"] * csvFile["rm"]
 X = csvFile[["lstat", "rm", "lstat_rm", "nox", "dis", "ptratio"]]
 X = sm.add_constant(X)
 model2 = sm.OLS(y, X).fit()
 
 print(model2.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -204,7 +222,8 @@ print(model2.summary())
 
 		Now add non-linear term
 
-		csvFile["lstat_rm_squared"] = csvFile["lstat_rm"] ** 2
+		
+csvFile["lstat_rm_squared"] = csvFile["lstat_rm"] ** 2
 X = csvFile[["lstat", "rm", "lstat_rm", "lstat_rm_squared", "nox", "dis", "ptratio"]]
 X = sm.add_constant(X)
 model3 = sm.OLS(y, X).fit()
@@ -216,9 +235,10 @@ print(model3.summary())
 
 		Perform ANOVA
 
-		anova_results = sm.stats.anova_lm(model2, model3)
+		
+anova_results = sm.stats.anova_lm(model2, model3)
 print(anova_results)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -226,7 +246,8 @@ print(anova_results)
 
 		Add polynomial
 
-		for i in range(2, 6):
+		
+for i in range(2, 6):
     csvFile[f"lstat_poly_{i}"] = csvFile["lstat"] ** i
 
 X = csvFile[["lstat", "rm", "lstat_rm", "lstat_poly_2", "lstat_poly_3", "lstat_poly_4", "lstat_poly_5", "nox", "dis", "ptratio"]]
@@ -234,19 +255,21 @@ X = sm.add_constant(X)
 model4 = sm.OLS(y, X).fit()
 
 print(model4.summary())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		anova_results = sm.stats.anova_lm(model2, model4)
+		
+anova_results = sm.stats.anova_lm(model2, model4)
 print(anova_results)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
 		We get an ever so slight better increase in r-squared compared to model 4. The p-value from anova is lower meaning it is probably more statistically significant than with model 3 however the risk with having too high polynomials is overfitting.
 
-		csvFile["log_rm"] = np.log(csvFile["rm"])
+		
+csvFile["log_rm"] = np.log(csvFile["rm"])
 
 X = csvFile[["lstat", "lstat_poly_2", "lstat_poly_3", "lstat_poly_4", "lstat_poly_5", "rm", "log_rm", "nox", "dis", "ptratio"]]
 X = sm.add_constant(X)
@@ -254,11 +277,12 @@ model5 = sm.OLS(y, X).fit()
 
 print(model5.summary())
 
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		anova_results = sm.stats.anova_lm(model2, model5)
+		
+anova_results = sm.stats.anova_lm(model2, model5)
 print(anova_results)
 # Classification: PREPROCESS
 
@@ -268,16 +292,18 @@ print(anova_results)
 
 		### Using carseats dataset
 
-		csvFile2 = pd.read_csv("Carseats.csv", index_col=0)
+		
+csvFile2 = pd.read_csv("Carseats.csv", index_col=0)
 print(csvFile2.describe(), "\n")
 print(csvFile2['ShelveLoc'].value_counts(), "\n")
 print(csvFile2['Urban'].value_counts(), "\n")
 print(csvFile2['US'].value_counts())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		X = pd.get_dummies(csvFile2, columns=["ShelveLoc", "Urban", "US"])
+		
+X = pd.get_dummies(csvFile2, columns=["ShelveLoc", "Urban", "US"])
 for col in X.select_dtypes("bool"):
     X[col] = X[col].astype(int)
 
@@ -293,7 +319,8 @@ print(model.summary())
 
 		Here we have an R-squared value of 0.873 which means that 87.3% of the variance can be explained by the model with an f-value probability of 1.6e-166 which is very small meaning the model has a large significance.
 
-		X = csvFile2.drop(columns=["Sales", "Population", "Education", "Age", "Urban", "US"])
+		
+X = csvFile2.drop(columns=["Sales", "Population", "Education", "Age", "Urban", "US"])
 X = pd.get_dummies(X, columns=["ShelveLoc"])
 
 for col in X.select_dtypes("bool"):
@@ -306,13 +333,14 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 		This one has a slightly worse r-squared however it has a slightly better prob f-statistic instead which means it has more statistical significance than the previous one
 
-		X = csvFile2.drop(columns=["Sales"])
+		
+X = csvFile2.drop(columns=["Sales"])
 X = pd.get_dummies(X, columns=["ShelveLoc", "US", "Urban"])
 
 for col in X.select_dtypes("bool"):

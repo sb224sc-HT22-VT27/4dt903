@@ -1,11 +1,14 @@
-		"""
+		
+"""
 
 		# Assignment 5 vj222hx
 
-		"""
+		
+"""
 
 
-		import numpy as np
+		
+import numpy as np
 import matplotlib.pyplot as plt
 import time
 # Classification: PREDICT
@@ -14,7 +17,8 @@ import time
 
 		Implement mse, grad_mse and grad_desc_mse form XOR assignment
 
-		np.random.seed(1)
+		
+np.random.seed(1)
 
 def mse(ws, m, X, Y):
     N = len(X)
@@ -57,7 +61,8 @@ def grad_desc_mse(K, ws, learning_eps, loss, grad_loss):
 
 		### 1.2 Setting the scene
 
-		N = 100
+		
+N = 100
 XX = np.empty((N**2,2))
 i = 0
 for j in range(1, N+1):
@@ -102,7 +107,8 @@ plt.show()
 
 		Here we are generating a plane of size NxN with some random noise
 
-		def m1(ws, x):
+		
+def m1(ws, x):
     return ws[0] * x[0] + ws[1] * x[1]
 
 def mse1(ws):
@@ -114,24 +120,26 @@ limit = (6 / (in_ + out))**0.5
 ws0 = np.random.rand(2) * 2 * limit - limit
 print(f"initial weights: {ws0}")
 print(f"Initial mse: {mse1(ws0)}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 		Here we are defining the function for the simple neural net and initilizing random weights. 
 
-		def grad1(ws, x):
+		
+def grad1(ws, x):
     return x[0]
 
 def grad2(ws, x):
     return x[1]
 
 gradients1 = [grad1, grad2]
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
-		def f(a, b):
+		
+def f(a, b):
     return mse1([a, b])
 
 def grad_loss(ws):
@@ -156,14 +164,15 @@ plt.show()
 
 
 
-		mseHistory = []
+		
+mseHistory = []
 
 for i in history:
     mseHistory.append(mse1(i))
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -171,7 +180,8 @@ plt.show()
 
 		### 1.3 Stochastic Gradient Descent (SGD)
 
-		def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
+		
+def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
     batch_size = int(N * 0.01)
     history = [ws]
 
@@ -192,7 +202,8 @@ plt.show()
 
 		Here we are doing stochastic gradient descent where we are making an approximation of the gradient direction based on a sample of size "batch_size" of the dataset. 
 
-		def grad_loss2(ws, randices):
+		
+def grad_loss2(ws, randices):
     XX_batch = XX[randices, :]
     Y_batch = Y[randices]
     return grad_mse(ws, m1, gradients1, XX_batch, Y_batch)
@@ -210,7 +221,19 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
+
+
+
+		
+mseHistory = []
+
+for i in history:
+    mseHistory.append(mse1(i))
+
+plt.plot(range(len(mseHistory)), mseHistory)
+plt.show()
+# Classification: PREDICT
 
 
 
@@ -218,7 +241,8 @@ plt.show()
 
 		### 1.4 SGD with adaptive learning rate
 
-		def stochastic_adaptive_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N, alpha):
+		
+def stochastic_adaptive_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N, alpha):
     batch_size = int(N * 0.01)
     history = [ws]
 
@@ -257,7 +281,19 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
+
+
+
+		
+mseHistory = []
+
+for i in history:
+    mseHistory.append(mse1(i))
+
+plt.plot(range(len(mseHistory)), mseHistory)
+plt.show()
+# Classification: TRAIN
 
 
 
@@ -265,7 +301,8 @@ plt.show()
 
 		### 1.5 SGD with momentum
 
-		def stochastic_momentum_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N, mass):
+		
+def stochastic_momentum_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N, mass):
     batch_size = int(N * 0.01)
     history = [ws]
     v = np.zeros_like(ws)
@@ -306,18 +343,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: TRAIN
-
-
-
-		mseHistory = []
-
-for i in history:
-    mseHistory.append(mse1(i))
-
-plt.plot(range(len(mseHistory)), mseHistory)
-plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

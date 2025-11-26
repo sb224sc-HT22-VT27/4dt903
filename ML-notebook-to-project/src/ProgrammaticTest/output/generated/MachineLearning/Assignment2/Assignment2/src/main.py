@@ -1,13 +1,16 @@
-		"""
+		
+"""
 
 		## Assignmen 2 vj222hx
 
-		"""
+		
+"""
 
 
 		Add imports
 
-		import pandas as pd
+		
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -17,14 +20,16 @@ import statsmodels.api as sm
 
 		Load the Boston.csv file
 
-		csvFile = pd.read_csv("Boston.csv", index_col=0)
-# Classification: PREPROCESS
+		
+csvFile = pd.read_csv("Boston.csv", index_col=0)
+# Classification: TRAIN
 
 
 
 		Display the number of features and their names:
 
-		colNames = csvFile.columns.tolist()
+		
+colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
 # Classification: TRAIN
@@ -33,29 +38,33 @@ print(f"Column Names {colNames}")
 
 		Print a statistic summary of the predictors and the response:
 
-		csvFile.describe()
-# Classification: PREPROCESS
+		
+csvFile.describe()
+# Classification: TRAIN
 
 
 
 		Display the number of datapoints
 
-		print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREPROCESS
+		
+print(f"Number of datapoints {len(csvFile)}")
+# Classification: PREDICT
 
 
 
 		Display the data in a table
 
 
-		print(csvFile.head(20))
-# Classification: PREPROCESS
+		
+print(csvFile.head(20))
+# Classification: TRAIN
 
 
 
 		Plot lstat and rm
 
-		sns.scatterplot(x="lstat", y="medv", data=csvFile, color="black")
+		
+sns.scatterplot(x="lstat", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
@@ -67,7 +76,8 @@ plt.show()
 
 		Do linear regression
 
-		reg1 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["lstat"])).fit()
+		
+reg1 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["lstat"])).fit()
 print(reg1.summary())
 reg2 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["rm"])).fit()
 print(reg2.summary())
@@ -81,10 +91,11 @@ print(reg3.summary())
 
 The same interpretation can be made of the other values of 0.484 and 2.49e-74, and 0.142 and 1.57e-18 for the third one. All f-statistics are low enough to statistically significant. 
 
-		print(reg1.conf_int())
+		
+print(reg1.conf_int())
 print(reg2.conf_int())
 print(reg3.conf_int())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -92,7 +103,8 @@ print(reg3.conf_int())
 
 		Use the model
 
-		new_lstat = pd.DataFrame({'lstat': [5, 10, 15]})
+		
+new_lstat = pd.DataFrame({'lstat': [5, 10, 15]})
 new_lstat = sm.add_constant(new_lstat)
 pred1 = reg1.get_prediction(new_lstat).summary_frame(alpha=0.05)
 print(pred1[['mean', 'obs_ci_lower', 'obs_ci_upper']])
@@ -112,17 +124,19 @@ print(pred3[['mean', 'obs_ci_lower', 'obs_ci_upper']])
 
 		The values inserted in the first regression is 5, 10 and 15. This means that an lstat of 5 will mean that it will have a medv of between 17.56 and 42.04 with a 95% probabilty. 10 and 15 will have a value between (12.82, 37.28) and (8.08, 32.53) respectivly with a 95% probaility. We also inserted 5, 6.5 and 8 into rm and the same values can be interpreted from the second matrix in the output. I also inserted 20, 50, and 75 into age and the same data can be read from the third matrix in the output.
 
-		reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
+		
+reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 		Here we can see that R-squared is 0.639 which means that 63.9% of the variance can be explained with the model. The prob f-statistics line of 1.2e-110 is very low which means it is highly statistically significant, a value of < 0.05 indicating that it is 95% statstically significant
 
-		reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
+		
+reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
 print(reg.summary())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -130,7 +144,8 @@ print(reg.summary())
 
 		Correlation plot
 
-		sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+		
+sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.show()
 # Classification: PREPROCESS
 
@@ -140,7 +155,8 @@ plt.show()
 
 		Use the multiple linear regression model to predict the medv values
 
-		selected_predictor_values = pd.DataFrame(pd.MultiIndex.from_product([[5, 10, 15], [5, 6.5, 8]], names=["lstat", "rm"]).to_frame(index=False))
+		
+selected_predictor_values = pd.DataFrame(pd.MultiIndex.from_product([[5, 10, 15], [5, 6.5, 8]], names=["lstat", "rm"]).to_frame(index=False))
 print(selected_predictor_values)
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm"]])).fit()
@@ -148,7 +164,7 @@ selected_predictor_values = sm.add_constant(selected_predictor_values)
 predictions = reg.get_prediction(selected_predictor_values)
 pred_summary = predictions.summary_frame(alpha=0.05)
 print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

@@ -1,8 +1,10 @@
-		"""
+		
+"""
 
 		# Assignmen 6 vj222hx
 
-		"""
+		
+"""
 
 
 		## Conceptual
@@ -14,7 +16,8 @@
 
 		Add imports
 
-		import pandas as pd
+		
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -28,63 +31,71 @@ from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 
 		Load Carseats dataset
 
-		csvFile = pd.read_csv("Carseats.csv", index_col=0)
+		
+csvFile = pd.read_csv("Carseats.csv", index_col=0)
 # Classification: PREDICT
 
 
 
 		Display the number of features and their names:
 
-		colNames = csvFile.columns.tolist()
+		
+colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
 		Print a statistic summary of the predictors and the response:
 
-		print(csvFile.describe(), "\n")
+		
+print(csvFile.describe(), "\n")
 print(csvFile['ShelveLoc'].value_counts())
 print(csvFile['Urban'].value_counts())
 print(csvFile['US'].value_counts())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
 		Display the number of datapoints
 
-		print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+		
+print(f"Number of datapoints {len(csvFile)}")
+# Classification: TRAIN
 
 
 
 		Display the data in a table
 
-		print(csvFile.head(20))
+		
+print(csvFile.head(20))
 # Classification: TRAIN
 
 
 
 		Correlation Plot
 
-		sns.heatmap(csvFile.drop(columns=['ShelveLoc', "Urban", "US"]).corr(), annot=True, fmt=".2f", linewidths=0.5)
+		
+sns.heatmap(csvFile.drop(columns=['ShelveLoc', "Urban", "US"]).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 		Scatter plot of price to sales
 
-		sns.regplot(x="Sales", y="Price", data=csvFile,  scatter_kws={'s': 5, 'color': 'black'}, line_kws={'color': 'black'})
+		
+sns.regplot(x="Sales", y="Price", data=csvFile,  scatter_kws={'s': 5, 'color': 'black'}, line_kws={'color': 'black'})
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 		Sales is our response and the most correlated predictor is price, and since it is a negative correlation, it means that if price goes down, the sales go up. The second most correlated predictor is Advertising which has a positive correlation. The least correlated predictors are Population and Education. The slope of the above regression plot also shows the -44 correlation between Price and Sales. 
 
-		csvFileEncoded = pd.get_dummies(csvFile, columns=["ShelveLoc", "Urban", "US"])
+		
+csvFileEncoded = pd.get_dummies(csvFile, columns=["ShelveLoc", "Urban", "US"])
 csvFile["High"] = ["No" if sales <= 8 else "Yes" for sales in csvFile["Sales"]]
 
 X = csvFileEncoded.drop(columns=["Sales"]) 
@@ -94,20 +105,22 @@ tree = DecisionTreeClassifier()
 tree.fit(X, y)
 
 print(f"Number of terminal nodes: {tree.get_n_leaves()}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		plt.figure(figsize=(16, 10))
+		
+plt.figure(figsize=(16, 10))
 plot_tree(tree, feature_names=X.columns, class_names=["No", "Yes"], impurity=False, fontsize=5, label="none")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
 		The tree can be interpreted as when a point reaches the first node it checks if the ShelveLoc is good, and in that case it goes left, else it goes right. If it goes left it will check if the price is <= 92.5 and go left else right. Then it will do this all the way to the bottom where it will get an answer if "High" is Yes or No. 
 
-		csvFile_encoded = pd.get_dummies(csvFile, columns=["ShelveLoc", "Urban", "US"], drop_first=True)
+		
+csvFile_encoded = pd.get_dummies(csvFile, columns=["ShelveLoc", "Urban", "US"], drop_first=True)
 X = csvFile_encoded.drop(columns=["Sales", "High"])
 y = csvFile["High"]
 
@@ -120,13 +133,14 @@ y_pred = tree_model.predict(X_test)
 
 conf_matrix = confusion_matrix(y_test, y_pred)
 print(conf_matrix)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 		From here we can see that it had 95 true negatives, 25 false positives, 30 false negativesm and 51 true positives. This gives us a precision of 0.67 and a recall of 0.63. It also gives us an accuracy of 72.5%
 
-		path = tree_model.cost_complexity_pruning_path(X_train, y_train)
+		
+path = tree_model.cost_complexity_pruning_path(X_train, y_train)
 ccpAlphas = path.ccp_alphas
 
 cv_scores = []
@@ -142,13 +156,14 @@ for alpha in ccpAlphas:
         best_alpha = alpha
 
 print(f"Best accuracy {best_accuracy:.4f}, with alpha: {best_alpha:.4f}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 		In this case pruning the tree gave us a slightly worse score, 71% instead of the previous 72.5%
 
-		plt.plot(ccpAlphas, cv_scores, marker='o', color='black')
+		
+plt.plot(ccpAlphas, cv_scores, marker='o', color='black')
 
 plt.xlabel("Alpha")
 plt.ylabel("Cross-Validation Accuracy")
@@ -159,27 +174,30 @@ plt.show()
 
 		This shows our results from the previous test in graph form where we can see that an alpha of 0.0128 gives us a score of 71%
 
-		pruned_tree = DecisionTreeClassifier(random_state=0, ccp_alpha=best_alpha)
+		
+pruned_tree = DecisionTreeClassifier(random_state=0, ccp_alpha=best_alpha)
 pruned_tree.fit(X_train, y_train)
 
 plot_tree(pruned_tree, filled=True, feature_names=X_train.columns, class_names=["No", "Yes"], impurity=False)
 plt.title("Pruned Decision Tree")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		y_pred = pruned_tree.predict(X_test)
+		
+y_pred = pruned_tree.predict(X_test)
 
 conf_matrix = confusion_matrix(y_test, y_pred)
 print(conf_matrix)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 		This gives us an accuracy of 72.5% when using the test data which is the same as without the pruning but with a more interperatable tree. 
 
-		best_alpha = 0
+		
+best_alpha = 0
 for alpha in ccpAlphas:
     pruned_tree = DecisionTreeClassifier(random_state=0, ccp_alpha=alpha)
     pruned_tree.fit(X_train, y_train)
@@ -206,14 +224,16 @@ plt.show()
 
 		Load Boston dataset
 
-		csvFile = pd.read_csv("Boston.csv", index_col=0)
-# Classification: PREDICT
+		
+csvFile = pd.read_csv("Boston.csv", index_col=0)
+# Classification: TRAIN
 
 
 
 		Regression tree
 
-		X = csvFile.drop(columns=["medv"])
+		
+X = csvFile.drop(columns=["medv"])
 y = csvFile["medv"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1)
 tree = DecisionTreeRegressor(random_state=1, max_leaf_nodes=7)
@@ -228,15 +248,17 @@ print(f"Residual mean deviance: {tree.tree_.impurity.mean():.4f}")
 
 		Plot the tree
 
-		plot_tree(tree, feature_names=X.columns, filled=True, rounded=True, impurity=False, fontsize=5, label="none")
+		
+plot_tree(tree, feature_names=X.columns, filled=True, rounded=True, impurity=False, fontsize=5, label="none")
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 		The residual mean deviance is 26.09 which is a way of measuring deviance
 
-		path = tree.cost_complexity_pruning_path(X_train, y_train)
+		
+path = tree.cost_complexity_pruning_path(X_train, y_train)
 ccpAlphas = path.ccp_alphas
 
 cv_scores = []
@@ -268,7 +290,8 @@ plt.show()
 
 		We now got an error of 17.92 which is an improvement from without pruning
 
-		yhat = tree.predict(X_test)
+		
+yhat = tree.predict(X_test)
 
 plt.figure(figsize=(8, 6))
 plt.scatter(yhat, y_test, alpha=0.6, edgecolors="k")
@@ -279,7 +302,7 @@ plt.show()
 
 mse = np.mean((yhat - y_test) ** 2)
 print(f"Mean Squared Error: {mse:.4f}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -287,7 +310,8 @@ print(f"Mean Squared Error: {mse:.4f}")
 
 		Learn and assess Regression Bagging (Trees) and Random Forests
 
-		rf = RandomForestRegressor(n_estimators=500, max_features=13, random_state=1)
+		
+rf = RandomForestRegressor(n_estimators=500, max_features=13, random_state=1)
 rf.fit(X_train, y_train)
 
 yhat_bag = rf.predict(X_test)
@@ -303,13 +327,14 @@ plt.xlabel("Predicted MEDV")
 plt.ylabel("Actual MEDV")
 plt.title("Bagging Model")
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 		This model has an MSE of 11.73 which is better than the previous 17.92
 
-		rf = RandomForestRegressor(n_estimators=25, max_features=13, random_state=1)
+		
+rf = RandomForestRegressor(n_estimators=25, max_features=13, random_state=1)
 rf.fit(X_train, y_train)
 
 yhat_bag = rf.predict(X_test)
@@ -323,7 +348,8 @@ print(f"R²: {100 * r2_bag:.2f}%")
 
 		Now we are getting a worse MSE of 13.27 instead because we have fewer parameters the model can use for tuning
 
-		rf = RandomForestRegressor(n_estimators=500, max_features=6, random_state=1)
+		
+rf = RandomForestRegressor(n_estimators=500, max_features=6, random_state=1)
 rf.fit(X_train, y_train)
 
 yhat_bag = rf.predict(X_test)
@@ -339,13 +365,14 @@ plt.xlabel("Predicted MEDV")
 plt.ylabel("Actual MEDV")
 plt.title("Bagging Model")
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
 		This was almost the same result as we got before
 
-		feature_importances = rf.feature_importances_
+		
+feature_importances = rf.feature_importances_
 
 sorted_indices = np.argsort(feature_importances)[::-1]
 feature_names = X_train.columns
@@ -360,13 +387,14 @@ plt.yticks(range(len(feature_importances)), np.array(feature_names)[sorted_indic
 plt.xlabel("Feature Importance")
 plt.gca().invert_yaxis()
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
 		Here we can see that lstat is the most important variable and chas is the least important in this random forest based model
 
-		boost = GradientBoostingRegressor(loss="squared_error", n_estimators=5000, learning_rate=0.001, random_state=1)
+		
+boost = GradientBoostingRegressor(loss="squared_error", n_estimators=5000, learning_rate=0.001, random_state=1)
 boost.fit(X_train, y_train)
 feature_importances = boost.feature_importances_
 sorted_indices = np.argsort(feature_importances)[::-1]
@@ -381,13 +409,14 @@ plt.yticks(range(len(feature_importances)), np.array(feature_names)[sorted_indic
 plt.xlabel("Feature Importance")
 plt.gca().invert_yaxis()
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
 		Same thing here that lstat is the most influential parameter, but this time however, zn is the least influential parameter
 
-		yhat = boost.predict(X_test) 
+		
+yhat = boost.predict(X_test) 
 mse_boost = mean_squared_error(y_test, yhat)
 print(f"MSE: {mse_boost:.4f}")
 # Classification: PREDICT
@@ -396,7 +425,8 @@ print(f"MSE: {mse_boost:.4f}")
 
 		Here we are getting a slightly better MSE however it is quite small so we probably need a significance test to see wether it is significantly better
 
-		boost = GradientBoostingRegressor(loss="squared_error", n_estimators=5000, learning_rate=0.2, random_state=1)
+		
+boost = GradientBoostingRegressor(loss="squared_error", n_estimators=5000, learning_rate=0.2, random_state=1)
 boost.fit(X_train, y_train)
 feature_importances = boost.feature_importances_
 sorted_indices = np.argsort(feature_importances)[::-1]

@@ -1,8 +1,10 @@
-		"""
+		
+"""
 
 		# Assignment 7 vj222hx
 
-		"""
+		
+"""
 
 
 		## Conceptual
@@ -13,7 +15,8 @@
 
 		Add imports
 
-		import numpy as np
+		
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.svm import SVC
@@ -25,7 +28,8 @@ from sklearn.metrics import confusion_matrix
 
 		Generate 20 random points in two classes
 
-		np.random.seed(1)
+		
+np.random.seed(1)
 x = np.random.randn(20, 2)
 y = np.concatenate([-np.ones(10), np.ones(10)])
 x[y == 1] += 1
@@ -35,11 +39,12 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		dat = pd.DataFrame({'X1': x[:, 0], 'X2': x[:, 1], 'y': y.astype(int)})
+		
+dat = pd.DataFrame({'X1': x[:, 0], 'X2': x[:, 1], 'y': y.astype(int)})
 print(dat)
 
 svm = SVC(kernel="linear", C=10)
@@ -59,17 +64,19 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		support_vector_indices = svm.support_
+		
+support_vector_indices = svm.support_
 print(support_vector_indices)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		svm = SVC(kernel="linear", C=0.1)
+		
+svm = SVC(kernel="linear", C=0.1)
 svm.fit(dat[['X1', 'X2']], dat['y'])
 
 plt.figure(figsize=(8, 6))
@@ -92,7 +99,8 @@ plt.show()
 
 		The smaller value of C makes it allow for a larger error but also reduces the risk of overfitting. 
 
-		param_grid = {'C': [0.001, 0.01, 0.1, 1, 5, 10, 100]}
+		
+param_grid = {'C': [0.001, 0.01, 0.1, 1, 5, 10, 100]}
 
 grid_search = GridSearchCV(SVC(kernel="linear"), param_grid, cv=10)
 grid_search.fit(dat[['X1', 'X2']], dat['y'])
@@ -110,7 +118,8 @@ print("Best Accuracy:", grid_search.best_score_)
 
 Fit a model with the C value
 
-		np.random.seed(1)
+		
+np.random.seed(1)
 svm = SVC(kernel="linear", C=0.001)
 svm.fit(dat[['X1', 'X2']], dat['y'])
 xtest = np.random.randn(20, 2)
@@ -126,7 +135,8 @@ print("Confusion Matrix:\n", conf_matrix)
 
 		With the newly generated datapoints we are getting an accuracy of 80%
 
-		np.random.seed(1)
+		
+np.random.seed(1)
 x = np.random.randn(200, 2)
 x[:100] += 2
 x[100:150] -= 2
@@ -142,11 +152,12 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
-		np.random.seed(1)
+		
+np.random.seed(1)
 train_indices = np.random.choice(200, 100, replace=False)
 
 train_data = dat.iloc[train_indices]
@@ -171,7 +182,8 @@ plt.show()
 
 
 
-		train_indices = np.random.choice(200, 100, replace=False)
+		
+train_indices = np.random.choice(200, 100, replace=False)
 
 train_data = dat.iloc[train_indices]
 test_data = dat.drop(train_indices)
@@ -195,7 +207,8 @@ plt.show()
 
 
 
-		param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [0.5, 1]}
+		
+param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [0.5, 1]}
 
 grid_search = GridSearchCV(SVC(kernel="rbf"), param_grid, cv=10)
 grid_search.fit(dat[['X1', 'X2']], dat['y'])
@@ -212,7 +225,8 @@ print(f"Best Accuracy: {grid_search.best_score_:.2f}")
 
 		Here we got an accuracy of 94% with a C of 1 and a gamma of 0.5
 
-		svm = SVC(kernel="rbf", C=1, gamma=0.5)
+		
+svm = SVC(kernel="rbf", C=1, gamma=0.5)
 svm.fit(dat[['X1', 'X2']], dat['y'])
 
 xtest = np.random.randn(100, 2)
@@ -223,13 +237,14 @@ ytest = np.concatenate([-np.ones(75), np.ones(25)])
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 		When trying with the test data, we get an accuracy 82% on the training data
 
-		x = np.vstack([x, np.random.randn(50, 2)])
+		
+x = np.vstack([x, np.random.randn(50, 2)])
 y = np.concatenate([y, np.zeros(50)])
 
 x[y == 0, 1] += 2 
@@ -247,7 +262,8 @@ print(dat)
 
 
 
-		np.random.seed(1)
+		
+np.random.seed(1)
 train_indices = np.random.choice(250, 125, replace=False)
 
 train_data = dat.iloc[train_indices]
@@ -271,11 +287,12 @@ plt.xlabel("X1")
 plt.ylabel("X2")
 plt.title("SVM Decision Boundaries for Multi-Class Classification")
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
-		param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [0.5, 1, 2, 3, 4]}
+		
+param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [0.5, 1, 2, 3, 4]}
 
 
 grid_search = GridSearchCV(SVC(kernel="rbf"), param_grid, cv=10)
@@ -287,16 +304,17 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
-		svm = SVC(kernel="rbf", C=1, gamma=0.5)
+		
+svm = SVC(kernel="rbf", C=1, gamma=0.5)
 svm.fit(train_data[['X1', 'X2']], train_data['y'])
 y_pred = svm.predict(test_data[['X1', 'X2']])
 cm = confusion_matrix(test_data['y'], y_pred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -304,7 +322,8 @@ print("Confusion Matrix:\n", conf_matrix)
 
 		Load the datasets
 
-		xtrain = pd.read_csv("Khan_xtrain.csv", index_col=0)
+		
+xtrain = pd.read_csv("Khan_xtrain.csv", index_col=0)
 xtest = pd.read_csv("Khan_xtest.csv", index_col=0)
 ytrain = pd.read_csv("Khan_ytrain.csv", index_col=0)
 ytest = pd.read_csv("Khan_ytest.csv", index_col=0)
@@ -315,18 +334,20 @@ print(len(xtest), len(xtest.columns.tolist()))
 
 
 
-		ytrain = ytrain.iloc[:, 0]
+		
+ytrain = ytrain.iloc[:, 0]
 
 svm_model = SVC(kernel="linear", C=10)
 svm_model.fit(xtrain, ytrain)
 
 print("Number of Support:", svm_model.n_support_)
 print("Number of classes:", svm_model.classes_)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
-		y_train_pred = svm_model.predict(xtrain)
+		
+y_train_pred = svm_model.predict(xtrain)
 conf_matrix = confusion_matrix(ytrain, y_train_pred)
 conf_matrix_df = pd.DataFrame(conf_matrix, index=svm_model.classes_, columns=svm_model.classes_)
 
@@ -335,12 +356,13 @@ print(conf_matrix_df)
 
 
 
-		y_test_pred = svm_model.predict(xtest)
+		
+y_test_pred = svm_model.predict(xtest)
 conf_matrix_test = confusion_matrix(ytest, y_test_pred)
 
 conf_matrix_test_df = pd.DataFrame(conf_matrix_test, index=svm_model.classes_, columns=svm_model.classes_)
 print(conf_matrix_test_df)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

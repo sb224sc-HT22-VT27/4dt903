@@ -18,15 +18,15 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(St
             // Convert markdown cell to Python docstring
             var mdCell := cell.oclAsType(NotebookMM::MarkdownCell);
             if mdCell.content <> null and mdCell.content <> '' then {
-                contentLines += '"""\n';
+                contentLines += '\n"""\n';
                 contentLines += mdCell.content + '\n';
-                contentLines += '"""\n\n';
+                contentLines += '\n"""\n\n';
             } endif;
         } else if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
             // Add code cell source as-is
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
-                contentLines += codeCell.source + CodeClassificationLib::getClassificationCommentQVTo() + '\n\n';
+                contentLines += '\n' + codeCell.source + CodeClassificationLib::getClassificationCommentQVTo() + '\n\n';
             } endif;
         } endif endif;
     };
