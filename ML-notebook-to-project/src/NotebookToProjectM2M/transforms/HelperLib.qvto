@@ -118,7 +118,8 @@ helper generateDockerfileContent() : Sequence(String) {
 		'# Set up virtual environment and install dependencies',
 		'RUN python -m venv /opt/venv',
 		'ENV PATH="/opt/venv/bin:$PATH"',
-		'RUN pip install --upgrade pip && pip install -r requirements.txt',
+		'RUN pip install --upgrade pip',
+		'RUN pip install -r requirements.txt',
 		'',
 		'# Run the main script',
 		'CMD ["python", "src/main.py"]'
