@@ -324,7 +324,10 @@ public class FullPipeline {
 				Path targetFile = targetDir.resolve(relativePath);
 
 				// Ensure parent directories exist
-				Files.createDirectories(targetFile.getParent());
+				Path parentDir = targetFile.getParent();
+				if (parentDir != null) {
+					Files.createDirectories(parentDir);
+				}
 
 				Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
 				System.out.println("    Copied: " + relativePath);
