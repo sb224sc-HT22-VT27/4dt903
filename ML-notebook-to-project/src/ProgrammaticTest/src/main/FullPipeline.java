@@ -313,10 +313,12 @@ public class FullPipeline {
 			return 0;
 		}
 
-		int[] count = { 0 };
+		int count = 0;
 
-		Files.walk(sourceDir).filter(Files::isRegularFile).filter(this::isDataFile).forEach(file -> {
-			try {
+		try (var stream = Files.walk(sourceDir)) {
+			List<Path> dataFiles = stream.filter(Files::isRegularFile).filter(this::isDataFile).toList();
+
+			for (Path file : dataFiles) {
 				// Compute relative path from sourceDir to preserve directory structure
 				Path relativePath = sourceDir.relativize(file);
 				Path targetFile = targetDir.resolve(relativePath);
@@ -326,13 +328,11 @@ public class FullPipeline {
 
 				Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
 				System.out.println("    Copied: " + relativePath);
-				count[0]++;
-			} catch (IOException e) {
-				throw new RuntimeException("Failed to copy file: " + file, e);
+				count++;
 			}
-		});
+		}
 
-		return count[0];
+		return count;
 	}
 
 	/**
