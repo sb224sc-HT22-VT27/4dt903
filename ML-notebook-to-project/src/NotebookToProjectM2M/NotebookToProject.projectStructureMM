@@ -1,359 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:projectStructureMM="http://www.g7.org/projectStructureMM" xsi:schemaLocation="http://www.g7.org/projectStructureMM ../ProjectStructureMM/model/projectStructureMM.ecore">
-  <projectStructureMM:ProjectStructure name="image_classification_cnn" filesystemelement="/1 /2 /3 /4 /5"/>
+  <projectStructureMM:ProjectStructure name="simple_classification" filesystemelement="/1 /2 /3 /4 /5"/>
   <projectStructureMM:Directory name="data"/>
   <projectStructureMM:Directory name="src">
     <filesystemelement xsi:type="projectStructureMM:File" name="main.py">
       <content>&quot;&quot;&quot;
 </content>
-      <content># Image Classification with CNN
-Training a convolutional neural network for product category classification
+      <content># Customer Churn Prediction
+This notebook trains a model to predict customer churn based on usage patterns.
 </content>
       <content>&quot;&quot;&quot;
 
 </content>
-      <content>import os
+      <content>import pandas as pd
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from sklearn.metrics import confusion_matrix, classification_report
-import seaborn as sns
-import json
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+import joblib
+# Classification: PREPROCESS
+
+
+</content>
+      <content>## Load and Explore Data
+</content>
+      <content># Load data
+df = pd.read_csv('data/customers.csv')
+print(f&quot;Dataset shape: {df.shape}&quot;)
+print(df.head())
 # Classification: TRAIN
 
 
 </content>
-      <content>## Configuration
+      <content>## Data Preprocessing
 </content>
-      <content># Hyperparameters
-IMG_SIZE = 224
-BATCH_SIZE = 32
-EPOCHS = 50
-LEARNING_RATE = 0.001
-NUM_CLASSES = 10
+      <content># Handle missing values
+df = df.dropna()
 
-# Paths
-TRAIN_DIR = 'data/train'
-VAL_DIR = 'data/validation'
-TEST_DIR = 'data/test'
-MODEL_PATH = 'models/product_classifier.keras'
-HISTORY_PATH = 'output/training_history.json'
+# Feature engineering
+df['usage_per_month'] = df['total_usage'] / df['months_active']
+df['support_ratio'] = df['support_calls'] / df['months_active']
 
-print(f&quot;Using TensorFlow version: {tf.__version__}&quot;)
-print(f&quot;GPU Available: {tf.config.list_physical_devices('GPU')}&quot;)
-# Classification: TRAIN
+# Select features
+features = ['age', 'monthly_charges', 'total_usage', 'usage_per_month',
+            'support_ratio', 'contract_type']
+X = df[features]
+y = df['churned']
 
-
-</content>
-      <content>## Data Loading and Augmentation
-</content>
-      <content># Data augmentation for training
-train_datagen = ImageDataGenerator(
-    rescale=1./255,
-    rotation_range=20,
-    width_shift_range=0.2,
-    height_shift_range=0.2,
-    horizontal_flip=True,
-    zoom_range=0.2,
-    shear_range=0.2,
-    fill_mode='nearest'
-)
-
-# Only rescaling for validation and test
-val_datagen = ImageDataGenerator(rescale=1./255)
-test_datagen = ImageDataGenerator(rescale=1./255)
-
-# Load datasets
-train_generator = train_datagen.flow_from_directory(
-    TRAIN_DIR,
-    target_size=(IMG_SIZE, IMG_SIZE),
-    batch_size=BATCH_SIZE,
-    class_mode='categorical'
-)
-
-val_generator = val_datagen.flow_from_directory(
-    VAL_DIR,
-    target_size=(IMG_SIZE, IMG_SIZE),
-    batch_size=BATCH_SIZE,
-    class_mode='categorical'
-)
-
-test_generator = test_datagen.flow_from_directory(
-    TEST_DIR,
-    target_size=(IMG_SIZE, IMG_SIZE),
-    batch_size=BATCH_SIZE,
-    class_mode='categorical',
-    shuffle=False
-)
-
-print(f&quot;Training samples: {train_generator.samples}&quot;)
-print(f&quot;Validation samples: {val_generator.samples}&quot;)
-print(f&quot;Test samples: {test_generator.samples}&quot;)
-print(f&quot;Class labels: {train_generator.class_indices}&quot;)
+# Encode categorical variables
+X = pd.get_dummies(X, columns=['contract_type'])
 # Classification: PREDICT
 
 
 </content>
-      <content>## Model Architecture
+      <content>## Split and Scale Data
 </content>
-      <content>def build_cnn_model(input_shape, num_classes):
-    &quot;&quot;&quot;
-    Build a CNN model for image classification
-    &quot;&quot;&quot;
-    model = keras.Sequential([
-        # Block 1
-        layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
-        layers.BatchNormalization(),
-        layers.MaxPooling2D((2, 2)),
-        layers.Dropout(0.25),
-
-        # Block 2
-        layers.Conv2D(64, (3, 3), activation='relu'),
-        layers.BatchNormalization(),
-        layers.MaxPooling2D((2, 2)),
-        layers.Dropout(0.25),
-
-        # Block 3
-        layers.Conv2D(128, (3, 3), activation='relu'),
-        layers.BatchNormalization(),
-        layers.MaxPooling2D((2, 2)),
-        layers.Dropout(0.25),
-
-        # Block 4
-        layers.Conv2D(256, (3, 3), activation='relu'),
-        layers.BatchNormalization(),
-        layers.MaxPooling2D((2, 2)),
-        layers.Dropout(0.25),
-
-        # Dense layers
-        layers.Flatten(),
-        layers.Dense(512, activation='relu'),
-        layers.BatchNormalization(),
-        layers.Dropout(0.5),
-        layers.Dense(256, activation='relu'),
-        layers.Dropout(0.3),
-        layers.Dense(num_classes, activation='softmax')
-    ])
-
-    return model
-
-# Build model
-model = build_cnn_model(
-    input_shape=(IMG_SIZE, IMG_SIZE, 3),
-    num_classes=NUM_CLASSES
+      <content># Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
 )
 
-model.summary()
+feature_names = X_train.columns.tolist()
+
+# Scale features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 # Classification: PREDICT
-
-
-</content>
-      <content>## Compile Model
-</content>
-      <content># Compile model
-optimizer = keras.optimizers.Adam(learning_rate=LEARNING_RATE)
-
-model.compile(
-    optimizer=optimizer,
-    loss='categorical_crossentropy',
-    metrics=['accuracy', keras.metrics.TopKCategoricalAccuracy(k=3)]
-)
-
-print(&quot;Model compiled successfully!&quot;)
-# Classification: PREDICT
-
-
-</content>
-      <content>## Callbacks
-</content>
-      <content># Early stopping
-early_stopping = keras.callbacks.EarlyStopping(
-    monitor='val_loss',
-    patience=10,
-    restore_best_weights=True
-)
-
-# Learning rate reduction
-reduce_lr = keras.callbacks.ReduceLROnPlateau(
-    monitor='val_loss',
-    factor=0.5,
-    patience=5,
-    min_lr=1e-7
-)
-
-# Model checkpoint
-checkpoint = keras.callbacks.ModelCheckpoint(
-    'models/best_model.keras',
-    monitor='val_accuracy',
-    save_best_only=True
-)
-
-callbacks = [early_stopping, reduce_lr, checkpoint]
-# Classification: TRAIN
 
 
 </content>
       <content>## Train Model
 </content>
-      <content># Train the model
-history = model.fit(
-    train_generator,
-    validation_data=val_generator,
-    epochs=EPOCHS,
-    callbacks=callbacks,
-    verbose=1
+      <content># Train Random Forest model
+model = RandomForestClassifier(
+    n_estimators=100,
+    max_depth=10,
+    random_state=42
 )
-
-print(&quot;Training completed!&quot;)
-# Classification: PREPROCESS
-
-
-</content>
-      <content>## Plot Training History
-</content>
-      <content># Plot training &amp; validation accuracy
-plt.figure(figsize=(12, 4))
-
-plt.subplot(1, 2, 1)
-plt.plot(history.history['accuracy'], label='Train Accuracy')
-plt.plot(history.history['val_accuracy'], label='Val Accuracy')
-plt.title('Model Accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.legend()
-plt.grid(True)
-
-plt.subplot(1, 2, 2)
-plt.plot(history.history['loss'], label='Train Loss')
-plt.plot(history.history['val_loss'], label='Val Loss')
-plt.title('Model Loss')
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.legend()
-plt.grid(True)
-
-plt.tight_layout()
-plt.savefig('output/training_history.png')
-plt.show()
-# Classification: PREPROCESS
+model.fit(X_train_scaled, y_train)
+print(&quot;Model trained successfully!&quot;)
+# Classification: TRAIN
 
 
 </content>
-      <content>## Evaluate on Test Set
+      <content>## Evaluate Model
 </content>
-      <content># Evaluate on test set
-test_loss, test_acc, test_top3_acc = model.evaluate(test_generator)
-print(f&quot;\nTest Accuracy: {test_acc:.4f}&quot;)
-print(f&quot;Test Top-3 Accuracy: {test_top3_acc:.4f}&quot;)
-print(f&quot;Test Loss: {test_loss:.4f}&quot;)
+      <content># Make predictions
+y_pred = model.predict(X_test_scaled)
 
-# Get predictions
-predictions = model.predict(test_generator)
-y_pred = np.argmax(predictions, axis=1)
-y_true = test_generator.classes
-
-# Classification report
-class_names = list(test_generator.class_indices.keys())
+# Evaluate
+accuracy = accuracy_score(y_test, y_pred)
+print(f&quot;Accuracy: {accuracy:.3f}&quot;)
 print(&quot;\nClassification Report:&quot;)
-print(classification_report(y_true, y_pred, target_names=class_names))
-# Classification: PREDICT
+print(classification_report(y_test, y_pred))
+# Classification: PREPROCESS
 
 
 </content>
-      <content>## Confusion Matrix
+      <content>## Save Model and Scaler
 </content>
-      <content># Plot confusion matrix
-cm = confusion_matrix(y_true, y_pred)
-
-plt.figure(figsize=(12, 10))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
-            xticklabels=class_names,
-            yticklabels=class_names)
-plt.title('Confusion Matrix')
-plt.ylabel('True Label')
-plt.xlabel('Predicted Label')
-plt.tight_layout()
-plt.savefig('output/confusion_matrix.png')
-plt.show()
+      <content># Save trained model
+joblib.dump(model, 'models/churn_model.pkl')
+joblib.dump(scaler, 'models/scaler.pkl')
+joblib.dump(feature_names, 'models/feature_names.pkl')
+print(&quot;Model and scaler saved!&quot;)
 # Classification: TRAIN
 
 
 </content>
-      <content>## Save Model and Metadata
+      <content>## Make Predictions on New Data
 </content>
-      <content># Save final model
-model.save(MODEL_PATH)
-print(f&quot;Model saved to {MODEL_PATH}&quot;)
-
-# Save training history
-with open(HISTORY_PATH, 'w') as f:
-    json.dump(history.history, f)
-
-# Save class indices
-with open('models/class_indices.json', 'w') as f:
-    json.dump(train_generator.class_indices, f)
-
-# Save model metadata
-metadata = {
-    'img_size': IMG_SIZE,
-    'num_classes': NUM_CLASSES,
-    'test_accuracy': float(test_acc),
-    'test_loss': float(test_loss),
-    'class_names': class_names
-}
-
-with open('models/model_metadata.json', 'w') as f:
-    json.dump(metadata, f, indent=2)
-
-print(&quot;Metadata saved!&quot;)
-# Classification: TRAIN
-
-
-</content>
-      <content>## Inference Function
-</content>
-      <content>def predict_image(image_path, model_path='models/product_classifier.keras'):
+      <content># Example prediction function
+def predict_churn(customer_data):
     &quot;&quot;&quot;
-    Predict class for a single image
+    Predict churn for a new customer
+    customer_data: dict with customer features
     &quot;&quot;&quot;
-    # Load model
-    model = keras.models.load_model(model_path)
+    # Load model and scaler
+    model = joblib.load('models/churn_model.pkl')
+    scaler = joblib.load('models/scaler.pkl')
+    feature_names = joblib.load('models/feature_names.pkl')
 
-    # Load and preprocess image
-    img = keras.preprocessing.image.load_img(
-        image_path,
-        target_size=(IMG_SIZE, IMG_SIZE)
-    )
-    img_array = keras.preprocessing.image.img_to_array(img)
-    img_array = img_array / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
+    # Prepare features
+    features_df = pd.DataFrame([customer_data])
+    features_df = pd.get_dummies(features_df)
+
+    for col in feature_names:
+        if col not in features_df.columns:
+            features_df[col] = 0
+
+    features_df = features_df[feature_names]
+
+    features_scaled = scaler.transform(features_df)
 
     # Predict
-    predictions = model.predict(img_array)
-    predicted_class = np.argmax(predictions[0])
-    confidence = predictions[0][predicted_class]
+    prediction = model.predict(features_scaled)
+    probability = model.predict_proba(features_scaled)
 
-    # Load class names
-    with open('models/class_indices.json', 'r') as f:
-        class_indices = json.load(f)
+    return prediction[0], probability[0]
 
-    # Reverse mapping
-    idx_to_class = {v: k for k, v in class_indices.items()}
-    predicted_label = idx_to_class[predicted_class]
+# Test prediction
+new_customer = {
+    'age': 35,
+    'monthly_charges': 75.5,
+    'total_usage': 450,
+    'usage_per_month': 37.5,
+    'support_ratio': 0.5,
+    'contract_type': 'monthly'
+}
 
-    return predicted_label, confidence, predictions[0]
-
-# Test the function
-test_image = 'data/test/sample_product.jpg'
-label, conf, probs = predict_image(test_image)
-print(f&quot;\nPredicted class: {label}&quot;)
-print(f&quot;Confidence: {conf:.4f}&quot;)
-# print(f&quot;Probs: {probs}&quot;)
-# Classification: TRAIN
+pred, prob = predict_churn(new_customer)
+print(f&quot;Churn prediction: {pred}&quot;)
+print(f&quot;Churn probability: {prob[1]:.3f}&quot;)
+# Classification: PREDICT
 
 
 </content>
