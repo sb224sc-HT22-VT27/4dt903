@@ -268,6 +268,7 @@ public class FullPipeline {
 	 * @param inputPath   Path to the input .ipynb file
 	 * @param outputPath  Base directory for generated output
 	 * @param projectName Name of the generated project
+	 * @throws IOException if there is an error creating directories or copying files
 	 */
 	private void copyDataFiles(String inputPath, String outputPath, String projectName) throws IOException {
 		Path inputFile = Paths.get(inputPath).toAbsolutePath().normalize();
@@ -297,6 +298,7 @@ public class FullPipeline {
 	 * @param sourceDir Source directory to copy from
 	 * @param targetDir Target directory to copy to
 	 * @return Number of files copied
+	 * @throws IOException if there is an error reading the directory or copying files
 	 */
 	private int copyDataFilesFromDir(Path sourceDir, Path targetDir) throws IOException {
 		if (!Files.exists(sourceDir) || !Files.isDirectory(sourceDir)) {
