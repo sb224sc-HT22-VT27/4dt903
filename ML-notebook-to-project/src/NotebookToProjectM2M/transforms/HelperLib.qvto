@@ -60,6 +60,84 @@ helper generateMainPyEntryContent(notebook : NotebookMM::NotebookModel) : Sequen
 }
 
 /**
+ * Collects imports from code cells that match the specified stage.
+ * @param notebook The notebook model
+ * @param stage The stage name: "preprocess", "train", or "predict"
+ * @return Sequence of import statements
+ */
+helper collectImportsForStage(notebook : NotebookMM::NotebookModel, stage : String) : Sequence(String) {
+    var imports : Sequence(String) := Sequence{};
+    
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                var isMatch : Boolean := false;
+                if stage = 'preprocess' then {
+                    isMatch := codeCell.isDataPreprocessing();
+                } elif stage = 'train' then {
+                    isMatch := codeCell.isTrainingCode();
+                } elif stage = 'predict' then {
+                    isMatch := codeCell.isPredictionCode();
+                } endif endif endif;
+                
+                if isMatch then {
+                    codeCell.extractImports()->forEach(imp) {
+                        imports += imp;
+                    };
+                } endif;
+            } endif;
+        } endif;
+    };
+    
+    return imports;
+}
+
+/**
+ * Generates indented code blocks for cells matching the specified stage.
+ * @param notebook The notebook model
+ * @param stage The stage name: "preprocess", "train", or "predict"
+ * @return Sequence of indented code lines with comments
+ */
+helper generateCodeBlocksForStage(notebook : NotebookMM::NotebookModel, stage : String) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    var hasCode : Boolean := false;
+    
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                var isMatch : Boolean := false;
+                if stage = 'preprocess' then {
+                    isMatch := codeCell.isDataPreprocessing();
+                } elif stage = 'train' then {
+                    isMatch := codeCell.isTrainingCode();
+                } elif stage = 'predict' then {
+                    isMatch := codeCell.isPredictionCode();
+                } endif endif endif;
+                
+                if isMatch then {
+                    hasCode := true;
+                    contentLines += '';
+                    // Capitalize first letter of stage name
+                    var stageLabel : String := if stage = 'preprocess' then 'Preprocess' elif stage = 'train' then 'Train' else 'Predict' endif endif;
+                    contentLines += '    # ' + stageLabel + ' code block';
+                    codeCell.getSourceLines()->forEach(line) {
+                        contentLines += '    ' + line;
+                    };
+                } endif;
+            } endif;
+        } endif;
+    };
+    
+    if not hasCode then {
+        contentLines += '    pass  # No ' + stage + ' code blocks found';
+    } endif;
+    
+    return contentLines;
+}
+
+/**
  * Returns the content for preprocess.py containing preprocessing code blocks.
  * @return Sequence(String)
  */
@@ -71,16 +149,9 @@ helper generatePreprocessPyContent(notebook : NotebookMM::NotebookModel) : Seque
     contentLines += '"""';
     contentLines += '';
     
-    // Collect all imports from the notebook
-    notebook.cells->forEach(cell) {
-        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
-            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
-            if codeCell.source <> null and codeCell.source <> '' and codeCell.isDataPreprocessing() then {
-                codeCell.extractImports()->forEach(imp) {
-                    contentLines += imp;
-                };
-            } endif;
-        } endif;
+    // Collect imports for preprocessing stage
+    collectImportsForStage(notebook, 'preprocess')->forEach(imp) {
+        contentLines += imp;
     };
     
     contentLines += '';
@@ -90,27 +161,8 @@ helper generatePreprocessPyContent(notebook : NotebookMM::NotebookModel) : Seque
     contentLines += '    Execute all preprocessing steps.';
     contentLines += '    """';
     
-    // Collect preprocessing code blocks
-    var hasPreprocessCode : Boolean := false;
-    notebook.cells->forEach(cell) {
-        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
-            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
-            if codeCell.source <> null and codeCell.source <> '' and codeCell.isDataPreprocessing() then {
-                hasPreprocessCode := true;
-                // Add preceding markdown as comment
-                contentLines += '';
-                contentLines += '    # Preprocessing code block';
-                // Indent the code for the function body
-                codeCell.getSourceLines()->forEach(line) {
-                    contentLines += '    ' + line;
-                };
-            } endif;
-        } endif;
-    };
-    
-    if not hasPreprocessCode then {
-        contentLines += '    pass  # No preprocessing code blocks found';
-    } endif;
+    // Generate code blocks for preprocessing stage
+    contentLines := contentLines->union(generateCodeBlocksForStage(notebook, 'preprocess'));
     
     contentLines += '';
     
@@ -129,16 +181,9 @@ helper generateTrainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(S
     contentLines += '"""';
     contentLines += '';
     
-    // Collect all imports from the notebook
-    notebook.cells->forEach(cell) {
-        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
-            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
-            if codeCell.source <> null and codeCell.source <> '' and codeCell.isTrainingCode() then {
-                codeCell.extractImports()->forEach(imp) {
-                    contentLines += imp;
-                };
-            } endif;
-        } endif;
+    // Collect imports for training stage
+    collectImportsForStage(notebook, 'train')->forEach(imp) {
+        contentLines += imp;
     };
     
     contentLines += '';
@@ -148,27 +193,8 @@ helper generateTrainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(S
     contentLines += '    Execute all training steps.';
     contentLines += '    """';
     
-    // Collect training code blocks
-    var hasTrainCode : Boolean := false;
-    notebook.cells->forEach(cell) {
-        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
-            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
-            if codeCell.source <> null and codeCell.source <> '' and codeCell.isTrainingCode() then {
-                hasTrainCode := true;
-                // Add preceding markdown as comment
-                contentLines += '';
-                contentLines += '    # Training code block';
-                // Indent the code for the function body
-                codeCell.getSourceLines()->forEach(line) {
-                    contentLines += '    ' + line;
-                };
-            } endif;
-        } endif;
-    };
-    
-    if not hasTrainCode then {
-        contentLines += '    pass  # No training code blocks found';
-    } endif;
+    // Generate code blocks for training stage
+    contentLines := contentLines->union(generateCodeBlocksForStage(notebook, 'train'));
     
     contentLines += '';
     
@@ -187,16 +213,9 @@ helper generatePredictPyContent(notebook : NotebookMM::NotebookModel) : Sequence
     contentLines += '"""';
     contentLines += '';
     
-    // Collect all imports from the notebook
-    notebook.cells->forEach(cell) {
-        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
-            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
-            if codeCell.source <> null and codeCell.source <> '' and codeCell.isPredictionCode() then {
-                codeCell.extractImports()->forEach(imp) {
-                    contentLines += imp;
-                };
-            } endif;
-        } endif;
+    // Collect imports for prediction stage
+    collectImportsForStage(notebook, 'predict')->forEach(imp) {
+        contentLines += imp;
     };
     
     contentLines += '';
@@ -206,27 +225,8 @@ helper generatePredictPyContent(notebook : NotebookMM::NotebookModel) : Sequence
     contentLines += '    Execute all prediction steps.';
     contentLines += '    """';
     
-    // Collect prediction code blocks
-    var hasPredictCode : Boolean := false;
-    notebook.cells->forEach(cell) {
-        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
-            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
-            if codeCell.source <> null and codeCell.source <> '' and codeCell.isPredictionCode() then {
-                hasPredictCode := true;
-                // Add preceding markdown as comment
-                contentLines += '';
-                contentLines += '    # Prediction code block';
-                // Indent the code for the function body
-                codeCell.getSourceLines()->forEach(line) {
-                    contentLines += '    ' + line;
-                };
-            } endif;
-        } endif;
-    };
-    
-    if not hasPredictCode then {
-        contentLines += '    pass  # No prediction code blocks found';
-    } endif;
+    // Generate code blocks for prediction stage
+    contentLines := contentLines->union(generateCodeBlocksForStage(notebook, 'predict'));
     
     contentLines += '';
     
