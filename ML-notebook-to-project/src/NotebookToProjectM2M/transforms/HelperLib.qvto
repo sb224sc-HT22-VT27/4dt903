@@ -52,45 +52,45 @@ helper extractPackageNames(notebook : NotebookMM::NotebookModel) : OrderedSet(St
  * @return String
  */
 helper mapImportToPackage(importStmt : String) : String {
-	if importStmt.indexOf('sklearn') >= 0 then
+	if importStmt.indexOf('sklearn') > 0 then
 	return 'scikit-learn'
-	elif importStmt.indexOf('cv2') >= 0 then
+	elif importStmt.indexOf('cv2') > 0 then
 	return 'opencv-python'
-	elif importStmt.indexOf('PIL') >= 0 then
+	elif importStmt.indexOf('PIL') > 0 then
 	return 'Pillow'
-	elif importStmt.indexOf('pandas') >= 0 then
+	elif importStmt.indexOf('pandas') > 0 then
 	return 'pandas'
-	elif importStmt.indexOf('numpy') >= 0 then
+	elif importStmt.indexOf('numpy') > 0 then
 	return 'numpy'
-	elif importStmt.indexOf('matplotlib') >= 0 then
+	elif importStmt.indexOf('matplotlib') > 0 then
 	return 'matplotlib'
-	elif importStmt.indexOf('scipy') >= 0 then
+	elif importStmt.indexOf('scipy') > 0 then
 	return 'scipy'
-	elif importStmt.indexOf('seaborn') >= 0 then
+	elif importStmt.indexOf('seaborn') > 0 then
 	return 'seaborn'
-	elif importStmt.indexOf('joblib') >= 0 then
+	elif importStmt.indexOf('joblib') > 0 then
 	return 'joblib'
-	elif importStmt.indexOf('tensorflow') >= 0 then
+	elif importStmt.indexOf('tensorflow') > 0 then
 	return 'tensorflow'
-	elif importStmt.indexOf('torch') >= 0 then
+	elif importStmt.indexOf('torch') > 0 then
 	return 'torch'
-	elif importStmt.indexOf('keras') >= 0 then
+	elif importStmt.indexOf('keras') > 0 then
 	return 'keras'
-	elif importStmt.indexOf('flask') >= 0 then
+	elif importStmt.indexOf('flask') > 0 then
 	return 'flask'
-	elif importStmt.indexOf('django') >= 0 then
+	elif importStmt.indexOf('django') > 0 then
 	return 'django'
-	elif importStmt.indexOf('requests') >= 0 then
+	elif importStmt.indexOf('requests') > 0 then
 	return 'requests'
-	elif importStmt.indexOf('sqlalchemy') >= 0 then
+	elif importStmt.indexOf('sqlalchemy') > 0 then
 	return 'sqlalchemy'
-	elif importStmt.indexOf('pytest') >= 0 then
+	elif importStmt.indexOf('pytest') > 0 then
 	return 'pytest'
-	elif importStmt.indexOf('yaml') >= 0 then
+	elif importStmt.indexOf('yaml') > 0 then
 	return 'PyYAML'
-	elif importStmt.indexOf('bs4') >= 0 then
+	elif importStmt.indexOf('bs4') > 0 then
 	return 'beautifulsoup4'
-	elif importStmt.indexOf('dateutil') >= 0 then
+	elif importStmt.indexOf('dateutil') > 0 then
 	return 'python-dateutil'
 	else
 	return ''
