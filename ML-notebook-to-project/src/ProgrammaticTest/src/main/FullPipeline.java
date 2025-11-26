@@ -6,14 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
@@ -248,26 +246,14 @@ public class FullPipeline {
 		Path outputDir = Paths.get(baseOutputDir);
 		Files.createDirectories(outputDir);
 		
-		// Use a UUID-based temporary filename to avoid invalid filename characters
-		String tempFileName = "temp_model_" + java.util.UUID.randomUUID().toString() + ".xmi";
-		Path tempModelFile = outputDir.resolve(tempFileName);
-		URI modelURI = URI.createFileURI(tempModelFile.toAbsolutePath().toString());
+		// Create and execute the Acceleo generator
+		// Use the EObject constructor to pass the model directly instead of saving to file
+		// This avoids serialization issues with non-containment references in the metamodel
+		File targetFolder = outputDir.toFile();
+		Generate generator = new Generate(project, targetFolder, new ArrayList<>());
+		generator.doGenerate(new BasicMonitor());
 		
-		Resource resource = resourceSet.createResource(modelURI);
-		resource.getContents().add(project);
-		resource.save(new HashMap<>());
-		
-		try {
-			// Create and execute the Acceleo generator
-			File targetFolder = outputDir.toFile();
-			Generate generator = new Generate(modelURI, targetFolder, new ArrayList<>());
-			generator.doGenerate(new BasicMonitor());
-			
-			System.out.println("  Generated project at: " + outputDir.resolve(project.getName()));
-		} finally {
-			// Clean up temporary model file
-			Files.deleteIfExists(tempModelFile);
-		}
+		System.out.println("  Generated project at: " + outputDir.resolve(project.getName()));
 	}
 
 	// ==================== Utility Methods ====================
