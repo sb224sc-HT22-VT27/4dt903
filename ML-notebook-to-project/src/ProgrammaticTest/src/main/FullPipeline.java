@@ -300,6 +300,10 @@ public class FullPipeline {
 	 * @return Number of files copied
 	 */
 	private int copyDataFilesFromDir(Path sourceDir, Path targetDir) throws IOException {
+		if (!Files.exists(sourceDir) || !Files.isDirectory(sourceDir)) {
+			return 0;
+		}
+		
 		int count = 0;
 		
 		try (var dirStream = Files.newDirectoryStream(sourceDir)) {
@@ -325,7 +329,8 @@ public class FullPipeline {
 	private boolean isDataFile(Path file) {
 		String fileName = file.getFileName().toString().toLowerCase();
 		int lastDot = fileName.lastIndexOf('.');
-		if (lastDot == -1) {
+		// Handle files without extension or ending with a dot
+		if (lastDot == -1 || lastDot == fileName.length() - 1) {
 			return false;
 		}
 		String extension = fileName.substring(lastDot + 1);
