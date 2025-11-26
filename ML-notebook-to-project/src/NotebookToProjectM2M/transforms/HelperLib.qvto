@@ -1,0 +1,100 @@
+import CodeClassificationLib;
+
+library HelperLib;
+
+modeltype NotebookMM uses "http://www.g7.org/notebookMM";
+modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
+
+/**
+ * Returns a Sequence of Strings representing the code of the given notebook.
+ * @return Sequence(String)
+ */
+helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+
+    // Iterate through all cells in order
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::MarkdownCell) then {
+            // Convert markdown cell to Python docstring
+            var mdCell := cell.oclAsType(NotebookMM::MarkdownCell);
+            if mdCell.content <> null and mdCell.content <> '' then {
+                contentLines += '"""\n';
+                contentLines += mdCell.content + '\n';
+                contentLines += '"""\n\n';
+            } endif;
+        } else if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            // Add code cell source as-is
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                contentLines += codeCell.source + CodeClassificationLib::getClassificationCommentQVTo() + '\n\n';
+            } endif;
+        } endif endif;
+    };
+
+    return contentLines;
+}
+
+/**
+ * Returns an OrderedSet of String names of imported packages in python for pip to install.
+ * @return OrderedSet(String)
+ */
+helper extractPackageNames(notebook : NotebookMM::NotebookModel) : OrderedSet(String) {
+	var imports : OrderedSet(String) := notebook.getAllImports();
+	var packages : OrderedSet(String) := 
+		imports 
+		->collect(importStmt | mapImportToPackage(importStmt)) 
+		->select(pkg | pkg <> '') 
+		->asOrderedSet(); 
+	
+	return packages;
+}
+
+/**
+ * Returns the assumed String name of a package.
+ * @return String
+ */
+helper mapImportToPackage(importStmt : String) : String {
+	if importStmt.indexOf('sklearn') >= 0 then
+	return 'scikit-learn'
+	elif importStmt.indexOf('cv2') >= 0 then
+	return 'opencv-python'
+	elif importStmt.indexOf('PIL') >= 0 then
+	return 'Pillow'
+	elif importStmt.indexOf('pandas') >= 0 then
+	return 'pandas'
+	elif importStmt.indexOf('numpy') >= 0 then
+	return 'numpy'
+	elif importStmt.indexOf('matplotlib') >= 0 then
+	return 'matplotlib'
+	elif importStmt.indexOf('scipy') >= 0 then
+	return 'scipy'
+	elif importStmt.indexOf('seaborn') >= 0 then
+	return 'seaborn'
+	elif importStmt.indexOf('joblib') >= 0 then
+	return 'joblib'
+	elif importStmt.indexOf('tensorflow') >= 0 then
+	return 'tensorflow'
+	elif importStmt.indexOf('torch') >= 0 then
+	return 'torch'
+	elif importStmt.indexOf('keras') >= 0 then
+	return 'keras'
+	elif importStmt.indexOf('flask') >= 0 then
+	return 'flask'
+	elif importStmt.indexOf('django') >= 0 then
+	return 'django'
+	elif importStmt.indexOf('requests') >= 0 then
+	return 'requests'
+	elif importStmt.indexOf('sqlalchemy') >= 0 then
+	return 'sqlalchemy'
+	elif importStmt.indexOf('pytest') >= 0 then
+	return 'pytest'
+	elif importStmt.indexOf('yaml') >= 0 then
+	return 'PyYAML'
+	elif importStmt.indexOf('bs4') >= 0 then
+	return 'beautifulsoup4'
+	elif importStmt.indexOf('dateutil') >= 0 then
+	return 'python-dateutil'
+	else
+	return ''
+	endif
+}

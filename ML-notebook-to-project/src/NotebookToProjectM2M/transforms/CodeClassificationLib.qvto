@@ -6,14 +6,14 @@ library CodeClassificationLib;
  * Returns a random classification for a code block.
  * @return One of: PREPROCESS, TRAIN, or PREDICT
  */
-helper classifyCodeBlock() : String {
-	return CodeBlockClassifier::classifyCodeBlock();
+helper classifyCodeBlockQVTo() : String {
+	return CodeBlockClassifier::classifyCodeBlockJava();
 }
 
 /**
  * Returns a comment with the classification.
  * @return A comment string with the classification
  */
-helper getClassificationComment() : String {
-	return CodeBlockClassifier::getClassificationComment();
+helper getClassificationCommentQVTo() : String {
+	return CodeBlockClassifier::getClassificationCommentJava();
 }

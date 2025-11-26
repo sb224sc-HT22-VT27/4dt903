@@ -12,7 +12,7 @@ public class CodeBlockClassifier {
 	 * 
 	 * @return One of: PREPROCESS, TRAIN, or PREDICT
 	 */
-	public static String classifyCodeBlock() {
+	public static String classifyCodeBlockJava() {
 		int index = random.nextInt(CLASSIFICATIONS.length);
 		return CLASSIFICATIONS[index];
 	}
@@ -22,7 +22,7 @@ public class CodeBlockClassifier {
 	 * 
 	 * @return A comment string with the classification
 	 */
-	public static String getClassificationComment() {
-		return "\n# Classification: " + classifyCodeBlock() + "\n";
+	public static String getClassificationCommentJava() {
+		return "\n# Classification: " + classifyCodeBlockJava() + "\n";
 	}
 }

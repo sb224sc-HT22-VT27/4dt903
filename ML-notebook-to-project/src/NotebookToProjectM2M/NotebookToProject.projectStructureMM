@@ -45,7 +45,7 @@ HISTORY_PATH = 'output/training_history.json'
 
 print(f&quot;Using TensorFlow version: {tf.__version__}&quot;)
 print(f&quot;GPU Available: {tf.config.list_physical_devices('GPU')}&quot;)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 </content>
@@ -164,7 +164,7 @@ model.compile(
 )
 
 print(&quot;Model compiled successfully!&quot;)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 </content>
@@ -193,7 +193,7 @@ checkpoint = keras.callbacks.ModelCheckpoint(
 )
 
 callbacks = [early_stopping, reduce_lr, checkpoint]
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 </content>
@@ -209,7 +209,7 @@ history = model.fit(
 )
 
 print(&quot;Training completed!&quot;)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 </content>
@@ -239,7 +239,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig('output/training_history.png')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 </content>
@@ -260,7 +260,7 @@ y_true = test_generator.classes
 class_names = list(test_generator.class_indices.keys())
 print(&quot;\nClassification Report:&quot;)
 print(classification_report(y_true, y_pred, target_names=class_names))
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 </content>
@@ -279,7 +279,7 @@ plt.xlabel('Predicted Label')
 plt.tight_layout()
 plt.savefig('output/confusion_matrix.png')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 </content>
@@ -353,7 +353,7 @@ label, conf, probs = predict_image(test_image)
 print(f&quot;\nPredicted class: {label}&quot;)
 print(f&quot;Confidence: {conf:.4f}&quot;)
 # print(f&quot;Probs: {probs}&quot;)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 </content>
