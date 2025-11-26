@@ -259,6 +259,13 @@ public class FullPipeline {
 	 * Copy data files from the input notebook's directory to the generated project's data directory.
 	 * Handles files with extensions: json, csv, yaml, jpg, txt
 	 * 
+	 * Files are copied from two locations in order:
+	 * 1. The notebook's parent directory
+	 * 2. A 'data' subdirectory (if it exists)
+	 * 
+	 * Note: If a file with the same name exists in both locations, the file from the 'data'
+	 * subdirectory takes precedence (overwrites the first copy).
+	 * 
 	 * @param inputPath   Path to the input .ipynb file
 	 * @param outputPath  Base directory for generated output
 	 * @param projectName Name of the generated project
@@ -295,12 +302,14 @@ public class FullPipeline {
 	private int copyDataFilesFromDir(Path sourceDir, Path targetDir) throws IOException {
 		int count = 0;
 		
-		for (Path file : Files.newDirectoryStream(sourceDir)) {
-			if (Files.isRegularFile(file) && isDataFile(file)) {
-				Path targetFile = targetDir.resolve(file.getFileName());
-				Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
-				System.out.println("    Copied: " + file.getFileName());
-				count++;
+		try (var dirStream = Files.newDirectoryStream(sourceDir)) {
+			for (Path file : dirStream) {
+				if (Files.isRegularFile(file) && isDataFile(file)) {
+					Path targetFile = targetDir.resolve(file.getFileName());
+					Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+					System.out.println("    Copied: " + file.getFileName());
+					count++;
+				}
 			}
 		}
 		
