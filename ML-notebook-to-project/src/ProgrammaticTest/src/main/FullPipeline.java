@@ -2,7 +2,6 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -300,7 +299,8 @@ public class FullPipeline {
 	}
 
 	/**
-	 * Copy data files from a source directory to a target directory.
+	 * Copy data files from a source directory to a target directory recursively,
+	 * preserving the directory structure.
 	 * 
 	 * @param sourceDir Source directory to copy from
 	 * @param targetDir Target directory to copy to
@@ -313,20 +313,26 @@ public class FullPipeline {
 			return 0;
 		}
 
-		int count = 0;
+		int[] count = { 0 };
 
-		try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(sourceDir)) {
-			for (Path file : dirStream) {
-				if (Files.isRegularFile(file) && isDataFile(file)) {
-					Path targetFile = targetDir.resolve(file.getFileName());
-					Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
-					System.out.println("    Copied: " + file.getFileName());
-					count++;
-				}
+		Files.walk(sourceDir).filter(Files::isRegularFile).filter(this::isDataFile).forEach(file -> {
+			try {
+				// Compute relative path from sourceDir to preserve directory structure
+				Path relativePath = sourceDir.relativize(file);
+				Path targetFile = targetDir.resolve(relativePath);
+
+				// Ensure parent directories exist
+				Files.createDirectories(targetFile.getParent());
+
+				Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+				System.out.println("    Copied: " + relativePath);
+				count[0]++;
+			} catch (IOException e) {
+				throw new RuntimeException("Failed to copy file: " + file, e);
 			}
-		}
+		});
 
-		return count;
+		return count[0];
 	}
 
 	/**
