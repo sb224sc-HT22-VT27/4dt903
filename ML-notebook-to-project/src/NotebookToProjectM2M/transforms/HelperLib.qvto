@@ -96,3 +96,31 @@ helper mapImportToPackage(importStmt : String) : String {
 	return ''
 	endif
 }
+
+/**
+ * Returns a Sequence of Strings representing the content of a Dockerfile.
+ * The Dockerfile sets up a Python venv, installs requirements, and runs main.py.
+ * @return Sequence(String)
+ */
+helper generateDockerfileContent() : Sequence(String) {
+	return Sequence{
+		'FROM python:3.11-slim',
+		'',
+		'WORKDIR /app',
+		'',
+		'# Copy project files',
+		'COPY requirements.txt .',
+		'COPY src/ ./src/',
+		'COPY data/ ./data/',
+		'COPY models/ ./models/',
+		'COPY outputs/ ./outputs/',
+		'',
+		'# Set up virtual environment and install dependencies',
+		'RUN python -m venv /opt/venv',
+		'ENV PATH="/opt/venv/bin:$PATH"',
+		'RUN pip install --upgrade pip && pip install -r requirements.txt',
+		'',
+		'# Run the main script',
+		'CMD ["python", "src/main.py"]'
+	};
+}
