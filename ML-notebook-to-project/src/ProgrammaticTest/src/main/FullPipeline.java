@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -41,6 +45,10 @@ import projectStructureMM.ProjectStructureMMPackage;
  */
 public class FullPipeline {
 	private static final String QVTO_TRANSFORMATION_PATH = "../NotebookToProjectM2M/transforms/NotebookToProject.qvto";
+	
+	/** Supported data file extensions to copy to the generated project's data directory */
+	private static final Set<String> DATA_FILE_EXTENSIONS = new HashSet<>(
+			Arrays.asList("json", "csv", "yaml", "jpg", "txt"));
 
 	private final NotebookJSONParser parser;
 	private final ResourceSet resourceSet;
@@ -92,6 +100,11 @@ public class FullPipeline {
 		// Step 3: M2T - Generate files from ProjectStructure using Acceleo
 		System.out.println("Step 3: M2T - Generating project files using generate.mtl (Acceleo)...");
 		modelToText(projectStructure, outputPath);
+		System.out.println();
+		
+		// Step 4: Copy data files from input to generated project's data directory
+		System.out.println("Step 4: Copying data files to generated project...");
+		copyDataFiles(inputPath, outputPath, projectStructure.getName());
 		System.out.println();
 
 		System.out.println("=== Pipeline Complete ===");
@@ -240,6 +253,74 @@ public class FullPipeline {
 
 		System.out.println("  Generated project at: " + outputDir.resolve(project.getName()));
 
+	}
+
+	/**
+	 * Copy data files from the input notebook's directory to the generated project's data directory.
+	 * Handles files with extensions: json, csv, yaml, jpg, txt
+	 * 
+	 * @param inputPath   Path to the input .ipynb file
+	 * @param outputPath  Base directory for generated output
+	 * @param projectName Name of the generated project
+	 */
+	private void copyDataFiles(String inputPath, String outputPath, String projectName) throws IOException {
+		Path inputFile = Paths.get(inputPath).toAbsolutePath().normalize();
+		Path inputDir = inputFile.getParent();
+		Path targetDataDir = Paths.get(outputPath).resolve(projectName).resolve("data");
+		
+		// Ensure target data directory exists
+		Files.createDirectories(targetDataDir);
+		
+		int copiedCount = 0;
+		
+		// Copy data files from the same directory as the notebook
+		copiedCount += copyDataFilesFromDir(inputDir, targetDataDir);
+		
+		// Copy data files from a 'data' subdirectory if it exists
+		Path inputDataDir = inputDir.resolve("data");
+		if (Files.exists(inputDataDir) && Files.isDirectory(inputDataDir)) {
+			copiedCount += copyDataFilesFromDir(inputDataDir, targetDataDir);
+		}
+		
+		System.out.println("  Copied " + copiedCount + " data file(s) to " + targetDataDir);
+	}
+	
+	/**
+	 * Copy data files from a source directory to a target directory.
+	 * 
+	 * @param sourceDir Source directory to copy from
+	 * @param targetDir Target directory to copy to
+	 * @return Number of files copied
+	 */
+	private int copyDataFilesFromDir(Path sourceDir, Path targetDir) throws IOException {
+		int count = 0;
+		
+		for (Path file : Files.newDirectoryStream(sourceDir)) {
+			if (Files.isRegularFile(file) && isDataFile(file)) {
+				Path targetFile = targetDir.resolve(file.getFileName());
+				Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+				System.out.println("    Copied: " + file.getFileName());
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
+	/**
+	 * Check if a file is a data file based on its extension.
+	 * 
+	 * @param file Path to the file
+	 * @return true if the file has a supported data file extension
+	 */
+	private boolean isDataFile(Path file) {
+		String fileName = file.getFileName().toString().toLowerCase();
+		int lastDot = fileName.lastIndexOf('.');
+		if (lastDot == -1) {
+			return false;
+		}
+		String extension = fileName.substring(lastDot + 1);
+		return DATA_FILE_EXTENSIONS.contains(extension);
 	}
 
 	/**
