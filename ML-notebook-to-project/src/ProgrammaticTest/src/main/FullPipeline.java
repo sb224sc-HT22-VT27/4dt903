@@ -296,7 +296,7 @@ public class FullPipeline {
 			copiedCount += copyDataFilesFromDir(inputDataDir, targetDataDir);
 		}
 
-		System.out.println("  Copied " + copiedCount + " data file(s) to " + targetDataDir);
+		System.out.println("	Copied " + copiedCount + " data file(s) to " + targetDataDir);
 	}
 
 	/**
