@@ -2,15 +2,15 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -47,8 +47,7 @@ public class FullPipeline {
 	private static final String QVTO_TRANSFORMATION_PATH = "../NotebookToProjectM2M/transforms/NotebookToProject.qvto";
 	
 	/** Supported data file extensions to copy to the generated project's data directory */
-	private static final Set<String> DATA_FILE_EXTENSIONS = new HashSet<>(
-			Arrays.asList("json", "csv", "yaml", "jpg", "txt"));
+	private static final Set<String> DATA_FILE_EXTENSIONS = Set.of("json", "csv", "yaml", "jpg", "txt");
 
 	private final NotebookJSONParser parser;
 	private final ResourceSet resourceSet;
@@ -306,7 +305,7 @@ public class FullPipeline {
 		
 		int count = 0;
 		
-		try (var dirStream = Files.newDirectoryStream(sourceDir)) {
+		try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(sourceDir)) {
 			for (Path file : dirStream) {
 				if (Files.isRegularFile(file) && isDataFile(file)) {
 					Path targetFile = targetDir.resolve(file.getFileName());
@@ -327,7 +326,7 @@ public class FullPipeline {
 	 * @return true if the file has a supported data file extension
 	 */
 	private boolean isDataFile(Path file) {
-		String fileName = file.getFileName().toString().toLowerCase();
+		String fileName = file.getFileName().toString().toLowerCase(Locale.ROOT);
 		int lastDot = fileName.lastIndexOf('.');
 		// Handle files without extension or ending with a dot
 		if (lastDot == -1 || lastDot == fileName.length() - 1) {
