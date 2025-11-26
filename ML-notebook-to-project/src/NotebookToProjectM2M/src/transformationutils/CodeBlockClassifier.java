@@ -38,7 +38,7 @@ public class CodeBlockClassifier {
 	 */
 	private static boolean containsPredictionPatterns(String code) {
 		return code.contains("predict(") || code.contains("predict_proba(") || code.contains("def predict")
-				|| code.contains("load(") && (code.contains("model") || code.contains("scaler"))
+				|| (code.contains("load(") && (code.contains("model") || code.contains("scaler")))
 				|| code.contains("inference");
 	}
 

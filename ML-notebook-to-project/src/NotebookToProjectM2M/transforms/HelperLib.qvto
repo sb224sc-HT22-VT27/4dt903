@@ -95,7 +95,7 @@ helper generatePreprocessContent(notebook : NotebookMM::NotebookModel) : Sequenc
             if codeCell.source <> null and codeCell.source <> '' then {
                 var classification := CodeClassificationLib::classifyCodeWithContent(codeCell.source);
                 // Include imports in preprocessing file
-                if codeCell.source.indexOf('import ') > 0 and not hasImports then {
+                if codeCell.source.indexOf('import ') >= 0 and not hasImports then {
                     contentLines += codeCell.source + '\n\n';
                     hasImports := true;
                 } elif classification = 'PREPROCESS' then {
@@ -146,7 +146,7 @@ helper generateTrainContent(notebook : NotebookMM::NotebookModel) : Sequence(Str
         if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
-                if codeCell.source.indexOf('import ') > 0 then {
+                if codeCell.source.indexOf('import ') >= 0 then {
                     contentLines += codeCell.source + '\n\n';
                 } endif;
             } endif;
@@ -159,7 +159,7 @@ helper generateTrainContent(notebook : NotebookMM::NotebookModel) : Sequence(Str
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
                 var classification := CodeClassificationLib::classifyCodeWithContent(codeCell.source);
-                if classification = 'TRAIN' and codeCell.source.indexOf('import ') <= 0 then {
+                if classification = 'TRAIN' and codeCell.source.indexOf('import ') < 0 then {
                     codeBlocks += codeCell.source;
                 } endif;
             } endif;
@@ -209,7 +209,7 @@ helper generatePredictContent(notebook : NotebookMM::NotebookModel) : Sequence(S
         if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
-                if codeCell.source.indexOf('import ') > 0 then {
+                if codeCell.source.indexOf('import ') >= 0 then {
                     contentLines += codeCell.source + '\n\n';
                 } endif;
             } endif;
@@ -222,7 +222,7 @@ helper generatePredictContent(notebook : NotebookMM::NotebookModel) : Sequence(S
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
                 var classification := CodeClassificationLib::classifyCodeWithContent(codeCell.source);
-                if classification = 'PREDICT' and codeCell.source.indexOf('import ') <= 0 then {
+                if classification = 'PREDICT' and codeCell.source.indexOf('import ') < 0 then {
                     codeBlocks += codeCell.source;
                 } endif;
             } endif;
