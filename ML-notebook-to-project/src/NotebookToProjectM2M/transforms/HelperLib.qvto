@@ -1,4 +1,5 @@
 import CodeClassificationLib;
+import transformationutils.FilePathTransformer;
 
 library HelperLib;
 
@@ -7,6 +8,8 @@ modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
 /**
  * Returns a Sequence of Strings representing the code of the given notebook.
+ * File paths are updated to match the new project structure where code is in src/
+ * and data files are in data/, models/, etc.
  * @return Sequence(String)
  */
 helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
@@ -21,14 +24,25 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(St
                 contentLines += '\n"""\n' + mdCell.content + '\n"""\n\n';
             } endif;
         } else if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
-            // Add code cell source as-is
+            // Transform file paths in code to match new project structure
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
-                contentLines += '\n' + codeCell.source + CodeClassificationLib::getClassificationCommentQVTo() + '\n\n';
+                var transformedSource := transformFilePathsJava(codeCell.source);
+                contentLines += '\n' + transformedSource + CodeClassificationLib::getClassificationCommentQVTo() + '\n\n';
             } endif;
         } endif endif;
     };
 	return contentLines;
+}
+
+/**
+ * Transforms file paths in Python code using Java helper.
+ * Uses FilePathTransformer to update paths for the new project structure.
+ * @param source The original source code
+ * @return The source code with updated file paths
+ */
+helper transformFilePathsJava(source : String) : String {
+    return FilePathTransformer::transformFilePaths(source);
 }
 
 /**
