@@ -99,15 +99,15 @@ public class FullPipeline {
 		// Step 1: T2M - Parse notebook to model using EMF
 		System.out.println("Step 1: T2M - Parsing notebook to NotebookModel (EMF)...");
 		NotebookModel notebookModel = textToModel(inputPath);
-		System.out.println("  Parsed notebook: " + notebookModel.getName());
-		System.out.println("  Cells: " + notebookModel.getCells().size());
+		System.out.println("\tParsed notebook: " + notebookModel.getName());
+		System.out.println("\tCells: " + notebookModel.getCells().size());
 		System.out.println();
 
 		// Step 2: M2M - Transform NotebookModel to ProjectStructure using QVT-O
 		System.out.println("Step 2: M2M - Executing NotebookToProject.qvto (QVT-O)...");
 		ProjectStructure projectStructure = modelToModel(notebookModel);
-		System.out.println("  Project name: " + projectStructure.getName());
-		System.out.println("  Elements: " + projectStructure.getFilesystemelement().size());
+		System.out.println("\tProject name: " + projectStructure.getName());
+		System.out.println("\tElements: " + projectStructure.getFilesystemelement().size());
 		System.out.println();
 
 		// Step 3: M2T - Generate files from ProjectStructure using Acceleo
@@ -237,7 +237,7 @@ public class FullPipeline {
 			// Find the ProjectStructure in the output
 			for (EObject obj : outputObjects) {
 				if (obj instanceof ProjectStructure) {
-					System.out.println("  Notebook transformed to Project!");
+					System.out.println("\tNotebook transformed to Project!");
 					return (ProjectStructure) obj;
 				}
 			}
@@ -264,7 +264,7 @@ public class FullPipeline {
 		Generate generator = new Generate(project, targetFolder, new ArrayList<>());
 		generator.doGenerate(new BasicMonitor());
 
-		System.out.println("  Generated project at: " + outputDir.resolve(project.getName()));
+		System.out.println("\tGenerated project at: " + outputDir.resolve(project.getName()));
 
 	}
 
@@ -466,6 +466,8 @@ public class FullPipeline {
 
 		try {
 			pipeline.executeAll(inputDir, outputDir);
+			// pipeline.execute(inputDir +
+			// "Customer-Churn-Prediction/simple_classification.ipynb", outputDir);
 		} catch (IOException e) {
 			System.err.println("Pipeline execution failed: " + e.getMessage());
 			e.printStackTrace();
