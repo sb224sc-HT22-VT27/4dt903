@@ -29,6 +29,12 @@ public class FilePathTransformer {
 	private static final Set<String> MAPPED_DIRS = Set.of("data", "models", "output", "outputs");
 
 	/**
+	 * Pattern for matching file extensions in paths. Built from DATA_FILE_EXTENSIONS.
+	 * Example: "csv|json|yaml|yml|..."
+	 */
+	private static final String EXTENSIONS_PATTERN = String.join("|", DATA_FILE_EXTENSIONS);
+
+	/**
 	 * Regex pattern to match file paths in Python strings. Matches single-quoted
 	 * and double-quoted strings containing file paths with common data file
 	 * extensions.
@@ -40,8 +46,15 @@ public class FilePathTransformer {
 	 * Groups: 1. Opening quote (' or ") 2. Full path (may include directory
 	 * components) 3. File extension (without dot)
 	 */
-	private static final Pattern PATH_PATTERN = Pattern
-			.compile("(['\"])([^'\"\\n\\r]*\\.(" + String.join("|", DATA_FILE_EXTENSIONS) + "))\\1", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PATH_PATTERN = Pattern.compile(
+			"(['\"])([^'\"\\n\\r]*\\.(" + EXTENSIONS_PATTERN + "))\\1",
+			Pattern.CASE_INSENSITIVE);
+
+	/**
+	 * Pattern to strip leading './' prefixes from paths.
+	 * Matches one or more consecutive './' at the start of the string.
+	 */
+	private static final Pattern LEADING_DOT_SLASH_PATTERN = Pattern.compile("^(\\./)+");
 
 	/**
 	 * Transforms file paths in Python code to work with the new project structure.
@@ -90,16 +103,9 @@ public class FilePathTransformer {
 			return path;
 		}
 
-		// Handle paths starting with ./ (strip all leading ./ prefixes iteratively)
+		// Strip all leading './' prefixes using regex for efficiency
 		// This handles cases like './file.csv', '././file.csv', etc.
-		String processedPath = path;
-		while (processedPath.startsWith("./")) {
-			processedPath = processedPath.substring(2);
-		}
-		// If we stripped any ./ prefixes, continue processing with the cleaned path
-		if (!processedPath.equals(path)) {
-			path = processedPath;
-		}
+		path = LEADING_DOT_SLASH_PATTERN.matcher(path).replaceFirst("");
 
 		// Check if path starts with a mapped directory
 		for (String dir : MAPPED_DIRS) {
