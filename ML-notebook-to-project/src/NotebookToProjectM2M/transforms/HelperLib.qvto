@@ -6,29 +6,230 @@ modeltype NotebookMM uses "http://www.g7.org/notebookMM";
 modeltype ProjectStuctureMM uses "http://www.g7.org/projectStructureMM";
 
 /**
- * Returns a Sequence of Strings representing the code of the given notebook.
+ * Returns the main.py entry point content that imports from preprocess, train, and predict modules.
  * @return Sequence(String)
  */
-helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+helper generateMainPyEntryContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
     var contentLines : Sequence(String) := Sequence{};
-
-    // Iterate through all cells in order
+    
+    // Add docstring from first markdown cell if available
     notebook.cells->forEach(cell) {
         if cell.oclIsTypeOf(NotebookMM::MarkdownCell) then {
-            // Convert markdown cell to Python docstring
             var mdCell := cell.oclAsType(NotebookMM::MarkdownCell);
             if mdCell.content <> null and mdCell.content <> '' then {
-                contentLines += '\n"""\n' + mdCell.content + '\n"""\n\n';
+                contentLines += '"""';
+                contentLines += mdCell.content;
+                contentLines += '"""';
+                contentLines += '';
+                break;
             } endif;
-        } else if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
-            // Add code cell source as-is
+        } endif;
+    };
+    
+    // Add imports from the stage modules
+    contentLines += '# Import stage modules';
+    contentLines += 'from preprocess import run_preprocessing';
+    contentLines += 'from train import run_training';
+    contentLines += 'from predict import run_prediction';
+    contentLines += '';
+    contentLines += '';
+    contentLines += 'def main():';
+    contentLines += '    """';
+    contentLines += '    Main entry point that orchestrates the ML pipeline.';
+    contentLines += '    Executes preprocessing, training, and prediction stages in sequence.';
+    contentLines += '    """';
+    contentLines += '    print("Starting ML Pipeline...")';
+    contentLines += '    ';
+    contentLines += '    print("\\n=== Preprocessing Stage ===")';
+    contentLines += '    run_preprocessing()';
+    contentLines += '    ';
+    contentLines += '    print("\\n=== Training Stage ===")';
+    contentLines += '    run_training()';
+    contentLines += '    ';
+    contentLines += '    print("\\n=== Prediction Stage ===")';
+    contentLines += '    run_prediction()';
+    contentLines += '    ';
+    contentLines += '    print("\\nML Pipeline completed!")';
+    contentLines += '';
+    contentLines += '';
+    contentLines += 'if __name__ == "__main__":';
+    contentLines += '    main()';
+    contentLines += '';
+    
+    return contentLines;
+}
+
+/**
+ * Collects imports from code cells that match the specified stage.
+ * @param notebook The notebook model
+ * @param stage The stage name: "preprocess", "train", or "predict"
+ * @return Sequence of import statements
+ */
+helper collectImportsForStage(notebook : NotebookMM::NotebookModel, stage : String) : Sequence(String) {
+    var imports : Sequence(String) := Sequence{};
+    
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
-                contentLines += '\n' + codeCell.source + CodeClassificationLib::getClassificationCommentQVTo() + '\n\n';
+                var isMatch : Boolean := false;
+                if stage = 'preprocess' then {
+                    isMatch := codeCell.isDataPreprocessing();
+                } elif stage = 'train' then {
+                    isMatch := codeCell.isTrainingCode();
+                } elif stage = 'predict' then {
+                    isMatch := codeCell.isPredictionCode();
+                } endif endif endif;
+                
+                if isMatch then {
+                    codeCell.extractImports()->forEach(imp) {
+                        imports += imp;
+                    };
+                } endif;
             } endif;
-        } endif endif;
+        } endif;
     };
+    
+    return imports;
+}
 
+/**
+ * Generates indented code blocks for cells matching the specified stage.
+ * @param notebook The notebook model
+ * @param stage The stage name: "preprocess", "train", or "predict"
+ * @return Sequence of indented code lines with comments
+ */
+helper generateCodeBlocksForStage(notebook : NotebookMM::NotebookModel, stage : String) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    var hasCode : Boolean := false;
+    
+    notebook.cells->forEach(cell) {
+        if cell.oclIsTypeOf(NotebookMM::CodeCell) then {
+            var codeCell := cell.oclAsType(NotebookMM::CodeCell);
+            if codeCell.source <> null and codeCell.source <> '' then {
+                var isMatch : Boolean := false;
+                if stage = 'preprocess' then {
+                    isMatch := codeCell.isDataPreprocessing();
+                } elif stage = 'train' then {
+                    isMatch := codeCell.isTrainingCode();
+                } elif stage = 'predict' then {
+                    isMatch := codeCell.isPredictionCode();
+                } endif endif endif;
+                
+                if isMatch then {
+                    hasCode := true;
+                    contentLines += '';
+                    // Capitalize first letter of stage name
+                    var stageLabel : String := if stage = 'preprocess' then 'Preprocess' elif stage = 'train' then 'Train' else 'Predict' endif endif;
+                    contentLines += '    # ' + stageLabel + ' code block';
+                    codeCell.getSourceLines()->forEach(line) {
+                        contentLines += '    ' + line;
+                    };
+                } endif;
+            } endif;
+        } endif;
+    };
+    
+    if not hasCode then {
+        contentLines += '    pass  # No ' + stage + ' code blocks found';
+    } endif;
+    
+    return contentLines;
+}
+
+/**
+ * Returns the content for preprocess.py containing preprocessing code blocks.
+ * @return Sequence(String)
+ */
+helper generatePreprocessPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    
+    contentLines += '"""';
+    contentLines += 'Preprocessing module - Contains data loading and preprocessing logic.';
+    contentLines += '"""';
+    contentLines += '';
+    
+    // Collect imports for preprocessing stage
+    collectImportsForStage(notebook, 'preprocess')->forEach(imp) {
+        contentLines += imp;
+    };
+    
+    contentLines += '';
+    contentLines += '';
+    contentLines += 'def run_preprocessing():';
+    contentLines += '    """';
+    contentLines += '    Execute all preprocessing steps.';
+    contentLines += '    """';
+    
+    // Generate code blocks for preprocessing stage
+    contentLines := contentLines->union(generateCodeBlocksForStage(notebook, 'preprocess'));
+    
+    contentLines += '';
+    
+    return contentLines;
+}
+
+/**
+ * Returns the content for train.py containing training code blocks.
+ * @return Sequence(String)
+ */
+helper generateTrainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    
+    contentLines += '"""';
+    contentLines += 'Training module - Contains model training logic.';
+    contentLines += '"""';
+    contentLines += '';
+    
+    // Collect imports for training stage
+    collectImportsForStage(notebook, 'train')->forEach(imp) {
+        contentLines += imp;
+    };
+    
+    contentLines += '';
+    contentLines += '';
+    contentLines += 'def run_training():';
+    contentLines += '    """';
+    contentLines += '    Execute all training steps.';
+    contentLines += '    """';
+    
+    // Generate code blocks for training stage
+    contentLines := contentLines->union(generateCodeBlocksForStage(notebook, 'train'));
+    
+    contentLines += '';
+    
+    return contentLines;
+}
+
+/**
+ * Returns the content for predict.py containing prediction code blocks.
+ * @return Sequence(String)
+ */
+helper generatePredictPyContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+    var contentLines : Sequence(String) := Sequence{};
+    
+    contentLines += '"""';
+    contentLines += 'Prediction module - Contains model prediction/inference logic.';
+    contentLines += '"""';
+    contentLines += '';
+    
+    // Collect imports for prediction stage
+    collectImportsForStage(notebook, 'predict')->forEach(imp) {
+        contentLines += imp;
+    };
+    
+    contentLines += '';
+    contentLines += '';
+    contentLines += 'def run_prediction():';
+    contentLines += '    """';
+    contentLines += '    Execute all prediction steps.';
+    contentLines += '    """';
+    
+    // Generate code blocks for prediction stage
+    contentLines := contentLines->union(generateCodeBlocksForStage(notebook, 'predict'));
+    
+    contentLines += '';
+    
     return contentLines;
 }
 
