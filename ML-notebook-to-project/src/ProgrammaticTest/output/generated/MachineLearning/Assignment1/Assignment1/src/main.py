@@ -15,7 +15,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -26,8 +26,8 @@ Load the Wage.csv file
 
 
 
-csvFile = pd.read_csv("Wage.csv", index_col=0)
-# Classification: PREDICT
+csvFile = pd.read_csv("data/Wage.csv", index_col=0)
+# Classification: TRAIN
 
 
 
@@ -56,7 +56,7 @@ csvFile = csvFile.drop("logwage", axis=1)
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -68,7 +68,7 @@ Display the number of data points:
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -80,7 +80,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -101,7 +101,7 @@ print(csvFile['jobclass'].value_counts(), "\n")
 print(csvFile['health'].value_counts(), "\n")
 print(csvFile['health_ins'].value_counts(), "\n")
 print("wage\n", csvFile['wage'].describe())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -135,7 +135,7 @@ plt.ylabel("Age")
 plt.show()
 stats.probplot(csvFile['wage'], dist="norm", plot=plt)
 plt.ylabel("Wage")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -149,7 +149,7 @@ Pearson correlation test
 corr_coef, p_value = stats.pearsonr(csvFile['age'], csvFile['wage'])
 print(f"Correlation Coefficient: {corr_coef}")
 print(f"p-value: {p_value}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -191,7 +191,7 @@ for metric in colNames:
     plt.show()
 
 
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -210,7 +210,7 @@ for metric in colNames:
         groups.append(group["wage"].values)
     f_stat, p_value = stats.f_oneway(*groups)
     print(metric + ":", f_stat, p_value)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 

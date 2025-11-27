@@ -39,7 +39,7 @@ Load Auto dataset
 
 
 
-csvFile = pd.read_csv("Auto.csv", index_col=0)
+csvFile = pd.read_csv("data/Auto.csv", index_col=0)
 # Classification: TRAIN
 
 
@@ -54,7 +54,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -67,7 +67,7 @@ Print a statistic summary of the predictors and the response:
 
 print(csvFile.describe(), "\n")
 print(csvFile['name'].value_counts())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -79,7 +79,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -91,7 +91,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -128,7 +128,7 @@ def boot_fn(data, index):
 
 
 print(boot_fn(csvFile, range(392)))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -163,7 +163,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -182,7 +182,7 @@ def boot_fn_quadratic(data, index):
     y = sample['mpg']
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -194,7 +194,7 @@ for i in range(1000):
     boot_results[i, :] = boot_fn_quadratic(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

@@ -39,7 +39,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier as KNN
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -50,8 +50,8 @@ Load Smarket dataset
 
 
 
-csvFile = pd.read_csv("Smarket.csv", index_col=0)
-# Classification: PREDICT
+csvFile = pd.read_csv("data/Smarket.csv", index_col=0)
+# Classification: PREPROCESS
 
 
 
@@ -65,7 +65,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -90,7 +90,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -128,7 +128,7 @@ Here we can see that most values have very little to no correlation except for y
 
 sns.scatterplot(data=csvFile, x='Year', y='Volume', color="black")
 sns.regplot(data=csvFile, x="Year", y="Volume", color="black")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -151,7 +151,7 @@ y = csvFile['Direction'].map({'Up': 1, 'Down': 0})
 model = sm.Logit(y, X).fit()
 
 print(model.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -199,7 +199,7 @@ for i in probs:
 print(pd.crosstab(pred, csvFile["Direction"]))
 accuracy = np.mean(pred == csvFile["Direction"])
 print(f"Model Accuracy: {accuracy}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -277,7 +277,7 @@ conf_matrix = pd.crosstab(lda_class, y)
 accuracy = accuracy_score(y, lda_class)
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -298,7 +298,7 @@ model = QDA()
 model.fit(X, y)
 print(f"Prior probabilities of groups: {model.priors_}")
 print(f"Group means:\n{model.means_}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -343,7 +343,7 @@ Use KNN clustering
 
 train = csvFile['Year'] < 2005
 print(csvFile[~train].shape)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -365,7 +365,7 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

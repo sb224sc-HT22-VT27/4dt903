@@ -47,7 +47,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -58,8 +58,8 @@ Load the Boston.csv file
 
 
 
-csvFile = pd.read_csv("Boston.csv", index_col=0)
-# Classification: PREDICT
+csvFile = pd.read_csv("data/Boston.csv", index_col=0)
+# Classification: TRAIN
 
 
 
@@ -73,7 +73,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -85,7 +85,7 @@ Print a statistic summary of the predictors and the response:
 
 
 csvFile.describe()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -127,7 +127,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -144,7 +144,7 @@ reg2 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["rm"])).fit()
 print(reg2.summary())
 reg3 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["age"])).fit()
 print(reg3.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -160,7 +160,7 @@ The same interpretation can be made of the other values of 0.484 and 2.49e-74, a
 print(reg1.conf_int())
 print(reg2.conf_int())
 print(reg3.conf_int())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -217,7 +217,7 @@ Here we can see that R-squared is 0.639 which means that 63.9% of the variance c
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -236,7 +236,7 @@ Correlation plot
 
 sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -261,7 +261,7 @@ selected_predictor_values = sm.add_constant(selected_predictor_values)
 predictions = reg.get_prediction(selected_predictor_values)
 pred_summary = predictions.summary_frame(alpha=0.05)
 print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -284,7 +284,7 @@ X = sm.add_constant(X)
 model1 = sm.OLS(y, X).fit()
 
 print(model1.summary())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -295,7 +295,7 @@ X = sm.add_constant(X)
 model2 = sm.OLS(y, X).fit()
 
 print(model2.summary())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -318,7 +318,7 @@ X = sm.add_constant(X)
 model3 = sm.OLS(y, X).fit()
 
 print(model3.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -331,7 +331,7 @@ Perform ANOVA
 
 anova_results = sm.stats.anova_lm(model2, model3)
 print(anova_results)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -356,14 +356,14 @@ X = sm.add_constant(X)
 model4 = sm.OLS(y, X).fit()
 
 print(model4.summary())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
 
 anova_results = sm.stats.anova_lm(model2, model4)
 print(anova_results)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -382,7 +382,7 @@ model5 = sm.OLS(y, X).fit()
 
 print(model5.summary())
 
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -406,7 +406,7 @@ Here we get quite a large increse in r-squared of 0.804 and the anova test shows
 
 
 
-csvFile2 = pd.read_csv("Carseats.csv", index_col=0)
+csvFile2 = pd.read_csv("data/Carseats.csv", index_col=0)
 print(csvFile2.describe(), "\n")
 print(csvFile2['ShelveLoc'].value_counts(), "\n")
 print(csvFile2['Urban'].value_counts(), "\n")
@@ -426,7 +426,7 @@ y = csvFile2["Sales"]
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -473,7 +473,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
