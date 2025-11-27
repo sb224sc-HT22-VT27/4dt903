@@ -177,7 +177,7 @@ class MyVAE(nn.Module):
         z = self.prior.sample((n,))
         return self.decoder(z)
     
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -275,7 +275,7 @@ class MyVAEwithNF(MyVAE):
     
         xRecon = self.decoder(zK)
         return xRecon, kl, zK
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -309,13 +309,13 @@ train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, drop_las
 # Load MNIST test set
 test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=True)
 test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, drop_last=True, shuffle=False)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 
 train_dataset.data.shape, test_dataset.data.shape
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -407,7 +407,7 @@ for epoch in range(EPOCHS):
     reconLosses.append(epochRecon / len(train_loader))
     klDivs.append(epochKl / len(train_loader))
     print(f"Epoch: {epoch+1}, Recon Loss: {reconLosses[-1]:.4f}, KL: {klDivs[-1]:.4f}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -496,7 +496,7 @@ plt.title('t-SNE of Encoded Test Images')
 plt.xlabel('t-SNE 1')
 plt.ylabel('t-SNE 2')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -631,7 +631,7 @@ for epoch in range(EPOCHS):
     reconLossesNf.append(epochRecon / len(train_loader))
     klDivsNf.append(epochKl / len(train_loader))
     print(f"Epoch: {epoch+1}, Recon Loss: {reconLossesNf[-1]:.4f}, KL: {klDivsNf[-1]:.4f}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

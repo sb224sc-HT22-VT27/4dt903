@@ -157,7 +157,7 @@ model = build_cnn_model(
 )
 
 model.summary()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -212,7 +212,7 @@ checkpoint = keras.callbacks.ModelCheckpoint(
 )
 
 callbacks = [early_stopping, reduce_lr, checkpoint]
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -233,7 +233,7 @@ history = model.fit(
 )
 
 print("Training completed!")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -268,7 +268,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig('output/training_history.png')
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -294,7 +294,7 @@ y_true = test_generator.classes
 class_names = list(test_generator.class_indices.keys())
 print("\nClassification Report:")
 print(classification_report(y_true, y_pred, target_names=class_names))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -354,7 +354,7 @@ with open('models/model_metadata.json', 'w') as f:
     json.dump(metadata, f, indent=2)
 
 print("Metadata saved!")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -402,7 +402,7 @@ label, conf, probs = predict_image(test_image)
 print(f"\nPredicted class: {label}")
 print(f"Confidence: {conf:.4f}")
 # print(f"Probs: {probs}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

@@ -4,10 +4,11 @@ WORKDIR /app
 # Copy requirements first (for better caching)
 COPY requirements.txt .
 # Set up virtual environment and install dependencies
-RUN python -m venv /opt/venv && \
-			 pip install --upgrade pip && \
-			 pip install -r requirements.txt
+RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+# Install dependencies
+RUN pip install --upgrade pip && \
+			 pip install -r requirements.txt
 # Copy project files
 COPY src/ ./src/
 COPY data/ ./data/

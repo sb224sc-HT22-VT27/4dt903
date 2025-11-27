@@ -15,7 +15,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -41,7 +41,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -78,7 +78,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -95,7 +95,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -159,7 +159,7 @@ new_age = pd.DataFrame({'age': [25, 50, 75]})
 new_age = sm.add_constant(new_age)
 pred3 = reg3.get_prediction(new_age).summary_frame(alpha=0.05)
 print(pred3[['mean', 'obs_ci_lower', 'obs_ci_upper']])
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -172,7 +172,7 @@ The values inserted in the first regression is 5, 10 and 15. This means that an 
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -185,7 +185,7 @@ Here we can see that R-squared is 0.639 which means that 63.9% of the variance c
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -204,7 +204,7 @@ Correlation plot
 
 sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -229,7 +229,7 @@ selected_predictor_values = sm.add_constant(selected_predictor_values)
 predictions = reg.get_prediction(selected_predictor_values)
 pred_summary = predictions.summary_frame(alpha=0.05)
 print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

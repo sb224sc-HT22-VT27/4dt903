@@ -56,7 +56,7 @@ def grad_desc_mse(K, ws, learning_eps, loss, grad_loss):
         history.append(ws)
     
     return ws, np.array(history)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -106,7 +106,7 @@ ax.plot_surface(A, B, Z, cmap='viridis')
 ax.set_xlabel('X1')
 ax.set_ylabel('X2')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -129,7 +129,7 @@ limit = (6 / (in_ + out))**0.5
 ws0 = np.random.rand(2) * 2 * limit - limit
 print(f"initial weights: {ws0}")
 print(f"Initial mse: {mse1(ws0)}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -173,7 +173,7 @@ plt.ylim(ws[1] - 40, ws[1] + 40)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -185,7 +185,7 @@ for i in history:
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -217,7 +217,7 @@ def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
         history.append(ws)
 
     return ws, np.array(history)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -246,7 +246,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -258,7 +258,7 @@ for i in history:
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -314,7 +314,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -326,7 +326,7 @@ for i in history:
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -384,7 +384,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
