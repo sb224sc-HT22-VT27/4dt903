@@ -321,6 +321,10 @@ public class FullPipeline {
 			for (Path file : dataFiles) {
 				// Compute relative path from sourceDir to preserve directory structure
 				Path relativePath = sourceDir.relativize(file);
+				
+				// Skip intermediate 'data' directories since target is already a data directory
+				relativePath = skipDataDirectories(relativePath);
+				
 				Path targetFile = targetDir.resolve(relativePath);
 
 				// Ensure parent directories exist
@@ -336,6 +340,34 @@ public class FullPipeline {
 		}
 
 		return count;
+	}
+
+	/**
+	 * Skip intermediate 'data' directories from a relative path.
+	 * This prevents creating nested data/data/ structures in the output.
+	 * 
+	 * @param relativePath The relative path to process
+	 * @return The path with leading 'data' directory components removed
+	 */
+	private Path skipDataDirectories(Path relativePath) {
+		if (relativePath.getNameCount() == 0) {
+			return relativePath;
+		}
+		
+		int startIndex = 0;
+		for (int i = 0; i < relativePath.getNameCount() - 1; i++) {
+			if (relativePath.getName(i).toString().equals("data")) {
+				startIndex = i + 1;
+			} else {
+				break;
+			}
+		}
+		
+		if (startIndex == 0) {
+			return relativePath;
+		}
+		
+		return relativePath.subpath(startIndex, relativePath.getNameCount());
 	}
 
 	/**
