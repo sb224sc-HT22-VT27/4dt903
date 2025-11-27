@@ -25,11 +25,11 @@ import notebookMM.util.AIClassificationService;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link notebookMM.impl.CodeCellImpl#getSource <em>Source</em>}</li>
- * <li>{@link notebookMM.impl.CodeCellImpl#getImports <em>Imports</em>}</li>
- * <li>{@link notebookMM.impl.CodeCellImpl#getConstants <em>Constants</em>}</li>
- * <li>{@link notebookMM.impl.CodeCellImpl#getCommands <em>Commands</em>}</li>
- * <li>{@link notebookMM.impl.CodeCellImpl#getOutputs <em>Outputs</em>}</li>
+ *   <li>{@link notebookMM.impl.CodeCellImpl#getSource <em>Source</em>}</li>
+ *   <li>{@link notebookMM.impl.CodeCellImpl#getImports <em>Imports</em>}</li>
+ *   <li>{@link notebookMM.impl.CodeCellImpl#getConstants <em>Constants</em>}</li>
+ *   <li>{@link notebookMM.impl.CodeCellImpl#getCommands <em>Commands</em>}</li>
+ *   <li>{@link notebookMM.impl.CodeCellImpl#getOutputs <em>Outputs</em>}</li>
  * </ul>
  *
  * @generated
@@ -38,7 +38,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	/**
 	 * The default value of the '{@link #getSource() <em>Source</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see #getSource()
 	 * @generated
 	 * @ordered
@@ -58,7 +57,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	/**
 	 * The cached value of the '{@link #getSource() <em>Source</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see #getSource()
 	 * @generated
 	 * @ordered
@@ -66,9 +64,8 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected String source = SOURCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getImports() <em>Imports</em>}' attribute
-	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getImports() <em>Imports</em>}' attribute list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getImports()
 	 * @generated
 	 * @ordered
@@ -76,9 +73,8 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected EList<String> imports;
 
 	/**
-	 * The cached value of the '{@link #getConstants() <em>Constants</em>}'
-	 * attribute list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getConstants() <em>Constants</em>}' attribute list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getConstants()
 	 * @generated
 	 * @ordered
@@ -86,9 +82,8 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected EList<String> constants;
 
 	/**
-	 * The cached value of the '{@link #getCommands() <em>Commands</em>}' attribute
-	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getCommands() <em>Commands</em>}' attribute list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getCommands()
 	 * @generated
 	 * @ordered
@@ -96,9 +91,8 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected EList<String> commands;
 
 	/**
-	 * The cached value of the '{@link #getOutputs() <em>Outputs</em>}' attribute
-	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getOutputs() <em>Outputs</em>}' attribute list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getOutputs()
 	 * @generated
 	 * @ordered
@@ -107,7 +101,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected CodeCellImpl() {
@@ -116,7 +109,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -126,7 +118,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -136,14 +127,12 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void setSource(String newSource) {
 		String oldSource = source;
 		source = newSource;
-		invalidateCache();
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, NotebookMMPackage.CODE_CELL__SOURCE, oldSource,
 					source));
@@ -151,7 +140,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -164,7 +152,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -177,7 +164,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -190,7 +176,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -476,7 +461,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -498,7 +482,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -530,7 +513,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -557,7 +539,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -579,7 +560,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -613,7 +593,6 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

@@ -187,13 +187,22 @@ public interface NotebookMMPackage extends EPackage {
 	int NOTEBOOK_METADATA__LANGUAGE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Python Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTEBOOK_METADATA__PYTHON_VERSION = 2;
+
+	/**
 	 * The feature id for the '<em><b>Nbformat</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NOTEBOOK_METADATA__NBFORMAT = 2;
+	int NOTEBOOK_METADATA__NBFORMAT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Nbformat Minor</b></em>' attribute.
@@ -202,7 +211,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NOTEBOOK_METADATA__NBFORMAT_MINOR = 3;
+	int NOTEBOOK_METADATA__NBFORMAT_MINOR = 4;
 
 	/**
 	 * The number of structural features of the '<em>Notebook Metadata</em>' class.
@@ -211,7 +220,7 @@ public interface NotebookMMPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NOTEBOOK_METADATA_FEATURE_COUNT = 4;
+	int NOTEBOOK_METADATA_FEATURE_COUNT = 5;
 
 	/**
 	 * The operation id for the '<em>Is Python Kernel</em>' operation.
@@ -766,6 +775,17 @@ public interface NotebookMMPackage extends EPackage {
 	EAttribute getNotebookMetadata_Language();
 
 	/**
+	 * Returns the meta object for the attribute '{@link notebookMM.NotebookMetadata#getPythonVersion <em>Python Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Python Version</em>'.
+	 * @see notebookMM.NotebookMetadata#getPythonVersion()
+	 * @see #getNotebookMetadata()
+	 * @generated
+	 */
+	EAttribute getNotebookMetadata_PythonVersion();
+
+	/**
 	 * Returns the meta object for the attribute '{@link notebookMM.NotebookMetadata#getNbformat <em>Nbformat</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1219,6 +1239,14 @@ public interface NotebookMMPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute NOTEBOOK_METADATA__LANGUAGE = eINSTANCE.getNotebookMetadata_Language();
+
+		/**
+		 * The meta object literal for the '<em><b>Python Version</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTEBOOK_METADATA__PYTHON_VERSION = eINSTANCE.getNotebookMetadata_PythonVersion();
 
 		/**
 		 * The meta object literal for the '<em><b>Nbformat</b></em>' attribute feature.

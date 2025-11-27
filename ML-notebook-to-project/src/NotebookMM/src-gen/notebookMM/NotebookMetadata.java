@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link notebookMM.NotebookMetadata#getKernelspec <em>Kernelspec</em>}</li>
  *   <li>{@link notebookMM.NotebookMetadata#getLanguage <em>Language</em>}</li>
+ *   <li>{@link notebookMM.NotebookMetadata#getPythonVersion <em>Python Version</em>}</li>
  *   <li>{@link notebookMM.NotebookMetadata#getNbformat <em>Nbformat</em>}</li>
  *   <li>{@link notebookMM.NotebookMetadata#getNbformatMinor <em>Nbformat Minor</em>}</li>
  * </ul>
@@ -67,6 +68,28 @@ public interface NotebookMetadata extends EObject {
 	 * @generated
 	 */
 	void setLanguage(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Python Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Python Version</em>' attribute.
+	 * @see #setPythonVersion(String)
+	 * @see notebookMM.NotebookMMPackage#getNotebookMetadata_PythonVersion()
+	 * @model
+	 * @generated
+	 */
+	String getPythonVersion();
+
+	/**
+	 * Sets the value of the '{@link notebookMM.NotebookMetadata#getPythonVersion <em>Python Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Python Version</em>' attribute.
+	 * @see #getPythonVersion()
+	 * @generated
+	 */
+	void setPythonVersion(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Nbformat</b></em>' attribute.

@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link notebookMM.impl.NotebookMetadataImpl#getKernelspec <em>Kernelspec</em>}</li>
  *   <li>{@link notebookMM.impl.NotebookMetadataImpl#getLanguage <em>Language</em>}</li>
+ *   <li>{@link notebookMM.impl.NotebookMetadataImpl#getPythonVersion <em>Python Version</em>}</li>
  *   <li>{@link notebookMM.impl.NotebookMetadataImpl#getNbformat <em>Nbformat</em>}</li>
  *   <li>{@link notebookMM.impl.NotebookMetadataImpl#getNbformatMinor <em>Nbformat Minor</em>}</li>
  * </ul>
@@ -72,6 +73,26 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 	 * @ordered
 	 */
 	protected String language = LANGUAGE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getPythonVersion() <em>Python Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPythonVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String PYTHON_VERSION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getPythonVersion() <em>Python Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPythonVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected String pythonVersion = PYTHON_VERSION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getNbformat() <em>Nbformat</em>}' attribute.
@@ -186,6 +207,30 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	@Override
+	public String getPythonVersion() {
+		return pythonVersion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setPythonVersion(String newPythonVersion) {
+		String oldPythonVersion = pythonVersion;
+		pythonVersion = newPythonVersion;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, NotebookMMPackage.NOTEBOOK_METADATA__PYTHON_VERSION,
+					oldPythonVersion, pythonVersion));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public int getNbformat() {
 		return nbformat;
 	}
@@ -264,6 +309,8 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 			return getKernelspec();
 		case NotebookMMPackage.NOTEBOOK_METADATA__LANGUAGE:
 			return getLanguage();
+		case NotebookMMPackage.NOTEBOOK_METADATA__PYTHON_VERSION:
+			return getPythonVersion();
 		case NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT:
 			return getNbformat();
 		case NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT_MINOR:
@@ -285,6 +332,9 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 			return;
 		case NotebookMMPackage.NOTEBOOK_METADATA__LANGUAGE:
 			setLanguage((String) newValue);
+			return;
+		case NotebookMMPackage.NOTEBOOK_METADATA__PYTHON_VERSION:
+			setPythonVersion((String) newValue);
 			return;
 		case NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT:
 			setNbformat((Integer) newValue);
@@ -310,6 +360,9 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 		case NotebookMMPackage.NOTEBOOK_METADATA__LANGUAGE:
 			setLanguage(LANGUAGE_EDEFAULT);
 			return;
+		case NotebookMMPackage.NOTEBOOK_METADATA__PYTHON_VERSION:
+			setPythonVersion(PYTHON_VERSION_EDEFAULT);
+			return;
 		case NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT:
 			setNbformat(NBFORMAT_EDEFAULT);
 			return;
@@ -332,6 +385,9 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 			return KERNELSPEC_EDEFAULT == null ? kernelspec != null : !KERNELSPEC_EDEFAULT.equals(kernelspec);
 		case NotebookMMPackage.NOTEBOOK_METADATA__LANGUAGE:
 			return LANGUAGE_EDEFAULT == null ? language != null : !LANGUAGE_EDEFAULT.equals(language);
+		case NotebookMMPackage.NOTEBOOK_METADATA__PYTHON_VERSION:
+			return PYTHON_VERSION_EDEFAULT == null ? pythonVersion != null
+					: !PYTHON_VERSION_EDEFAULT.equals(pythonVersion);
 		case NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT:
 			return nbformat != NBFORMAT_EDEFAULT;
 		case NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT_MINOR:
@@ -369,6 +425,8 @@ public class NotebookMetadataImpl extends MinimalEObjectImpl.Container implement
 		result.append(kernelspec);
 		result.append(", language: ");
 		result.append(language);
+		result.append(", pythonVersion: ");
+		result.append(pythonVersion);
 		result.append(", nbformat: ");
 		result.append(nbformat);
 		result.append(", nbformatMinor: ");

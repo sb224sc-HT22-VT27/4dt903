@@ -28,6 +28,7 @@
     <genClasses ecoreClass="notebookMM.ecore#//NotebookMetadata">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/kernelspec"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/pythonVersion"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/nbformat"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notebookMM.ecore#//NotebookMetadata/nbformatMinor"/>
       <genOperations ecoreOperation="notebookMM.ecore#//NotebookMetadata/isPythonKernel"/>

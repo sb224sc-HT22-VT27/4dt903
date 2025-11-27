@@ -259,7 +259,7 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 	 * @generated
 	 */
 	@Override
-	public EAttribute getNotebookMetadata_Nbformat() {
+	public EAttribute getNotebookMetadata_PythonVersion() {
 		return (EAttribute) notebookMetadataEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -269,8 +269,18 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 	 * @generated
 	 */
 	@Override
-	public EAttribute getNotebookMetadata_NbformatMinor() {
+	public EAttribute getNotebookMetadata_Nbformat() {
 		return (EAttribute) notebookMetadataEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getNotebookMetadata_NbformatMinor() {
+		return (EAttribute) notebookMetadataEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -616,6 +626,7 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 		notebookMetadataEClass = createEClass(NOTEBOOK_METADATA);
 		createEAttribute(notebookMetadataEClass, NOTEBOOK_METADATA__KERNELSPEC);
 		createEAttribute(notebookMetadataEClass, NOTEBOOK_METADATA__LANGUAGE);
+		createEAttribute(notebookMetadataEClass, NOTEBOOK_METADATA__PYTHON_VERSION);
 		createEAttribute(notebookMetadataEClass, NOTEBOOK_METADATA__NBFORMAT);
 		createEAttribute(notebookMetadataEClass, NOTEBOOK_METADATA__NBFORMAT_MINOR);
 		createEOperation(notebookMetadataEClass, NOTEBOOK_METADATA___IS_PYTHON_KERNEL);
@@ -721,6 +732,9 @@ public class NotebookMMPackageImpl extends EPackageImpl implements NotebookMMPac
 				NotebookMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNotebookMetadata_Language(), ecorePackage.getEString(), "language", null, 0, 1,
+				NotebookMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNotebookMetadata_PythonVersion(), ecorePackage.getEString(), "pythonVersion", null, 0, 1,
 				NotebookMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNotebookMetadata_Nbformat(), ecorePackage.getEInt(), "nbformat", null, 0, 1,

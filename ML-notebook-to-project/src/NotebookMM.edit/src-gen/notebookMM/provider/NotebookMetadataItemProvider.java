@@ -55,6 +55,7 @@ public class NotebookMetadataItemProvider extends ItemProviderAdapter implements
 
 			addKernelspecPropertyDescriptor(object);
 			addLanguagePropertyDescriptor(object);
+			addPythonVersionPropertyDescriptor(object);
 			addNbformatPropertyDescriptor(object);
 			addNbformatMinorPropertyDescriptor(object);
 		}
@@ -91,6 +92,22 @@ public class NotebookMetadataItemProvider extends ItemProviderAdapter implements
 								"_UI_NotebookMetadata_type"),
 						NotebookMMPackage.Literals.NOTEBOOK_METADATA__LANGUAGE, true, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Python Version feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPythonVersionPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_NotebookMetadata_pythonVersion_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_NotebookMetadata_pythonVersion_feature",
+						"_UI_NotebookMetadata_type"),
+				NotebookMMPackage.Literals.NOTEBOOK_METADATA__PYTHON_VERSION, true, false, false,
+				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -173,6 +190,7 @@ public class NotebookMetadataItemProvider extends ItemProviderAdapter implements
 		switch (notification.getFeatureID(NotebookMetadata.class)) {
 		case NotebookMMPackage.NOTEBOOK_METADATA__KERNELSPEC:
 		case NotebookMMPackage.NOTEBOOK_METADATA__LANGUAGE:
+		case NotebookMMPackage.NOTEBOOK_METADATA__PYTHON_VERSION:
 		case NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT:
 		case NotebookMMPackage.NOTEBOOK_METADATA__NBFORMAT_MINOR:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
