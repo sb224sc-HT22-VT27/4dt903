@@ -1,7 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -92,7 +92,7 @@ for epoch_idx in range(epochs):
     biases_2 -= learning_rate * db_2
     weights_1 -= learning_rate * dW_1
     biases_1 -= learning_rate * db_1
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -137,7 +137,7 @@ ax.set_xlabel("W2[0,0]")
 ax.set_ylabel("W2[1,0]")
 ax.set_zlabel("Loss")
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

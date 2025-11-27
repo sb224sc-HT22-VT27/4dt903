@@ -25,7 +25,7 @@ for i in range(25):
     plt.imshow(x_test[i], cmap=plt.get_cmap('gray'))
 
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -60,21 +60,21 @@ x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], x_test.shape[2], 1))
 in_shape = x_train.shape[1:]
 print("Before: {0}".format(orig_shape))
 print("After: {0}".format(in_shape))
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 
 n_classes = len(unique(y_train)) 
 print("Classes: {0}".format(n_classes))
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 
 x_train = x_train.astype('float32') / 255.0
 x_test = x_test.astype('float32') / 255.0
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -109,7 +109,7 @@ def plot_metrics(history):
         else:
             plt.ylim([-0.1,1.1])
         plt.legend()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -181,7 +181,7 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -243,6 +243,15 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
+# Classification: PREPROCESS
+
+
+
+
+plot_metrics(model_history)
+loss, acc = model.evaluate(x_test, y_test, verbose=0)
+print('Accuracy: %.3f' % acc)
+err = print_res(model)
 # Classification: TRAIN
 
 

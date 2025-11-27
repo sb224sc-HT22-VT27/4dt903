@@ -84,7 +84,7 @@ plt.show()
 
 support_vector_indices = svm.support_
 print(support_vector_indices)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -106,7 +106,7 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -150,7 +150,7 @@ xtest[ytest == 1] += 1
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -177,7 +177,7 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -228,7 +228,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -244,7 +244,7 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -291,7 +291,7 @@ plt.ylabel("X2")
 plt.show()
 
 print(dat)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -371,7 +371,7 @@ ytest = pd.read_csv("Khan_ytest.csv", index_col=0)
 
 print(len(xtrain), len(xtrain.columns.tolist()))
 print(len(xtest), len(xtest.columns.tolist()))
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -383,7 +383,7 @@ svm_model.fit(xtrain, ytrain)
 
 print("Number of Support:", svm_model.n_support_)
 print("Number of classes:", svm_model.classes_)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -393,7 +393,7 @@ conf_matrix = confusion_matrix(ytrain, y_train_pred)
 conf_matrix_df = pd.DataFrame(conf_matrix, index=svm_model.classes_, columns=svm_model.classes_)
 
 print(conf_matrix_df)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

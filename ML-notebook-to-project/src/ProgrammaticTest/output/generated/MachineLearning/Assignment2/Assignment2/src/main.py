@@ -27,7 +27,7 @@ Load the Boston.csv file
 
 
 csvFile = pd.read_csv("Boston.csv", index_col=0)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -41,7 +41,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -53,7 +53,7 @@ Print a statistic summary of the predictors and the response:
 
 
 csvFile.describe()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -78,7 +78,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -95,7 +95,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -112,7 +112,7 @@ reg2 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["rm"])).fit()
 print(reg2.summary())
 reg3 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["age"])).fit()
 print(reg3.summary())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -128,7 +128,7 @@ The same interpretation can be made of the other values of 0.484 and 2.49e-74, a
 print(reg1.conf_int())
 print(reg2.conf_int())
 print(reg3.conf_int())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -159,7 +159,7 @@ new_age = pd.DataFrame({'age': [25, 50, 75]})
 new_age = sm.add_constant(new_age)
 pred3 = reg3.get_prediction(new_age).summary_frame(alpha=0.05)
 print(pred3[['mean', 'obs_ci_lower', 'obs_ci_upper']])
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -172,7 +172,7 @@ The values inserted in the first regression is 5, 10 and 15. This means that an 
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -185,7 +185,7 @@ Here we can see that R-squared is 0.639 which means that 63.9% of the variance c
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
 print(reg.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 

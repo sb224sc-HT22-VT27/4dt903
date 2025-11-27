@@ -15,7 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sympy import Matrix
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -51,7 +51,7 @@ Cor = np.corrcoef(R, rowvar=False)
 
 print("Sample covariance:\n", Sample_cov)
 print("\nCorrelation:\n", Cor)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -99,7 +99,7 @@ Check correlation
 
 
 print(np.corrcoef(score, rowvar=False))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -107,7 +107,7 @@ print(np.corrcoef(score, rowvar=False))
 print("PC1:", np.linalg.norm(loading_vector[:, 0]))
 print("PC2:", np.linalg.norm(loading_vector[:, 1]))
 print("Dot prod:", np.dot(loading_vector[:, 0], loading_vector[:, 1]))
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -121,7 +121,7 @@ plt.xlabel("PC1")
 plt.ylabel("PC2")
 plt.grid(True)
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -227,7 +227,7 @@ c = Cov[0, 0] * Cov[1, 1] - Cov[0, 1] * Cov[1, 0]
 
 eigenvalues = np.roots([a, b, c])
 print("Eigenvalues\n", eigenvalues)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -240,7 +240,7 @@ print(np.linalg.det(Char1))
 lambda2 = np.diag([eigenvalues[1], eigenvalues[1]])
 Char2 = Cov - lambda2
 print(np.linalg.det(Char2))
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -268,7 +268,7 @@ A2 = Cov - lambda2
 rref2 = np.array(Matrix(np.round(A2, 5)).rref()[0]).astype(np.float64)
 v2 = np.array([-rref2[0, 1], 1])
 print("Eigenvector 2:", v2 / np.linalg.norm(v2))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 

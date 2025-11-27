@@ -13,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 import joblib
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -28,7 +28,7 @@ import joblib
 df = pd.read_csv('data/customers.csv')
 print(f"Dataset shape: {df.shape}")
 print(df.head())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -54,7 +54,7 @@ y = df['churned']
 
 # Encode categorical variables
 X = pd.get_dummies(X, columns=['contract_type'])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -95,7 +95,7 @@ model = RandomForestClassifier(
 )
 model.fit(X_train_scaled, y_train)
 print("Model trained successfully!")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -130,7 +130,7 @@ joblib.dump(model, 'models/churn_model.pkl')
 joblib.dump(scaler, 'models/scaler.pkl')
 joblib.dump(feature_names, 'models/feature_names.pkl')
 print("Model and scaler saved!")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -183,7 +183,7 @@ new_customer = {
 pred, prob = predict_churn(new_customer)
 print(f"Churn prediction: {pred}")
 print(f"Churn probability: {prob[1]:.3f}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 

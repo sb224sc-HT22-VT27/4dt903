@@ -106,7 +106,7 @@ ax.plot_surface(A, B, Z, cmap='viridis')
 ax.set_xlabel('X1')
 ax.set_ylabel('X2')
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -147,7 +147,7 @@ def grad2(ws, x):
     return x[1]
 
 gradients1 = [grad1, grad2]
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -173,7 +173,7 @@ plt.ylim(ws[1] - 40, ws[1] + 40)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -185,7 +185,7 @@ for i in history:
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -217,7 +217,7 @@ def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
         history.append(ws)
 
     return ws, np.array(history)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -247,6 +247,18 @@ plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
 # Classification: PREPROCESS
+
+
+
+
+mseHistory = []
+
+for i in history:
+    mseHistory.append(mse1(i))
+
+plt.plot(range(len(mseHistory)), mseHistory)
+plt.show()
+# Classification: PREDICT
 
 
 
@@ -307,18 +319,6 @@ plt.show()
 
 
 
-mseHistory = []
-
-for i in history:
-    mseHistory.append(mse1(i))
-
-plt.plot(range(len(mseHistory)), mseHistory)
-plt.show()
-# Classification: TRAIN
-
-
-
-
 """
 Here we are doing stochastic gradient descent with adaptive learning rate. The learning rate is decreasing by a factor of alpha for each iteration. This is done because we are assuming that we are getting closer to the point with each iteration thus decreasing the step size. We test different values for alpha and learning rate and with the best one we are getting a worse loss than with just SGD.
 """
@@ -373,18 +373,6 @@ plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
 # Classification: TRAIN
-
-
-
-
-mseHistory = []
-
-for i in history:
-    mseHistory.append(mse1(i))
-
-plt.plot(range(len(mseHistory)), mseHistory)
-plt.show()
-# Classification: PREPROCESS
 
 
 
