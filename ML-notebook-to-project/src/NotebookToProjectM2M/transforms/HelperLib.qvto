@@ -317,3 +317,110 @@ helper mapImportToPackage(importStmt : String) : String {
 	return ''
 	endif
 }
+
+/**
+ * Returns a Sequence of Strings representing the content of a Dockerfile.
+ * The Dockerfile sets up a Python venv, installs requirements, and runs main.py.
+ * Uses the Python version from notebook metadata if available, defaults to 3.13-slim.
+ * @return Sequence(String)
+ */
+helper generateDockerfileContent(notebook : NotebookMM::NotebookModel) : Sequence(String) {
+	var dockerImage : String := mapPythonVersionToDockerImage(notebook);
+	return Sequence{
+		'FROM ' + dockerImage,
+		'',
+		'WORKDIR /app',
+		'# Copy requirements first (for better caching)',
+		'COPY requirements.txt .',
+		'',
+		'# Set up virtual environment and install dependencies',
+		'RUN python -m venv /opt/venv && \\
+			 pip install --upgrade pip && \\
+			 pip install -r requirements.txt',
+		'ENV PATH="/opt/venv/bin:$PATH"',
+		'',
+//		'# Install dependencies',
+//		'RUN pip install --upgrade pip && \\
+//			 pip install -r requirements.txt',
+		'',
+		'# Copy project files',
+		'COPY src/ ./src/',
+		'COPY data/ ./data/',
+		'COPY models/ ./models/',
+		'COPY outputs/ ./outputs/',
+		'',
+		'# Run the main script',
+		'CMD ["python", "src/main.py"]'
+	};
+}
+
+helper generateDockerIgnoreContent() : Sequence(String) {
+	return Sequence{
+		'__pycache__',
+		'*.pyc',
+		'.git',
+		'outputs/',
+		'.env'
+	}
+}
+
+/**
+ * Maps a Python version from notebook metadata to a valid Docker image tag.
+ * Extracts major.minor version and maps to python:X.Y-slim format.
+ * Defaults to python:3.13-slim if version cannot be mapped.
+ * @return String - Docker image name with tag (e.g., 'python:3.11-slim')
+ */
+helper mapPythonVersionToDockerImage(notebook : NotebookMM::NotebookModel) : String {
+	var defaultImage : String := 'python:3.13-slim';
+
+	// Check if metadata and pythonVersion exist
+	if notebook.metadata = null then
+		return defaultImage
+	endif;
+
+	var version : String := notebook.metadata.pythonVersion;
+	if version = null or version = '' then
+		return defaultImage
+	endif;
+
+	// Extract major.minor version (e.g., "3.11.5" -> "3.11")
+	var majorMinor : String := extractMajorMinorVersion(version);
+	if majorMinor = '' then
+		return defaultImage
+	endif;
+
+	// Map to supported Docker image versions
+	// Official Python Docker images exist for: 3.8, 3.9, 3.10, 3.11, 3.12, 3.13
+	if majorMinor = '3.8' or majorMinor = '3.9' or majorMinor = '3.10' or 
+	   majorMinor = '3.11' or majorMinor = '3.12' or majorMinor = '3.13' then
+		return 'python:' + majorMinor + '-slim'
+	else
+		return defaultImage
+	endif;
+}
+
+/**
+ * Extracts major.minor version from a full version string.
+ * E.g., "3.11.5" -> "3.11", "3.13.7" -> "3.13"
+ * @return String - major.minor version or empty string if invalid
+ */
+helper extractMajorMinorVersion(version : String) : String {
+	// Find first dot
+	var firstDot : Integer := version.indexOf('.');
+	if firstDot <= 0 then
+		return ''
+	endif;
+
+	// Find second dot (if exists)
+	var afterFirstDot : String := version.substring(firstDot + 1, version.size());
+	var secondDot : Integer := afterFirstDot.indexOf('.');
+
+	if secondDot > 0 then
+		// Version has patch number, extract major.minor
+		// firstDot + secondDot gives us the position up to minor version
+		return version.substring(1, firstDot + secondDot)
+	else
+		// Version is already major.minor
+		return version
+	endif;
+}

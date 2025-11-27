@@ -13,6 +13,9 @@ property TRAIN_FILE_NAME : String = "train.py";
 property PREDICT_FILE_NAME : String = "predict.py";
 property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outputs"};
 property REQUIREMENTS_FILE_NAME : String = "requirements.txt";
+property DOCKERFILE_NAME : String = "Dockerfile";
+property DOCKERIGNOREFILE_NAME : String = ".dockerignore";
+	
 
 main() {
 	// [MetaModel::Attribute]
@@ -21,7 +24,9 @@ main() {
 
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
-	result.filesystemelement := DIR_NAMES->collect(dirName | self.map toDirectory(dirName))->union(Sequence{self.map toRequirementsFile()});
+	result.filesystemelement := DIR_NAMES->collect(dirName | self.map 
+	toDirectory(dirName))->union(Sequence{self.map toRequirementsFile(), self.map 
+	toDockerfile(), self.map toDockerignorefile()});
 }
 
 mapping NotebookMM::NotebookModel::toDirectory(dirName : String) : ProjectStuctureMM::Directory {
@@ -59,6 +64,16 @@ mapping NotebookMM::NotebookModel::toPredictFile() : ProjectStuctureMM::File {
 mapping NotebookMM::NotebookModel::toRequirementsFile() : ProjectStuctureMM::File {
 	result.name := REQUIREMENTS_FILE_NAME;
 	result.content := extractPackageNames(self);
+}
+
+mapping NotebookMM::NotebookModel::toDockerfile() : ProjectStuctureMM::File {
+	result.name := DOCKERFILE_NAME;
+	result.content := generateDockerfileContent(self);
+}
+
+mapping NotebookMM::NotebookModel::toDockerignorefile() : ProjectStuctureMM::File {
+	result.name := DOCKERIGNOREFILE_NAME;
+	result.content := generateDockerIgnoreContent();
 }
 
 mapping NotebookMM::NotebookModel::toKeepFile() : ProjectStuctureMM::File {
