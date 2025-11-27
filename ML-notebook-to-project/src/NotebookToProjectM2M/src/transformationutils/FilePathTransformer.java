@@ -33,11 +33,15 @@ public class FilePathTransformer {
 	 * and double-quoted strings containing file paths with common data file
 	 * extensions.
 	 * 
+	 * The pattern uses a backreference (\\1) to ensure opening and closing quotes match.
+	 * The character class [^'\"\\n\\r] excludes quotes and newlines to prevent matching
+	 * malformed paths or paths containing the opposite quote type.
+	 * 
 	 * Groups: 1. Opening quote (' or ") 2. Full path (may include directory
-	 * components) 3. File extension (without dot) 4. Closing quote
+	 * components) 3. File extension (without dot)
 	 */
 	private static final Pattern PATH_PATTERN = Pattern
-			.compile("(['\"])([^'\"]*\\.(" + String.join("|", DATA_FILE_EXTENSIONS) + "))\\1", Pattern.CASE_INSENSITIVE);
+			.compile("(['\"])([^'\"\\n\\r]*\\.(" + String.join("|", DATA_FILE_EXTENSIONS) + "))\\1", Pattern.CASE_INSENSITIVE);
 
 	/**
 	 * Transforms file paths in Python code to work with the new project structure.
@@ -53,7 +57,7 @@ public class FilePathTransformer {
 		}
 
 		Matcher matcher = PATH_PATTERN.matcher(source);
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 
 		while (matcher.find()) {
 			String quote = matcher.group(1);
@@ -74,7 +78,7 @@ public class FilePathTransformer {
 	 * Rules: 1. If path already starts with '../', leave it unchanged 2. If path
 	 * starts with a mapped directory (data/, models/, etc.), prefix with '../' 3.
 	 * If path is a simple filename (no directory), prefix with '../data/' 4. If
-	 * path starts with './', remove it and apply rules again 5. For other
+	 * path starts with './', remove the prefix and apply rules again 5. For other
 	 * directory structures, prefix with '../'
 	 * 
 	 * @param path The original file path
@@ -86,9 +90,15 @@ public class FilePathTransformer {
 			return path;
 		}
 
-		// Handle paths starting with ./
-		if (path.startsWith("./")) {
-			return transformSinglePath(path.substring(2));
+		// Handle paths starting with ./ (strip all leading ./ prefixes iteratively)
+		// This handles cases like './file.csv', '././file.csv', etc.
+		String processedPath = path;
+		while (processedPath.startsWith("./")) {
+			processedPath = processedPath.substring(2);
+		}
+		// If we stripped any ./ prefixes, continue processing with the cleaned path
+		if (!processedPath.equals(path)) {
+			path = processedPath;
 		}
 
 		// Check if path starts with a mapped directory
