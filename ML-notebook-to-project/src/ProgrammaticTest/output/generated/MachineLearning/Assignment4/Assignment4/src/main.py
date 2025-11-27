@@ -65,7 +65,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -90,7 +90,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -102,7 +102,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -115,7 +115,7 @@ Correlation Plot
 
 sns.heatmap(csvFile.drop(columns=['Direction']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -128,7 +128,7 @@ Here we can see that most values have very little to no correlation except for y
 
 sns.scatterplot(data=csvFile, x='Year', y='Volume', color="black")
 sns.regplot(data=csvFile, x="Year", y="Volume", color="black")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -225,7 +225,7 @@ for i in probs:
 print(pd.crosstab(pred, csvFile["Direction"]))
 accuracy = np.mean(pred == csvFile['Direction'])
 print(f"Model Accuracy: {accuracy}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -261,7 +261,7 @@ axes[1].set_title(f"Group Down")
 plt.xlabel("LDA Projection")
 plt.tight_layout()
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -298,7 +298,7 @@ model = QDA()
 model.fit(X, y)
 print(f"Prior probabilities of groups: {model.priors_}")
 print(f"Group means:\n{model.means_}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -324,7 +324,7 @@ accuracy = accuracy_score(y, qda_class)
 # Print results
 print("\nConfusion Matrix:\n", conf_matrix)
 print("\nAccuracy:", accuracy)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -365,7 +365,7 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -381,7 +381,7 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

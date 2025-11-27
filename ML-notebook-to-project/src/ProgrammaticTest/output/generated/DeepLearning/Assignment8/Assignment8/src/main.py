@@ -177,7 +177,7 @@ class MyVAE(nn.Module):
         z = self.prior.sample((n,))
         return self.decoder(z)
     
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -275,7 +275,7 @@ class MyVAEwithNF(MyVAE):
     
         xRecon = self.decoder(zK)
         return xRecon, kl, zK
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -496,7 +496,7 @@ plt.title('t-SNE of Encoded Test Images')
 plt.xlabel('t-SNE 1')
 plt.ylabel('t-SNE 2')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -631,7 +631,7 @@ for epoch in range(EPOCHS):
     reconLossesNf.append(epochRecon / len(train_loader))
     klDivsNf.append(epochKl / len(train_loader))
     print(f"Epoch: {epoch+1}, Recon Loss: {reconLossesNf[-1]:.4f}, KL: {klDivsNf[-1]:.4f}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -704,7 +704,7 @@ plt.title('t-SNE of Encoded Test Images (NF-backed VAE)')
 plt.xlabel('t-SNE 1')
 plt.ylabel('t-SNE 2')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

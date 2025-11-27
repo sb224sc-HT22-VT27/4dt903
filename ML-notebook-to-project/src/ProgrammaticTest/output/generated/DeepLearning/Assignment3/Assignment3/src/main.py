@@ -1,7 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -24,7 +24,7 @@ def mse(y_true, y_pred):
 
 def mse_derivative(y_true, y_pred):
     return (y_pred - y_true)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

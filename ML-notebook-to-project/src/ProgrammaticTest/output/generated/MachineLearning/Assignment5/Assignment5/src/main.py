@@ -28,7 +28,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -67,7 +67,7 @@ Print a statistic summary of the predictors and the response:
 
 print(csvFile.describe(), "\n")
 print(csvFile['name'].value_counts())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -79,7 +79,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -91,7 +91,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -104,7 +104,7 @@ Correlation Plot
 
 sns.heatmap(csvFile.drop(columns=['name']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -122,7 +122,7 @@ def boot_fn(data, index):
     X = sm.add_constant(X)
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -135,7 +135,7 @@ print(boot_fn(csvFile, range(392)))
 
 np.random.seed(1)
 print(boot_fn(csvFile, np.random.choice(392, 392, replace=True)))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -163,7 +163,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -182,7 +182,7 @@ def boot_fn_quadratic(data, index):
     y = sample['mpg']
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

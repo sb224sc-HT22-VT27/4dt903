@@ -15,7 +15,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -27,7 +27,7 @@ Load the Boston.csv file
 
 
 csvFile = pd.read_csv("data/Boston.csv", index_col=0)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -41,7 +41,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -78,7 +78,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -95,7 +95,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -112,7 +112,7 @@ reg2 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["rm"])).fit()
 print(reg2.summary())
 reg3 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["age"])).fit()
 print(reg3.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -128,7 +128,7 @@ The same interpretation can be made of the other values of 0.484 and 2.49e-74, a
 print(reg1.conf_int())
 print(reg2.conf_int())
 print(reg3.conf_int())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 

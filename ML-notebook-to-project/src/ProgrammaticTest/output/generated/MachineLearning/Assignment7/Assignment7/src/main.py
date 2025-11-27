@@ -31,7 +31,7 @@ import pandas as pd
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -52,7 +52,7 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -77,7 +77,7 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -106,7 +106,7 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -127,7 +127,7 @@ print(cv_results)
 
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Accuracy:", grid_search.best_score_)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -177,7 +177,7 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -203,7 +203,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -228,7 +228,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -266,7 +266,7 @@ ytest = np.concatenate([-np.ones(75), np.ones(25)])
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -291,7 +291,7 @@ plt.ylabel("X2")
 plt.show()
 
 print(dat)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -337,7 +337,7 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -383,7 +383,7 @@ svm_model.fit(xtrain, ytrain)
 
 print("Number of Support:", svm_model.n_support_)
 print("Number of classes:", svm_model.classes_)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -393,7 +393,7 @@ conf_matrix = confusion_matrix(ytrain, y_train_pred)
 conf_matrix_df = pd.DataFrame(conf_matrix, index=svm_model.classes_, columns=svm_model.classes_)
 
 print(conf_matrix_df)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
