@@ -2,7 +2,6 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -57,6 +57,14 @@ public class FullPipeline {
 
 	private final NotebookJSONParser parser;
 	private final ResourceSet resourceSet;
+
+	/**
+	 * Mapping from input directory names to output directory names. This allows
+	 * files from input directories to be copied to the corresponding output
+	 * directories in the generated project structure.
+	 */
+	private static final Map<String, String> DIR_MAPPINGS = Map.of("data", "data", "models", "models", "output",
+			"outputs", "outputs", "outputs");
 
 	public FullPipeline() {
 		this.parser = new NotebookJSONParser();
@@ -262,14 +270,12 @@ public class FullPipeline {
 
 	/**
 	 * Copy data files from the input notebook's directory to the generated
-	 * project's data directory. Handles files with extensions: json, csv, yaml,
-	 * jpg, txt
+	 * project's corresponding directories. Handles files with extensions: json,
+	 * csv, yaml, jpg, txt
 	 * 
-	 * Files are copied from two locations in order: 1. The notebook's parent
-	 * directory 2. A 'data' subdirectory (if it exists)
-	 * 
-	 * Note: If a file with the same name exists in both locations, the file from
-	 * the 'data' subdirectory takes precedence (overwrites the first copy).
+	 * Files are copied from: 1. The notebook's parent directory (to data/) 2.
+	 * Subdirectories named data/, models/, output/, outputs/ (to their respective
+	 * target dirs)
 	 * 
 	 * @param inputPath   Path to the input .ipynb file
 	 * @param outputPath  Base directory for generated output
@@ -280,27 +286,71 @@ public class FullPipeline {
 	private void copyDataFiles(String inputPath, String outputPath, String projectName) throws IOException {
 		Path inputFile = Paths.get(inputPath).toAbsolutePath().normalize();
 		Path inputDir = inputFile.getParent();
-		Path targetDataDir = Paths.get(outputPath).resolve(projectName).resolve("data");
+		Path projectDir = Paths.get(outputPath).resolve(projectName);
+		Path targetDataDir = projectDir.resolve("data");
 
 		// Ensure target data directory exists
 		Files.createDirectories(targetDataDir);
 
 		int copiedCount = 0;
 
-		// Copy data files from the same directory as the notebook
-		copiedCount += copyDataFilesFromDir(inputDir, targetDataDir);
+		// Copy data files directly in the notebook's directory (not subdirectories) to
+		// data/
+		copiedCount += copyDataFilesFromDirShallow(inputDir, targetDataDir);
 
-		// Copy data files from a 'data' subdirectory if it exists
-		Path inputDataDir = inputDir.resolve("data");
-		if (Files.exists(inputDataDir) && Files.isDirectory(inputDataDir)) {
-			copiedCount += copyDataFilesFromDir(inputDataDir, targetDataDir);
+		// Copy files from known subdirectories to their corresponding output
+		// directories
+		for (Map.Entry<String, String> mapping : DIR_MAPPINGS.entrySet()) {
+			String inputDirName = mapping.getKey();
+			String outputDirName = mapping.getValue();
+
+			Path inputSubDir = inputDir.resolve(inputDirName);
+			if (Files.exists(inputSubDir) && Files.isDirectory(inputSubDir)) {
+				Path targetSubDir = projectDir.resolve(outputDirName);
+				Files.createDirectories(targetSubDir);
+				copiedCount += copyDataFilesFromDir(inputSubDir, targetSubDir);
+			}
 		}
 
-		System.out.println("	Copied " + copiedCount + " data file(s) to " + targetDataDir);
+		System.out.println("	Copied " + copiedCount + " data file(s) to " + projectDir);
 	}
 
 	/**
-	 * Copy data files from a source directory to a target directory.
+	 * Copy data files from a source directory to a target directory (shallow,
+	 * non-recursive). Only copies files directly in the source directory, not in
+	 * subdirectories.
+	 * 
+	 * @param sourceDir Source directory to copy from
+	 * @param targetDir Target directory to copy to
+	 * @return Number of files copied
+	 * @throws IOException if there is an error reading the directory or copying
+	 *                     files
+	 */
+	private int copyDataFilesFromDirShallow(Path sourceDir, Path targetDir) throws IOException {
+		if (!Files.exists(sourceDir) || !Files.isDirectory(sourceDir)) {
+			return 0;
+		}
+
+		int count = 0;
+
+		try (var stream = Files.list(sourceDir)) {
+			List<Path> dataFiles = stream.filter(Files::isRegularFile).filter(this::isDataFile).toList();
+
+			for (Path file : dataFiles) {
+				Path targetFile = targetDir.resolve(file.getFileName());
+
+				Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+				System.out.println("    Copied: " + file.getFileName());
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	/**
+	 * Copy data files from a source directory to a target directory recursively,
+	 * preserving the directory structure.
 	 * 
 	 * @param sourceDir Source directory to copy from
 	 * @param targetDir Target directory to copy to
@@ -315,18 +365,59 @@ public class FullPipeline {
 
 		int count = 0;
 
-		try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(sourceDir)) {
-			for (Path file : dirStream) {
-				if (Files.isRegularFile(file) && isDataFile(file)) {
-					Path targetFile = targetDir.resolve(file.getFileName());
-					Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
-					System.out.println("    Copied: " + file.getFileName());
-					count++;
+		try (var stream = Files.walk(sourceDir)) {
+			List<Path> dataFiles = stream.filter(Files::isRegularFile).filter(this::isDataFile).toList();
+
+			for (Path file : dataFiles) {
+				// Compute relative path from sourceDir to preserve directory structure
+				Path relativePath = sourceDir.relativize(file);
+
+				// Skip intermediate 'data' directories since target is already a data directory
+				relativePath = skipDataDirectories(relativePath);
+
+				Path targetFile = targetDir.resolve(relativePath);
+
+				// Ensure parent directories exist
+				Path parentDir = targetFile.getParent();
+				if (parentDir != null) {
+					Files.createDirectories(parentDir);
 				}
+
+				Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+				System.out.println("    Copied: " + relativePath);
+				count++;
 			}
 		}
 
 		return count;
+	}
+
+	/**
+	 * Skip intermediate 'data' directories from a relative path. This prevents
+	 * creating nested data/data/ structures in the output.
+	 * 
+	 * @param relativePath The relative path to process
+	 * @return The path with leading 'data' directory components removed
+	 */
+	private Path skipDataDirectories(Path relativePath) {
+		if (relativePath.getNameCount() == 0) {
+			return relativePath;
+		}
+
+		int startIndex = 0;
+		for (int i = 0; i < relativePath.getNameCount() - 1; i++) {
+			if (relativePath.getName(i).toString().equals("data")) {
+				startIndex = i + 1;
+			} else {
+				break;
+			}
+		}
+
+		if (startIndex == 0) {
+			return relativePath;
+		}
+
+		return relativePath.subpath(startIndex, relativePath.getNameCount());
 	}
 
 	/**
