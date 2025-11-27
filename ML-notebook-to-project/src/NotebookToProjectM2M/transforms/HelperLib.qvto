@@ -334,14 +334,12 @@ helper generateDockerfileContent(notebook : NotebookMM::NotebookModel) : Sequenc
 		'COPY requirements.txt .',
 		'',
 		'# Set up virtual environment and install dependencies',
-		'RUN python -m venv /opt/venv && \\
-			 pip install --upgrade pip && \\
-			 pip install -r requirements.txt',
+		'RUN python -m venv /opt/venv',
 		'ENV PATH="/opt/venv/bin:$PATH"',
 		'',
-//		'# Install dependencies',
-//		'RUN pip install --upgrade pip && \\
-//			 pip install -r requirements.txt',
+		'# Install dependencies',
+		'RUN pip install --upgrade pip && \\
+			 pip install -r requirements.txt',
 		'',
 		'# Copy project files',
 		'COPY src/ ./src/',
@@ -359,7 +357,6 @@ helper generateDockerIgnoreContent() : Sequence(String) {
 		'__pycache__',
 		'*.pyc',
 		'.git',
-		'outputs/',
 		'.env'
 	}
 }
