@@ -8,6 +8,9 @@ transformation NotebookToProject(in srcModel : NotebookMM, out targetModel : Pro
 
 // property NAME : TYPE = val; Consts
 property MAIN_FILE_NAME : String = "main.py";
+property PREPROCESS_FILE_NAME : String = "preprocess.py";
+property TRAIN_FILE_NAME : String = "train.py";
+property PREDICT_FILE_NAME : String = "predict.py";
 property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outputs"};
 property REQUIREMENTS_FILE_NAME : String = "requirements.txt";
 
@@ -23,12 +26,34 @@ mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::Pro
 
 mapping NotebookMM::NotebookModel::toDirectory(dirName : String) : ProjectStuctureMM::Directory {
     result.name := dirName;
-    result.filesystemelement := if dirName = 'src' then OrderedSet{self.map toMainFile()} else OrderedSet{self.map toKeepFile()} endif;
+//    result.filesystemelement := if dirName = 'src' then OrderedSet{
+//        self.map toMainFile(),
+//        self.map toPreprocessFile(),
+//        self.map toTrainFile(),
+//        self.map toPredictFile()
+//    } else OrderedSet{self.map toKeepFile()} endif;
+	result.filesystemelement := if dirName = 'src' then OrderedSet{self.map toMainFile()} else OrderedSet{self.map toKeepFile()} endif;
 }
 
 mapping NotebookMM::NotebookModel::toMainFile() : ProjectStuctureMM::File {
     result.name := MAIN_FILE_NAME;
-    result.content := generateMainPyContent(self);
+//    result.content := generateMainPyEntryContent(self);
+	result.content := generateMainPyContent(self);
+}
+
+mapping NotebookMM::NotebookModel::toPreprocessFile() : ProjectStuctureMM::File {
+    result.name := PREPROCESS_FILE_NAME;
+    result.content := generatePreprocessPyContent(self);
+}
+
+mapping NotebookMM::NotebookModel::toTrainFile() : ProjectStuctureMM::File {
+    result.name := TRAIN_FILE_NAME;
+    result.content := generateTrainPyContent(self);
+}
+
+mapping NotebookMM::NotebookModel::toPredictFile() : ProjectStuctureMM::File {
+    result.name := PREDICT_FILE_NAME;
+    result.content := generatePredictPyContent(self);
 }
 
 mapping NotebookMM::NotebookModel::toRequirementsFile() : ProjectStuctureMM::File {
