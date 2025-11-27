@@ -27,7 +27,7 @@ Load the Boston.csv file
 
 
 csvFile = pd.read_csv("Boston.csv", index_col=0)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -53,7 +53,7 @@ Print a statistic summary of the predictors and the response:
 
 
 csvFile.describe()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -78,7 +78,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -159,7 +159,7 @@ new_age = pd.DataFrame({'age': [25, 50, 75]})
 new_age = sm.add_constant(new_age)
 pred3 = reg3.get_prediction(new_age).summary_frame(alpha=0.05)
 print(pred3[['mean', 'obs_ci_lower', 'obs_ci_upper']])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -172,7 +172,7 @@ The values inserted in the first regression is 5, 10 and 15. This means that an 
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
 print(reg.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -229,7 +229,7 @@ selected_predictor_values = sm.add_constant(selected_predictor_values)
 predictions = reg.get_prediction(selected_predictor_values)
 pred_summary = predictions.summary_frame(alpha=0.05)
 print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 

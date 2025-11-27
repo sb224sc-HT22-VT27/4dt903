@@ -25,7 +25,7 @@ for i in range(25):
     plt.imshow(x_test[i], cmap=plt.get_cmap('gray'))
 
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -49,7 +49,7 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.callbacks import EarlyStopping 
 from tensorflow.keras import Input
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -74,7 +74,7 @@ print("Classes: {0}".format(n_classes))
 
 x_train = x_train.astype('float32') / 255.0
 x_test = x_test.astype('float32') / 255.0
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -141,7 +141,7 @@ def print_res(model):
                 print(f"{bcolors.FAIL}%d {bcolors.ENDC}" % y, end = '') 
         print()
     return err
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -169,7 +169,7 @@ def make_model1(add_dense=False):
 
 model = make_model1(False)
 model.summary()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -181,7 +181,7 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -223,7 +223,7 @@ def make_model2(add_dense=False):
 # 32, 7, 4
 model = make_model2(True)
 model.summary()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -243,15 +243,6 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: PREPROCESS
-
-
-
-
-plot_metrics(model_history)
-loss, acc = model.evaluate(x_test, y_test, verbose=0)
-print('Accuracy: %.3f' % acc)
-err = print_res(model)
 # Classification: TRAIN
 
 

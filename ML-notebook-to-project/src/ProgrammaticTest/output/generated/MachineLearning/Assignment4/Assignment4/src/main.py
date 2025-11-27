@@ -39,7 +39,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier as KNN
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -65,7 +65,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -78,7 +78,7 @@ Print a statistic summary of the predictors and the response:
 
 print(csvFile.describe())
 print(csvFile['Direction'].value_counts())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -102,7 +102,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -115,7 +115,7 @@ Correlation Plot
 
 sns.heatmap(csvFile.drop(columns=['Direction']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -151,7 +151,7 @@ y = csvFile['Direction'].map({'Up': 1, 'Down': 0})
 model = sm.Logit(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -172,7 +172,7 @@ probs = model.predict()
 
 for i in range(10):
     print(f"{i + 1}   {probs[i]}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -199,7 +199,7 @@ for i in probs:
 print(pd.crosstab(pred, csvFile["Direction"]))
 accuracy = np.mean(pred == csvFile["Direction"])
 print(f"Model Accuracy: {accuracy}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -225,7 +225,7 @@ for i in probs:
 print(pd.crosstab(pred, csvFile["Direction"]))
 accuracy = np.mean(pred == csvFile['Direction'])
 print(f"Model Accuracy: {accuracy}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -261,7 +261,7 @@ axes[1].set_title(f"Group Down")
 plt.xlabel("LDA Projection")
 plt.tight_layout()
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -277,7 +277,7 @@ conf_matrix = pd.crosstab(lda_class, y)
 accuracy = accuracy_score(y, lda_class)
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -324,7 +324,7 @@ accuracy = accuracy_score(y, qda_class)
 # Print results
 print("\nConfusion Matrix:\n", conf_matrix)
 print("\nAccuracy:", accuracy)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -343,7 +343,7 @@ Use KNN clustering
 
 train = csvFile['Year'] < 2005
 print(csvFile[~train].shape)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -365,7 +365,7 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

@@ -17,7 +17,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 import json
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -98,7 +98,7 @@ print(f"Training samples: {train_generator.samples}")
 print(f"Validation samples: {val_generator.samples}")
 print(f"Test samples: {test_generator.samples}")
 print(f"Class labels: {train_generator.class_indices}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -178,7 +178,7 @@ model.compile(
 )
 
 print("Model compiled successfully!")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -212,7 +212,7 @@ checkpoint = keras.callbacks.ModelCheckpoint(
 )
 
 callbacks = [early_stopping, reduce_lr, checkpoint]
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -233,7 +233,7 @@ history = model.fit(
 )
 
 print("Training completed!")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -318,7 +318,7 @@ plt.xlabel('Predicted Label')
 plt.tight_layout()
 plt.savefig('output/confusion_matrix.png')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -354,7 +354,7 @@ with open('models/model_metadata.json', 'w') as f:
     json.dump(metadata, f, indent=2)
 
 print("Metadata saved!")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -402,7 +402,7 @@ label, conf, probs = predict_image(test_image)
 print(f"\nPredicted class: {label}")
 print(f"Confidence: {conf:.4f}")
 # print(f"Probs: {probs}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
