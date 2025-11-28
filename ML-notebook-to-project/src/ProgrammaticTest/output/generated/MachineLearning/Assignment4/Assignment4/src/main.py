@@ -39,7 +39,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier as KNN
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -51,7 +51,7 @@ Load Smarket dataset
 
 
 csvFile = pd.read_csv("data/Smarket.csv", index_col=0)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -65,7 +65,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -78,7 +78,7 @@ Print a statistic summary of the predictors and the response:
 
 print(csvFile.describe())
 print(csvFile['Direction'].value_counts())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -90,7 +90,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -151,7 +151,7 @@ y = csvFile['Direction'].map({'Up': 1, 'Down': 0})
 model = sm.Logit(y, X).fit()
 
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -172,7 +172,7 @@ probs = model.predict()
 
 for i in range(10):
     print(f"{i + 1}   {probs[i]}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -199,7 +199,7 @@ for i in probs:
 print(pd.crosstab(pred, csvFile["Direction"]))
 accuracy = np.mean(pred == csvFile["Direction"])
 print(f"Model Accuracy: {accuracy}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -225,7 +225,7 @@ for i in probs:
 print(pd.crosstab(pred, csvFile["Direction"]))
 accuracy = np.mean(pred == csvFile['Direction'])
 print(f"Model Accuracy: {accuracy}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -298,7 +298,7 @@ model = QDA()
 model.fit(X, y)
 print(f"Prior probabilities of groups: {model.priors_}")
 print(f"Group means:\n{model.means_}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -365,7 +365,7 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -381,7 +381,7 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 

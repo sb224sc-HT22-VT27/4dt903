@@ -59,7 +59,7 @@ Load the Boston.csv file
 
 
 csvFile = pd.read_csv("data/Boston.csv", index_col=0)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -85,7 +85,7 @@ Print a statistic summary of the predictors and the response:
 
 
 csvFile.describe()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -97,7 +97,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -110,7 +110,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -127,7 +127,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -160,7 +160,7 @@ The same interpretation can be made of the other values of 0.484 and 2.49e-74, a
 print(reg1.conf_int())
 print(reg2.conf_int())
 print(reg3.conf_int())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -191,7 +191,7 @@ new_age = pd.DataFrame({'age': [25, 50, 75]})
 new_age = sm.add_constant(new_age)
 pred3 = reg3.get_prediction(new_age).summary_frame(alpha=0.05)
 print(pred3[['mean', 'obs_ci_lower', 'obs_ci_upper']])
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -204,7 +204,7 @@ The values inserted in the first regression is 5, 10 and 15. This means that an 
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
 print(reg.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -236,7 +236,7 @@ Correlation plot
 
 sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -261,7 +261,7 @@ selected_predictor_values = sm.add_constant(selected_predictor_values)
 predictions = reg.get_prediction(selected_predictor_values)
 pred_summary = predictions.summary_frame(alpha=0.05)
 print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -284,7 +284,7 @@ X = sm.add_constant(X)
 model1 = sm.OLS(y, X).fit()
 
 print(model1.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -318,7 +318,7 @@ X = sm.add_constant(X)
 model3 = sm.OLS(y, X).fit()
 
 print(model3.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -331,7 +331,7 @@ Perform ANOVA
 
 anova_results = sm.stats.anova_lm(model2, model3)
 print(anova_results)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -356,14 +356,14 @@ X = sm.add_constant(X)
 model4 = sm.OLS(y, X).fit()
 
 print(model4.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 
 anova_results = sm.stats.anova_lm(model2, model4)
 print(anova_results)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -382,7 +382,7 @@ model5 = sm.OLS(y, X).fit()
 
 print(model5.summary())
 
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -411,7 +411,7 @@ print(csvFile2.describe(), "\n")
 print(csvFile2['ShelveLoc'].value_counts(), "\n")
 print(csvFile2['Urban'].value_counts(), "\n")
 print(csvFile2['US'].value_counts())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -450,7 +450,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -473,7 +473,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

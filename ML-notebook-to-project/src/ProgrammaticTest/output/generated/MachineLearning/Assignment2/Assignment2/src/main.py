@@ -15,7 +15,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -41,7 +41,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -53,7 +53,7 @@ Print a statistic summary of the predictors and the response:
 
 
 csvFile.describe()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -65,7 +65,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -95,7 +95,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -112,7 +112,7 @@ reg2 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["rm"])).fit()
 print(reg2.summary())
 reg3 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["age"])).fit()
 print(reg3.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -185,7 +185,7 @@ Here we can see that R-squared is 0.639 which means that 63.9% of the variance c
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
 print(reg.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -204,7 +204,7 @@ Correlation plot
 
 sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -229,7 +229,7 @@ selected_predictor_values = sm.add_constant(selected_predictor_values)
 predictions = reg.get_prediction(selected_predictor_values)
 pred_summary = predictions.summary_frame(alpha=0.05)
 print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
