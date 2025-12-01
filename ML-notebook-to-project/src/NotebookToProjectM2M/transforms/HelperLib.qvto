@@ -339,7 +339,8 @@ helper generateDockerfileContent(notebook : NotebookMM::NotebookModel) : Sequenc
 		'ENV PATH="/opt/venv/bin:$PATH"',
 		'\n',
 		'# Install dependencies',
-		'RUN pip install --upgrade pip && \\ pip install -r requirements.txt',
+		'RUN pip install --upgrade pip && \\ 
+		pip install -r requirements.txt',
 		'\n',
 		'\n# Copy project files',
 		'COPY src/ ./src/',
