@@ -8,8 +8,12 @@ import joblib
 import numpy as np
 import os
 
+import logging
+
 app = Flask(__name__)
 
+# Configure basic logging (if not already configured elsewhere)
+logging.basicConfig(level=logging.INFO)
 # Load model and scaler at startup
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "models")
 model = None
@@ -108,7 +112,8 @@ def predict():
         return jsonify(response)
         
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        logging.exception("Exception occurred in /predict endpoint")
+        return jsonify({"error": "An internal server error occurred."}), 500
 
 @app.route("/health", methods=["GET"])
 def health():
