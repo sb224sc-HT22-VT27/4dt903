@@ -8,7 +8,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -56,7 +56,7 @@ def grad_desc_mse(K, ws, learning_eps, loss, grad_loss):
         history.append(ws)
     
     return ws, np.array(history)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -129,7 +129,7 @@ limit = (6 / (in_ + out))**0.5
 ws0 = np.random.rand(2) * 2 * limit - limit
 print(f"initial weights: {ws0}")
 print(f"Initial mse: {mse1(ws0)}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -173,7 +173,7 @@ plt.ylim(ws[1] - 40, ws[1] + 40)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -217,7 +217,7 @@ def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
         history.append(ws)
 
     return ws, np.array(history)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -246,19 +246,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
-
-
-
-
-mseHistory = []
-
-for i in history:
-    mseHistory.append(mse1(i))
-
-plt.plot(range(len(mseHistory)), mseHistory)
-plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -319,18 +307,6 @@ plt.show()
 
 
 
-mseHistory = []
-
-for i in history:
-    mseHistory.append(mse1(i))
-
-plt.plot(range(len(mseHistory)), mseHistory)
-plt.show()
-# Classification: PREPROCESS
-
-
-
-
 """
 Here we are doing stochastic gradient descent with adaptive learning rate. The learning rate is decreasing by a factor of alpha for each iteration. This is done because we are assuming that we are getting closer to the point with each iteration thus decreasing the step size. We test different values for alpha and learning rate and with the best one we are getting a worse loss than with just SGD.
 """
@@ -384,7 +360,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

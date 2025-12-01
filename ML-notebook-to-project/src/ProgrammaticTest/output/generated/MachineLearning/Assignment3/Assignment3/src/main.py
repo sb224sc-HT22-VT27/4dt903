@@ -47,7 +47,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -59,7 +59,7 @@ Load the Boston.csv file
 
 
 csvFile = pd.read_csv("data/Boston.csv", index_col=0)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -73,7 +73,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -85,7 +85,7 @@ Print a statistic summary of the predictors and the response:
 
 
 csvFile.describe()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -110,7 +110,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -127,7 +127,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -144,7 +144,7 @@ reg2 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["rm"])).fit()
 print(reg2.summary())
 reg3 = sm.OLS(csvFile["medv"], sm.add_constant(csvFile["age"])).fit()
 print(reg3.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -191,7 +191,7 @@ new_age = pd.DataFrame({'age': [25, 50, 75]})
 new_age = sm.add_constant(new_age)
 pred3 = reg3.get_prediction(new_age).summary_frame(alpha=0.05)
 print(pred3[['mean', 'obs_ci_lower', 'obs_ci_upper']])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -204,7 +204,7 @@ The values inserted in the first regression is 5, 10 and 15. This means that an 
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile[["lstat", "rm", "age"]])).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -217,7 +217,7 @@ Here we can see that R-squared is 0.639 which means that 63.9% of the variance c
 
 reg = sm.OLS(csvFile["medv"], sm.add_constant(csvFile.drop(columns=["medv"]))).fit()
 print(reg.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -261,7 +261,7 @@ selected_predictor_values = sm.add_constant(selected_predictor_values)
 predictions = reg.get_prediction(selected_predictor_values)
 pred_summary = predictions.summary_frame(alpha=0.05)
 print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -295,7 +295,7 @@ X = sm.add_constant(X)
 model2 = sm.OLS(y, X).fit()
 
 print(model2.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -318,7 +318,7 @@ X = sm.add_constant(X)
 model3 = sm.OLS(y, X).fit()
 
 print(model3.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -331,7 +331,7 @@ Perform ANOVA
 
 anova_results = sm.stats.anova_lm(model2, model3)
 print(anova_results)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -356,14 +356,14 @@ X = sm.add_constant(X)
 model4 = sm.OLS(y, X).fit()
 
 print(model4.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 
 anova_results = sm.stats.anova_lm(model2, model4)
 print(anova_results)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -389,7 +389,7 @@ print(model5.summary())
 
 anova_results = sm.stats.anova_lm(model2, model5)
 print(anova_results)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -426,7 +426,7 @@ y = csvFile2["Sales"]
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -473,7 +473,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

@@ -49,7 +49,7 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.callbacks import EarlyStopping 
 from tensorflow.keras import Input
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -60,14 +60,14 @@ x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], x_test.shape[2], 1))
 in_shape = x_train.shape[1:]
 print("Before: {0}".format(orig_shape))
 print("After: {0}".format(in_shape))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 
 n_classes = len(unique(y_train)) 
 print("Classes: {0}".format(n_classes))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -88,7 +88,7 @@ early_stopping = EarlyStopping(
     mode='max', 
     restore_best_weights=True)
 it = round(60000/BATCH_SIZE)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -109,7 +109,7 @@ def plot_metrics(history):
         else:
             plt.ylim([-0.1,1.1])
         plt.legend()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -141,7 +141,7 @@ def print_res(model):
                 print(f"{bcolors.FAIL}%d {bcolors.ENDC}" % y, end = '') 
         print()
     return err
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -223,7 +223,7 @@ def make_model2(add_dense=False):
 # 32, 7, 4
 model = make_model2(True)
 model.summary()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -243,7 +243,7 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

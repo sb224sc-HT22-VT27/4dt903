@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sympy as sp
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -31,7 +31,7 @@ Y_pred = model.predict(X_with_const)
 
 plt.plot(X, Y_pred, color='b')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -60,7 +60,7 @@ ax.set_xlabel('a')
 ax.set_ylabel('b')
 ax.set_zlabel('RSS')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -124,7 +124,7 @@ plt.ylim(b_orig - 2, b_orig + 2)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -146,7 +146,7 @@ plt.xlabel('X')
 plt.ylabel('Y')
 plt.show()
 
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -205,7 +205,7 @@ plt.ylim(b_orig - 2, b_orig + 2)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -226,7 +226,7 @@ plt.plot(X, a_orig * X + b_orig, color='b')
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -264,7 +264,7 @@ plt.contour(A, B, Z, cmap='viridis')
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -285,22 +285,7 @@ plt.ylim(b_orig - 2, b_orig + 2)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
-
-
-
-
-final_loss = fL2(a_orig, b_orig)
-
-print(f"Orig: a = {a_orig:.2f}, b = {b_orig:.2f}, loss = {final_loss:.2f}")
-
-plt.scatter(X, Y, marker='+', label='Data')
-plt.plot(X, a0 * X + b0, color='g')
-plt.plot(X, a_orig * X + b_orig, color='b')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -326,7 +311,7 @@ def grad_rss3(a, b, alpha, s, c, X, Y):
     grad_alpha = a**2 + b**2 - c + s**2
     grad_s = 2 * alpha * s
     return np.array([grad_a, grad_b, grad_alpha, grad_s])
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -375,7 +360,7 @@ def grad_desc_rss3(K, a0, b0, alpha0, s0, learning_eps, f_orig, f, ff, verbose=F
         plt.show()
 
     return as_hist, bs_hist, alphas_hist, ss_hist
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -436,7 +421,7 @@ c = 25
 print(f"a_orig = {a_orig:.4f}")
 print(f"b_orig = {b_orig:.4f}")
 print(a_orig**2 + b_orig**2 - c)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -462,7 +447,7 @@ a_hat, b_hat, alpha_hat = sol
 print(f"a_hat = {a_hat.evalf():.4f}")
 print(f"b_hat = {b_hat.evalf():.4f}")
 print(f"alpha_hat = {alpha_hat.evalf():.4f}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
