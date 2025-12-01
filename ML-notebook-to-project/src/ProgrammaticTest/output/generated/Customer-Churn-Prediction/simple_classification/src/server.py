@@ -23,12 +23,20 @@ def load_model():
         # Try to load common model artifacts
         model_files = [f for f in os.listdir(MODEL_PATH) if f.endswith(".pkl") or f.endswith(".keras") or f.endswith(".h5")]
         for f in model_files:
-            if "model" in f.lower() and not "scaler" in f.lower():
-                model = joblib.load(os.path.join(MODEL_PATH, f))
+            filepath = os.path.join(MODEL_PATH, f)
+            if f.endswith(".keras") or f.endswith(".h5"):
+                # Load Keras/TensorFlow models
+                try:
+                    from tensorflow import keras
+                    model = keras.models.load_model(filepath)
+                except ImportError:
+                    print("TensorFlow not available for loading .keras/.h5 model")
+            elif "model" in f.lower() and "scaler" not in f.lower():
+                model = joblib.load(filepath)
             elif "scaler" in f.lower():
-                scaler = joblib.load(os.path.join(MODEL_PATH, f))
+                scaler = joblib.load(filepath)
             elif "feature" in f.lower():
-                feature_names = joblib.load(os.path.join(MODEL_PATH, f))
+                feature_names = joblib.load(filepath)
         print("Model loaded successfully")
     except Exception as e:
         print(f"Error loading model: {e}")
