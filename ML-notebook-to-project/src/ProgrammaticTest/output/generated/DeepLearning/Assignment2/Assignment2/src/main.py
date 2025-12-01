@@ -15,7 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sympy import Matrix
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 

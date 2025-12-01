@@ -28,7 +28,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

@@ -157,7 +157,7 @@ model = build_cnn_model(
 )
 
 model.summary()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 

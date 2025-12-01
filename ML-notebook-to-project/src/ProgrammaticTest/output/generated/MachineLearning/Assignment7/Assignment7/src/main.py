@@ -31,7 +31,7 @@ import pandas as pd
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

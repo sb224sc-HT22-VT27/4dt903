@@ -39,7 +39,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier as KNN
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

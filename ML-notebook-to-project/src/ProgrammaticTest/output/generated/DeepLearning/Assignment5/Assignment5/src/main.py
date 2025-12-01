@@ -8,7 +8,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -360,7 +360,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 

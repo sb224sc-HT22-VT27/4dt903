@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sympy as sp
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -360,7 +360,7 @@ def grad_desc_rss3(K, a0, b0, alpha0, s0, learning_eps, f_orig, f, ff, verbose=F
         plt.show()
 
     return as_hist, bs_hist, alphas_hist, ss_hist
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
