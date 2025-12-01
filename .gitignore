@@ -1,2 +1,4 @@
 .metadata/
 bin/
+__pycache__/
+*.pyc

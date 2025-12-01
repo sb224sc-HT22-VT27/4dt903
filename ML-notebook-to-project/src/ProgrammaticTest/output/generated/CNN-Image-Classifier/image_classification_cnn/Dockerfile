@@ -20,5 +20,8 @@ COPY data/ ./data/
 COPY models/ ./models/
 COPY outputs/ ./outputs/
 
-# Run the main script
-CMD ["python", "src/main.py"]
+# Expose port for prediction service
+EXPOSE 8080
+
+# Run the prediction server
+CMD ["python", "src/server.py"]
