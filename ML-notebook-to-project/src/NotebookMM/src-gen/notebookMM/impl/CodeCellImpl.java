@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 import notebookMM.CodeCell;
 import notebookMM.NotebookMMPackage;
-import notebookMM.util.AIClassificationService;
+import transformationutils.CodeBlockClassifier;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Code
@@ -25,11 +25,11 @@ import notebookMM.util.AIClassificationService;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link notebookMM.impl.CodeCellImpl#getSource <em>Source</em>}</li>
- *   <li>{@link notebookMM.impl.CodeCellImpl#getImports <em>Imports</em>}</li>
- *   <li>{@link notebookMM.impl.CodeCellImpl#getConstants <em>Constants</em>}</li>
- *   <li>{@link notebookMM.impl.CodeCellImpl#getCommands <em>Commands</em>}</li>
- *   <li>{@link notebookMM.impl.CodeCellImpl#getOutputs <em>Outputs</em>}</li>
+ * <li>{@link notebookMM.impl.CodeCellImpl#getSource <em>Source</em>}</li>
+ * <li>{@link notebookMM.impl.CodeCellImpl#getImports <em>Imports</em>}</li>
+ * <li>{@link notebookMM.impl.CodeCellImpl#getConstants <em>Constants</em>}</li>
+ * <li>{@link notebookMM.impl.CodeCellImpl#getCommands <em>Commands</em>}</li>
+ * <li>{@link notebookMM.impl.CodeCellImpl#getOutputs <em>Outputs</em>}</li>
  * </ul>
  *
  * @generated
@@ -38,6 +38,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	/**
 	 * The default value of the '{@link #getSource() <em>Source</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSource()
 	 * @generated
 	 * @ordered
@@ -45,18 +46,9 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected static final String SOURCE_EDEFAULT = null;
 
 	/**
-	 * Singleton instance of AI classification service (volatile for thread-safety)
-	 */
-	private static volatile AIClassificationService aiService = null;
-
-	/**
-	 * Cached classification result to avoid redundant API calls
-	 */
-	private transient AIClassificationService.ClassificationResult cachedClassification = null;
-
-	/**
 	 * The cached value of the '{@link #getSource() <em>Source</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSource()
 	 * @generated
 	 * @ordered
@@ -64,8 +56,9 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected String source = SOURCE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getImports() <em>Imports</em>}' attribute list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getImports() <em>Imports</em>}' attribute
+	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getImports()
 	 * @generated
 	 * @ordered
@@ -73,8 +66,9 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected EList<String> imports;
 
 	/**
-	 * The cached value of the '{@link #getConstants() <em>Constants</em>}' attribute list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getConstants() <em>Constants</em>}'
+	 * attribute list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getConstants()
 	 * @generated
 	 * @ordered
@@ -82,8 +76,9 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected EList<String> constants;
 
 	/**
-	 * The cached value of the '{@link #getCommands() <em>Commands</em>}' attribute list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getCommands() <em>Commands</em>}' attribute
+	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getCommands()
 	 * @generated
 	 * @ordered
@@ -91,8 +86,9 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 	protected EList<String> commands;
 
 	/**
-	 * The cached value of the '{@link #getOutputs() <em>Outputs</em>}' attribute list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getOutputs() <em>Outputs</em>}' attribute
+	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getOutputs()
 	 * @generated
 	 * @ordered
@@ -101,6 +97,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected CodeCellImpl() {
@@ -109,6 +106,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,6 +116,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -127,6 +126,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -140,6 +140,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -152,6 +153,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -164,6 +166,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -176,6 +179,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -346,46 +350,13 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 
-		AIClassificationService.ClassificationResult result = getClassification();
-		return result.isModelTraining();
+		String result = CodeBlockClassifier.getClassificationCommentJavaRandom();
+		if (result == "TRAIN")
+			return true;
+		else
+			return false;
 
 		// throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Gets or initializes the AI classification service using double-checked
-	 * locking
-	 */
-	private static AIClassificationService getAIService() {
-		if (aiService == null) {
-			synchronized (CodeCellImpl.class) {
-				if (aiService == null) {
-					aiService = new AIClassificationService();
-				}
-			}
-		}
-		return aiService;
-	}
-
-	/**
-	 * Gets classification result, using cache if available
-	 */
-	private AIClassificationService.ClassificationResult getClassification() {
-		if (cachedClassification == null) {
-			if (getSource() == null || getSource().trim().isEmpty()) {
-				cachedClassification = new AIClassificationService.ClassificationResult(false, false, false);
-			} else {
-				cachedClassification = getAIService().classifyCode(getSource());
-			}
-		}
-		return cachedClassification;
-	}
-
-	/**
-	 * Invalidates the cached classification (should be called when source changes)
-	 */
-	private void invalidateCache() {
-		cachedClassification = null;
 	}
 
 	/**
@@ -398,8 +369,11 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 
-		AIClassificationService.ClassificationResult result = getClassification();
-		return result.isDataPreprocessing();
+		String result = CodeBlockClassifier.getClassificationCommentJavaRandom();
+		if (result == "PREPROCESS")
+			return true;
+		else
+			return false;
 
 		// throw new UnsupportedOperationException();
 	}
@@ -414,8 +388,11 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 
-		AIClassificationService.ClassificationResult result = getClassification();
-		return result.isPrediction();
+		String result = CodeBlockClassifier.getClassificationCommentJavaRandom();
+		if (result == "PREDICT")
+			return true;
+		else
+			return false;
 
 		// throw new UnsupportedOperationException();
 	}
@@ -461,6 +438,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -482,6 +460,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -513,6 +492,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -539,6 +519,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -560,6 +541,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -593,6 +575,7 @@ public class CodeCellImpl extends CellImpl implements CodeCell {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
