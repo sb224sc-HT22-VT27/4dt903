@@ -7,8 +7,12 @@ from flask import Flask, request, jsonify
 import joblib
 import numpy as np
 import os
-
+import traceback
+import logging
 app = Flask(__name__)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Load model and scaler at startup
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "models")
@@ -108,8 +112,10 @@ def predict():
         return jsonify(response)
         
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
+        # Log the exception and traceback for internal debugging
+        logging.error("Exception occurred during prediction: %s", e)
+        logging.error(traceback.format_exc())
+        return jsonify({"error": "An internal error has occurred."}), 500
 @app.route("/health", methods=["GET"])
 def health():
     """Health check endpoint."""
