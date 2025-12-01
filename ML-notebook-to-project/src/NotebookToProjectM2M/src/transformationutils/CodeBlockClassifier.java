@@ -138,7 +138,7 @@ public class CodeBlockClassifier {
 
 	/**
 	 * Parses the classification from the API response.
-	 * Expects a JSON response with a "classification" field.
+	 * Expects a JSON response with a "classification" field or similar format.
 	 * 
 	 * @param response The JSON response string
 	 * @return The classification value or null if parsing fails
@@ -147,34 +147,94 @@ public class CodeBlockClassifier {
 		if (response == null || response.isEmpty()) {
 			return null;
 		}
-		// Simple JSON parsing for {"classification": "VALUE"} format
-		// Look for "classification" key and extract its value
-		int classIndex = response.indexOf("\"classification\"");
-		if (classIndex == -1) {
-			// Try alternative response format - just the value
-			String trimmed = response.trim();
-			if (trimmed.startsWith("\"") && trimmed.endsWith("\"")) {
+
+		String trimmed = response.trim();
+
+		// Try to find "classification" key first
+		String classification = extractJsonValue(trimmed, "classification");
+		if (classification != null) {
+			return classification.toUpperCase();
+		}
+
+		// Try alternative key names
+		classification = extractJsonValue(trimmed, "result");
+		if (classification != null) {
+			return classification.toUpperCase();
+		}
+
+		classification = extractJsonValue(trimmed, "label");
+		if (classification != null) {
+			return classification.toUpperCase();
+		}
+
+		// If response is just a plain string value (not JSON object)
+		if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) {
+			// Remove surrounding quotes if present
+			if (trimmed.startsWith("\"") && trimmed.endsWith("\"") && trimmed.length() > 2) {
 				return trimmed.substring(1, trimmed.length() - 1).toUpperCase();
 			}
 			return trimmed.toUpperCase();
 		}
 
-		int colonIndex = response.indexOf(':', classIndex);
+		return null;
+	}
+
+	/**
+	 * Extracts a string value for a given key from a JSON string.
+	 * Handles escaped quotes within the value.
+	 * 
+	 * @param json The JSON string
+	 * @param key The key to search for
+	 * @return The value as a string, or null if not found
+	 */
+	private static String extractJsonValue(String json, String key) {
+		String searchPattern = "\"" + key + "\"";
+		int keyIndex = json.indexOf(searchPattern);
+		if (keyIndex == -1) {
+			return null;
+		}
+
+		int colonIndex = json.indexOf(':', keyIndex + searchPattern.length());
 		if (colonIndex == -1) {
 			return null;
 		}
 
-		int valueStart = response.indexOf('"', colonIndex);
-		if (valueStart == -1) {
+		// Skip whitespace after colon
+		int valueStart = colonIndex + 1;
+		while (valueStart < json.length() && Character.isWhitespace(json.charAt(valueStart))) {
+			valueStart++;
+		}
+
+		if (valueStart >= json.length()) {
 			return null;
 		}
 
-		int valueEnd = response.indexOf('"', valueStart + 1);
-		if (valueEnd == -1) {
-			return null;
+		char startChar = json.charAt(valueStart);
+		if (startChar == '"') {
+			// String value - find closing quote, handling escaped quotes
+			int valueEnd = valueStart + 1;
+			while (valueEnd < json.length()) {
+				char c = json.charAt(valueEnd);
+				if (c == '"' && json.charAt(valueEnd - 1) != '\\') {
+					break;
+				}
+				valueEnd++;
+			}
+			if (valueEnd < json.length()) {
+				String value = json.substring(valueStart + 1, valueEnd);
+				// Unescape basic sequences
+				return value.replace("\\\"", "\"").replace("\\\\", "\\");
+			}
+		} else if (Character.isLetter(startChar)) {
+			// Unquoted value (like null, true, false, or unquoted string)
+			int valueEnd = valueStart;
+			while (valueEnd < json.length() && Character.isLetterOrDigit(json.charAt(valueEnd))) {
+				valueEnd++;
+			}
+			return json.substring(valueStart, valueEnd);
 		}
 
-		return response.substring(valueStart + 1, valueEnd).toUpperCase();
+		return null;
 	}
 
 	/**
