@@ -15,29 +15,44 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "models")
 model = None
 scaler = None
 feature_names = None
+is_keras_model = False
 
 def load_model():
     """Load the trained model and associated artifacts."""
-    global model, scaler, feature_names
+    global model, scaler, feature_names, is_keras_model
     try:
-        # Try to load common model artifacts
         model_files = [f for f in os.listdir(MODEL_PATH) if f.endswith(".pkl") or f.endswith(".keras") or f.endswith(".h5")]
-        for f in model_files:
-            filepath = os.path.join(MODEL_PATH, f)
-            if f.endswith(".keras") or f.endswith(".h5"):
-                # Load Keras/TensorFlow models
+        # Prioritize Keras models first, then pkl models
+        keras_models = [f for f in model_files if f.endswith(".keras") or f.endswith(".h5")]
+        pkl_files = [f for f in model_files if f.endswith(".pkl")]
+        
+        # Load Keras model if available
+        for f in keras_models:
+            if model is None:
+                filepath = os.path.join(MODEL_PATH, f)
                 try:
                     from tensorflow import keras
                     model = keras.models.load_model(filepath)
+                    is_keras_model = True
+                    print(f"Loaded Keras model from {f}")
                 except ImportError:
                     print("TensorFlow not available for loading .keras/.h5 model")
-            elif "model" in f.lower() and "scaler" not in f.lower():
+        
+        # Load pkl files (model if not already loaded, scaler, feature_names)
+        for f in pkl_files:
+            filepath = os.path.join(MODEL_PATH, f)
+            if model is None and "model" in f.lower() and "scaler" not in f.lower():
                 model = joblib.load(filepath)
+                print(f"Loaded model from {f}")
             elif "scaler" in f.lower():
                 scaler = joblib.load(filepath)
             elif "feature" in f.lower():
                 feature_names = joblib.load(filepath)
-        print("Model loaded successfully")
+        
+        if model is not None:
+            print("Model loaded successfully")
+        else:
+            print("Warning: No model found in models directory")
     except Exception as e:
         print(f"Error loading model: {e}")
 
@@ -61,11 +76,19 @@ def predict():
         if features is None:
             return jsonify({"error": "No features provided"}), 400
         
-        # Convert to numpy array
-        features_array = np.array(features).reshape(1, -1)
+        # Convert to numpy array and reshape appropriately
+        features_array = np.array(features)
         
-        # Apply scaler if available
-        if scaler is not None:
+        # For Keras models, preserve multi-dimensional input (add batch dimension)
+        # For sklearn models, flatten to 2D (samples, features)
+        if is_keras_model:
+            if features_array.ndim == len(features_array.shape):
+                features_array = np.expand_dims(features_array, axis=0)
+        else:
+            features_array = features_array.reshape(1, -1)
+        
+        # Apply scaler if available (typically for sklearn models)
+        if scaler is not None and not is_keras_model:
             features_array = scaler.transform(features_array)
         
         # Make prediction
