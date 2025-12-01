@@ -28,7 +28,7 @@ helper generateMainPyContent(notebook : NotebookMM::NotebookModel) : Sequence(St
             var codeCell := cell.oclAsType(NotebookMM::CodeCell);
             if codeCell.source <> null and codeCell.source <> '' then {
                 var transformedSource := transformFilePathsJava(codeCell.source);
-                contentLines += '\n' + transformedSource + CodeClassificationLib::getClassificationCommentQVTo() + '\n\n';
+                contentLines += '\n' + transformedSource + CodeClassificationLib::getClassificationCommentQVTo(codeCell.source) + '\n\n';
             } endif;
         } endif endif;
     };

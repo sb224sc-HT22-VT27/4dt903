@@ -3,17 +3,20 @@ import transformationutils.CodeBlockClassifier;
 library CodeClassificationLib;
 
 /**
- * Returns a random classification for a code block.
+ * Classifies a code block by invoking an AI API.
+ * Falls back to random classification if the API call fails.
+ * @param code The code to classify
  * @return One of: PREPROCESS, TRAIN, or PREDICT
  */
-helper classifyCodeBlockQVTo() : String {
-	return CodeBlockClassifier::classifyCodeBlockJava();
+helper classifyCodeBlockQVTo(code : String) : String {
+	return CodeBlockClassifier::classifyCodeBlockJava(code);
 }
 
 /**
  * Returns a comment with the classification.
+ * @param code The code to classify
  * @return A comment string with the classification
  */
-helper getClassificationCommentQVTo() : String {
-	return CodeBlockClassifier::getClassificationCommentJava();
+helper getClassificationCommentQVTo(code : String) : String {
+	return CodeBlockClassifier::getClassificationCommentJava(code);
 }
