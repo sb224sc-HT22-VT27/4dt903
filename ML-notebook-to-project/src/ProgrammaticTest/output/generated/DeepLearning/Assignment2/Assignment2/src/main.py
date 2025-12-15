@@ -15,7 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sympy import Matrix
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -51,7 +51,7 @@ Cor = np.corrcoef(R, rowvar=False)
 
 print("Sample covariance:\n", Sample_cov)
 print("\nCorrelation:\n", Cor)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -63,7 +63,7 @@ Double check cor
 
 
 print(1.5552 / (2.0479**0.5 * 4.2666**0.5))
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -87,7 +87,7 @@ variability_explained = pca.explained_variance_ratio_ * 100
 
 print("Loading vectors:\n", loading_vector)
 print("\nVariance explained:\n", variability_explained)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -99,7 +99,7 @@ Check correlation
 
 
 print(np.corrcoef(score, rowvar=False))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -107,7 +107,7 @@ print(np.corrcoef(score, rowvar=False))
 print("PC1:", np.linalg.norm(loading_vector[:, 0]))
 print("PC2:", np.linalg.norm(loading_vector[:, 1]))
 print("Dot prod:", np.dot(loading_vector[:, 0], loading_vector[:, 1]))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -121,7 +121,7 @@ plt.xlabel("PC1")
 plt.ylabel("PC2")
 plt.grid(True)
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -147,7 +147,7 @@ print(Cov)
 eigenvals, eigenvectors = np.linalg.eig(Cov)
 print("eigenvectors\n", eigenvectors)
 print("eigenvalues\n", eigenvals)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -160,7 +160,7 @@ Check eigenvalues
 
 print(Cov @ eigenvectors[:, 0] - eigenvals[0] * eigenvectors[:, 0])
 print(Cov @ eigenvectors[:, 1] - eigenvals[1] * eigenvectors[:, 1])
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -168,14 +168,14 @@ print(Cov @ eigenvectors[:, 1] - eigenvals[1] * eigenvectors[:, 1])
 print(np.linalg.norm(eigenvectors[:, 0]))
 print(np.linalg.norm(eigenvectors[:, 1]))
 print(np.dot(eigenvectors[:, 0], eigenvectors[:, 1]))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
 
 score = data@eigenvectors
 print(np.corrcoef(score, rowvar=False))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -215,7 +215,7 @@ plt.xlabel("PC1")
 plt.ylabel("PC2")
 plt.grid(True)
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -227,7 +227,7 @@ c = Cov[0, 0] * Cov[1, 1] - Cov[0, 1] * Cov[1, 0]
 
 eigenvalues = np.roots([a, b, c])
 print("Eigenvalues\n", eigenvalues)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -268,7 +268,7 @@ A2 = Cov - lambda2
 rref2 = np.array(Matrix(np.round(A2, 5)).rref()[0]).astype(np.float64)
 v2 = np.array([-rref2[0, 1], 1])
 print("Eigenvector 2:", v2 / np.linalg.norm(v2))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

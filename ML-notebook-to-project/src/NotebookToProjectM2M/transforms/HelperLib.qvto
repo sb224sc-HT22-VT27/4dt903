@@ -256,6 +256,7 @@ helper generatePredictPyContent(notebook : NotebookMM::NotebookModel) : Sequence
 
 /**
  * Returns an OrderedSet of String names of imported packages in python for pip to install.
+ * Always including flask for the prediction service
  * @return OrderedSet(String)
  */
 helper extractPackageNames(notebook : NotebookMM::NotebookModel) : OrderedSet(String) {
@@ -266,6 +267,7 @@ helper extractPackageNames(notebook : NotebookMM::NotebookModel) : OrderedSet(St
 		->select(pkg | pkg <> '') 
 		->asOrderedSet(); 
 	
+	packages += 'flask';
 	return packages;
 }
 
@@ -350,6 +352,12 @@ helper generateDockerfileContent(notebook : NotebookMM::NotebookModel) : Sequenc
 		'\n',
 		'\n# Run the main script',
 		'CMD ["python", "src/main.py"]'
+	};
+}
+
+helper generateServerPyContent() : Sequence(String) {
+	return Sequence {
+		
 	};
 }
 

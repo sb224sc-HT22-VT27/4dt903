@@ -47,7 +47,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -110,7 +110,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -127,7 +127,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -160,7 +160,7 @@ The same interpretation can be made of the other values of 0.484 and 2.49e-74, a
 print(reg1.conf_int())
 print(reg2.conf_int())
 print(reg3.conf_int())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -236,7 +236,7 @@ Correlation plot
 
 sns.heatmap(csvFile.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -284,7 +284,7 @@ X = sm.add_constant(X)
 model1 = sm.OLS(y, X).fit()
 
 print(model1.summary())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -331,7 +331,7 @@ Perform ANOVA
 
 anova_results = sm.stats.anova_lm(model2, model3)
 print(anova_results)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -382,14 +382,14 @@ model5 = sm.OLS(y, X).fit()
 
 print(model5.summary())
 
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
 
 anova_results = sm.stats.anova_lm(model2, model5)
 print(anova_results)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -426,7 +426,7 @@ y = csvFile2["Sales"]
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -473,7 +473,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
