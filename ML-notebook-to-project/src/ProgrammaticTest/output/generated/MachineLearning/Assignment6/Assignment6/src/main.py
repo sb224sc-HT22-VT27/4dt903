@@ -60,7 +60,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -87,7 +87,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -99,7 +99,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -112,7 +112,7 @@ Correlation Plot
 
 sns.heatmap(csvFile.drop(columns=['ShelveLoc', "Urban", "US"]).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -125,7 +125,7 @@ Scatter plot of price to sales
 
 sns.regplot(x="Sales", y="Price", data=csvFile,  scatter_kws={'s': 5, 'color': 'black'}, line_kws={'color': 'black'})
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -154,7 +154,7 @@ print(f"Number of terminal nodes: {tree.get_n_leaves()}")
 plt.figure(figsize=(16, 10))
 plot_tree(tree, feature_names=X.columns, class_names=["No", "Yes"], impurity=False, fontsize=5, label="none")
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -178,7 +178,7 @@ y_pred = tree_model.predict(X_test)
 
 conf_matrix = confusion_matrix(y_test, y_pred)
 print(conf_matrix)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -205,7 +205,7 @@ for alpha in ccpAlphas:
         best_alpha = alpha
 
 print(f"Best accuracy {best_accuracy:.4f}, with alpha: {best_alpha:.4f}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -221,7 +221,7 @@ plt.plot(ccpAlphas, cv_scores, marker='o', color='black')
 plt.xlabel("Alpha")
 plt.ylabel("Cross-Validation Accuracy")
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -277,7 +277,7 @@ print(conf_matrix)
 plt.figure(figsize=(12, 6))
 plot_tree(pruned_tree, filled=True, feature_names=X_train.columns, class_names=["No", "Yes"])
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -295,7 +295,7 @@ Load Boston dataset
 
 
 csvFile = pd.read_csv("data/Boston.csv", index_col=0)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -315,7 +315,7 @@ tree.fit(X_train, y_train)
 print(f"Number of leaves: {tree.get_n_leaves()}")
 print(f"Depth of tree: {tree.get_depth()}")
 print(f"Residual mean deviance: {tree.tree_.impurity.mean():.4f}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -387,7 +387,7 @@ plt.show()
 
 mse = np.mean((yhat - y_test) ** 2)
 print(f"Mean Squared Error: {mse:.4f}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -420,7 +420,7 @@ plt.xlabel("Predicted MEDV")
 plt.ylabel("Actual MEDV")
 plt.title("Bagging Model")
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -439,7 +439,7 @@ mse_bag = mean_squared_error(y_test, yhat_bag)
 r2_bag = r2_score(y_test, yhat_bag)
 print(f"MSE: {mse_bag:.4f}")
 print(f"R²: {100 * r2_bag:.2f}%")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -466,7 +466,7 @@ plt.xlabel("Predicted MEDV")
 plt.ylabel("Actual MEDV")
 plt.title("Bagging Model")
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -492,7 +492,7 @@ plt.yticks(range(len(feature_importances)), np.array(feature_names)[sorted_indic
 plt.xlabel("Feature Importance")
 plt.gca().invert_yaxis()
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -569,7 +569,7 @@ plt.plot([min(yhat), max(yhat)], [min(y_test), max(y_test)], color="red", linest
 plt.xlabel("Predicted MEDV")
 plt.ylabel("Actual MEDV")
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

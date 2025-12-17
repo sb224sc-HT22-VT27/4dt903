@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sympy as sp
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -60,7 +60,7 @@ ax.set_xlabel('a')
 ax.set_ylabel('b')
 ax.set_zlabel('RSS')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -178,7 +178,7 @@ plt.contour(A, B, Z, cmap='viridis')
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -205,7 +205,7 @@ plt.ylim(b_orig - 2, b_orig + 2)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -226,7 +226,7 @@ plt.plot(X, a_orig * X + b_orig, color='b')
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -264,7 +264,7 @@ plt.contour(A, B, Z, cmap='viridis')
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -300,7 +300,7 @@ plt.plot(X, a_orig * X + b_orig, color='b')
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -326,7 +326,7 @@ def grad_rss3(a, b, alpha, s, c, X, Y):
     grad_alpha = a**2 + b**2 - c + s**2
     grad_s = 2 * alpha * s
     return np.array([grad_a, grad_b, grad_alpha, grad_s])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -375,7 +375,7 @@ def grad_desc_rss3(K, a0, b0, alpha0, s0, learning_eps, f_orig, f, ff, verbose=F
         plt.show()
 
     return as_hist, bs_hist, alphas_hist, ss_hist
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -393,7 +393,7 @@ def ffL2c(a, b, alpha, s):
 
 s0 = 1
 as_hist, bs_hist, alphas_hist, ss_hist = grad_desc_rss3(K, a0, b0, alpha0, s0, learning_eps, f, fL2c, ffL2c, verbose=True)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -436,7 +436,7 @@ c = 25
 print(f"a_orig = {a_orig:.4f}")
 print(f"b_orig = {b_orig:.4f}")
 print(a_orig**2 + b_orig**2 - c)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -462,7 +462,7 @@ a_hat, b_hat, alpha_hat = sol
 print(f"a_hat = {a_hat.evalf():.4f}")
 print(f"b_hat = {b_hat.evalf():.4f}")
 print(f"alpha_hat = {alpha_hat.evalf():.4f}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

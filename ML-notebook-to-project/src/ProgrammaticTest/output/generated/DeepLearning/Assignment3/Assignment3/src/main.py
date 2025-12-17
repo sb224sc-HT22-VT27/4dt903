@@ -24,7 +24,7 @@ def mse(y_true, y_pred):
 
 def mse_derivative(y_true, y_pred):
     return (y_pred - y_true)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -92,7 +92,7 @@ for epoch_idx in range(epochs):
     biases_2 -= learning_rate * db_2
     weights_1 -= learning_rate * dW_1
     biases_1 -= learning_rate * db_1
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
