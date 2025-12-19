@@ -1,0 +1,294 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+citecolor=black]{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage[nottoc]{tocbibind}
+\usepackage[english]{babel}
+
+\tolerance=1413
+\hfuzz=1.5pt
+
+\title{4DT903 Group Report \\
+\large{Model-Driven Development of Notebook-to-Project Transformation System}}
+\author{Samuel Berg, Jesper Wingren \& Emil Ulvagården}
+\date{Januari 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+\section{Introduction}
+
+This report presents the collaborative work of our group on developing a model-driven engineering (MDE) solution for transforming Jupyter notebooks into structured project artifacts. The project addresses the challenge of converting exploratory data science notebooks into maintainable, production-ready code structures.
+
+\subsection{Background}
+
+Jupyter notebooks are widely used in data science for exploratory analysis, prototyping, and documentation. However, transitioning from notebooks to production-ready projects presents several challenges including code organization, modularity, testing, and maintainability.
+
+\subsection{Project Objectives}
+
+The main objectives of this project are:
+\begin{itemize}
+    \item Design metamodels for representing notebook structures and project architectures
+    \item Implement model-to-model (M2M) transformations from notebook models to project structure models
+    \item Develop model-to-text (M2T) transformations to generate project artifacts
+    \item Create a comprehensive system demonstrating MDE principles in practice
+\end{itemize}
+
+\newpage
+\section{Methodology}
+
+\subsection{Model-Driven Engineering Approach}
+
+Our approach follows the fundamental principles of MDE:
+\begin{enumerate}
+    \item \textbf{Metamodel Design}: Creating Ecore metamodels to represent the domain concepts
+    \item \textbf{Model Transformations}: Implementing transformations using ATL/ETL or similar technologies
+    \item \textbf{Code Generation}: Using template engines like Acceleo or Xtend for M2T transformations
+\end{enumerate}
+
+\subsection{Development Process}
+
+The development followed an iterative approach with regular group meetings and collaborative decision-making on architectural choices.
+
+\subsection{Tools and Technologies}
+
+\begin{itemize}
+    \item Eclipse Modeling Framework (EMF) for metamodel implementation
+    \item Eclipse Modeling Tools for model editing and validation
+    \item Transformation languages for M2M transformations
+    \item Template engines for code generation
+    \item Version control with Git for collaboration
+\end{itemize}
+
+\newpage
+\section{Metamodels}
+
+\subsection{Notebook Metamodel}
+
+The notebook metamodel captures the essential structure of Jupyter notebooks:
+\begin{itemize}
+    \item Notebook container with metadata
+    \item Cell structures (code cells, markdown cells)
+    \item Cell dependencies and execution order
+    \item Import statements and external dependencies
+\end{itemize}
+
+\subsection{Project Structure Metamodel}
+
+The target metamodel represents a well-organized project structure:
+\begin{itemize}
+    \item Package/module organization
+    \item Source file structure
+    \item Configuration files
+    \item Test organization
+    \item Documentation structure
+\end{itemize}
+
+\subsection{Design Decisions}
+
+Key design decisions in the metamodels include:
+\begin{itemize}
+    \item Abstraction level of the models
+    \item Relationships between model elements
+    \item Constraints and validation rules
+    \item Extension points for customization
+\end{itemize}
+
+\newpage
+\section{Transformations}
+
+\subsection{Model-to-Model Transformation}
+
+The M2M transformation maps notebook structures to project structures:
+\begin{itemize}
+    \item Grouping related code cells into modules
+    \item Extracting function definitions
+    \item Identifying test cases
+    \item Organizing imports
+\end{itemize}
+
+\subsection{Model-to-Text Transformation}
+
+The M2T transformation generates concrete project artifacts:
+\begin{itemize}
+    \item Python source files with proper structure
+    \item Configuration files (requirements.txt, setup.py)
+    \item Test files following conventions
+    \item Documentation files (README.md)
+\end{itemize}
+
+\subsection{Transformation Patterns}
+
+Common transformation patterns implemented:
+\begin{itemize}
+    \item Sequential code to function extraction
+    \item Data processing pipelines to class methods
+    \item Visualization code to utility functions
+    \item Markdown cells to docstrings and documentation
+\end{itemize}
+
+\newpage
+\section{Implementation}
+
+\subsection{System Architecture}
+
+The system consists of several Eclipse plugins:
+\begin{itemize}
+    \item NotebookMM: Core metamodel for notebook representation
+    \item ProjectStructureMM: Target metamodel for project structure
+    \item NotebookToProjectM2M: Transformation logic
+    \item ProjectStructureM2T: Code generation templates
+\end{itemize}
+
+\subsection{Key Components}
+
+\subsubsection{Metamodel Implementation}
+
+The metamodels are implemented using Ecore with proper validation rules and constraints.
+
+\subsubsection{Transformation Implementation}
+
+Transformations leverage established patterns and best practices from the MDE community.
+
+\subsubsection{Code Generation}
+
+The code generation templates ensure generated code follows Python best practices and conventions.
+
+\subsection{Testing and Validation}
+
+\begin{itemize}
+    \item Programmatic tests for transformation logic
+    \item Example notebooks for validation
+    \item Generated code quality checks
+\end{itemize}
+
+\newpage
+\section{Results}
+
+\subsection{Achieved Functionality}
+
+The implemented system successfully:
+\begin{itemize}
+    \item Parses notebook structures into models
+    \item Transforms notebook models to project structures
+    \item Generates organized Python project code
+    \item Maintains traceability between source and target
+\end{itemize}
+
+\subsection{Example Transformation}
+
+% TODO: Add specific examples with input notebook and generated output
+
+\subsection{Evaluation}
+
+The system was evaluated based on:
+\begin{itemize}
+    \item Correctness of transformations
+    \item Quality of generated code
+    \item Completeness of the solution
+    \item Maintainability of the models and transformations
+\end{itemize}
+
+\newpage
+\section{Discussion}
+
+\subsection{Strengths}
+
+\begin{itemize}
+    \item Clear separation of concerns through metamodeling
+    \item Reusable transformation logic
+    \item Extensible architecture
+    \item Well-documented models
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{itemize}
+    \item Limited support for complex notebook patterns
+    \item Manual intervention needed for certain transformations
+    \item Scope limitations in handling all notebook features
+\end{itemize}
+
+\subsection{Challenges Encountered}
+
+\begin{itemize}
+    \item Balancing abstraction level in metamodels
+    \item Handling diverse notebook structures
+    \item Ensuring generated code quality
+    \item Tool integration and setup
+\end{itemize}
+
+\subsection{Lessons Learned}
+
+\begin{itemize}
+    \item Importance of iterative metamodel design
+    \item Value of transformation testing early in development
+    \item Benefits of using established MDE tools and patterns
+    \item Collaboration and version control in modeling projects
+\end{itemize}
+
+\newpage
+\section{Conclusion}
+
+\subsection{Summary}
+
+This project successfully demonstrated the application of model-driven engineering principles to the practical problem of notebook-to-project transformation. The resulting system provides a foundation for automated code organization and can be extended to support additional transformation patterns.
+
+\subsection{Contributions}
+
+Each team member contributed to different aspects of the project:
+\begin{itemize}
+    \item Metamodel design and implementation
+    \item Transformation development
+    \item Code generation and templates
+    \item Testing and validation
+    \item Documentation
+\end{itemize}
+
+\subsection{Future Work}
+
+Potential extensions and improvements:
+\begin{itemize}
+    \item Support for additional programming languages
+    \item More sophisticated code analysis and refactoring
+    \item Integration with CI/CD pipelines
+    \item GUI for transformation configuration
+    \item Machine learning-based transformation suggestions
+\end{itemize}
+
+\newpage
+\section{References}
+
+% Bibliography will be generated here if using BibTeX
+% For now, add references manually as needed
+
+\begin{thebibliography}{9}
+
+\bibitem{emf}
+Eclipse Modeling Framework (EMF),
+\url{https://www.eclipse.org/modeling/emf/}
+
+\bibitem{jupyter}
+Project Jupyter,
+\url{https://jupyter.org/}
+
+\bibitem{mde}
+Brambilla, M., Cabot, J., \& Wimmer, M. (2017).
+\textit{Model-Driven Software Engineering in Practice}.
+Morgan \& Claypool Publishers.
+
+\end{thebibliography}
+
+\end{document}
