@@ -11,7 +11,11 @@
 package ProjectStructureM2T.main;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +27,8 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+
+import projectStructureMM.ProjectStructure;
 
 /**
  * Entry point of the 'Generate' generation module.
@@ -176,7 +182,7 @@ public class Generate extends AbstractAcceleoGenerator {
 	 * @param monitor This will be used to display progress information to the user.
 	 * @throws IOException This will be thrown if any of the output files cannot be
 	 *                     saved to disk.
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public void doGenerate(Monitor monitor) throws IOException {
@@ -204,7 +210,11 @@ public class Generate extends AbstractAcceleoGenerator {
         //    }
         //}
 
+        // Call the parent implementation to generate files from templates
         super.doGenerate(monitor);
+        
+        // Generate additional files in M2T (Docker, .dockerignore, server.py)
+        generateDockerFiles();
     }
 
 	/**
@@ -420,5 +430,221 @@ public class Generate extends AbstractAcceleoGenerator {
          */ 
         // UMLResourcesUtil.init(resourceSet)
     }
+
+	/**
+	 * Generate Docker-related files (Dockerfile, .dockerignore) and server.py in the M2T phase.
+	 * These files are now generated directly in Java instead of through QVTO transformations.
+	 * 
+	 * @throws IOException if file writing fails
+	 */
+	private void generateDockerFiles() throws IOException {
+		// Get the project structure from the model
+		if (model == null || !(model instanceof ProjectStructure)) {
+			return;
+		}
+		
+		ProjectStructure project = (ProjectStructure) model;
+		String projectName = project.getName();
+		
+		// Determine the base path for file generation
+		File baseDir = targetFolder;
+		File projectDir = new File(baseDir, projectName);
+		
+		// Generate Dockerfile
+		generateDockerfile(projectDir);
+		
+		// Generate .dockerignore
+		generateDockerignore(projectDir);
+		
+		// Generate server.py
+		generateServerPy(projectDir);
+	}
+
+	/**
+	 * Generate Dockerfile with Python 3.13-slim base image
+	 */
+	private void generateDockerfile(File projectDir) throws IOException {
+		File dockerfile = new File(projectDir, "Dockerfile");
+		try (FileWriter writer = new FileWriter(dockerfile)) {
+			writer.write("FROM python:3.13-slim\n");
+			writer.write("\n");
+			writer.write("WORKDIR /app\n");
+			writer.write("\n");
+			writer.write("# Copy requirements first (for better caching)\n");
+			writer.write("COPY requirements.txt .\n");
+			writer.write("\n");
+			writer.write("# Set up virtual environment and install dependencies\n");
+			writer.write("RUN python -m venv /opt/venv\n");
+			writer.write("ENV PATH=\"/opt/venv/bin:$PATH\"\n");
+			writer.write("\n");
+			writer.write("# Install dependencies\n");
+			writer.write("RUN pip install --upgrade pip && \\\n");
+			writer.write("    pip install -r requirements.txt\n");
+			writer.write("\n");
+			writer.write("# Copy project files\n");
+			writer.write("COPY src/ ./src/\n");
+			writer.write("COPY data/ ./data/\n");
+			writer.write("COPY models/ ./models/\n");
+			writer.write("COPY outputs/ ./outputs/\n");
+			writer.write("\n");
+			writer.write("# Expose the port for prediction service\n");
+			writer.write("EXPOSE 8080\n");
+			writer.write("\n");
+			writer.write("# Run the server\n");
+			writer.write("CMD [\"python\", \"src/server.py\"]\n");
+		}
+	}
+
+	/**
+	 * Generate .dockerignore file
+	 */
+	private void generateDockerignore(File projectDir) throws IOException {
+		File dockerignore = new File(projectDir, ".dockerignore");
+		try (FileWriter writer = new FileWriter(dockerignore)) {
+			writer.write("__pycache__\n");
+			writer.write("*.pyc\n");
+			writer.write(".git\n");
+			writer.write(".env\n");
+		}
+	}
+
+	/**
+	 * Generate server.py with Flask-based prediction service
+	 */
+	private void generateServerPy(File projectDir) throws IOException {
+		File srcDir = new File(projectDir, "src");
+		if (!srcDir.exists()) {
+			srcDir.mkdirs();
+		}
+		
+		File serverPy = new File(srcDir, "server.py");
+		try (FileWriter writer = new FileWriter(serverPy)) {
+			writer.write("\"\"\"\n");
+			writer.write("Prediction service - Flask based API for model prediction\n");
+			writer.write("Accessible at localhost:8080/predict\n");
+			writer.write("\"\"\"\n");
+			writer.write("\n");
+			writer.write("from flask import Flask, request, jsonify\n");
+			writer.write("import joblib\n");
+			writer.write("import numpy as np\n");
+			writer.write("import os\n");
+			writer.write("\n");
+			writer.write("app = Flask(__name__)\n");
+			writer.write("\n");
+			writer.write("# Load models and scalers at start\n");
+			writer.write("MODEL_PATH = os.path.join(os.path.dirname(__file__), \"..\", \"models\")\n");
+			writer.write("model = None\n");
+			writer.write("scaler = None\n");
+			writer.write("feature_names = None\n");
+			writer.write("is_keras_model = False\n");
+			writer.write("\n");
+			writer.write("def load_models():\n");
+			writer.write("    \"\"\"Load the trained model and associated artifacts.\"\"\"\n");
+			writer.write("    global model, scaler, feature_names, is_keras_model\n");
+			writer.write("    try:\n");
+			writer.write("        model_files = [f for f in os.listdir(MODEL_PATH) if f.endswith(\".pkl\") or f.endswith(\".keras\") or f.endswith(\".h5\")]\n");
+			writer.write("        # Prioritize Keras and h5 models over pkl\n");
+			writer.write("        keras_models = [f for f in model_files if f.endswith(\".keras\") or f.endswith(\".h5\")]\n");
+			writer.write("        pkl_files = [f for f in model_files if f.endswith(\".pkl\")]\n");
+			writer.write("        \n");
+			writer.write("        for f in keras_models:\n");
+			writer.write("            if model is None:\n");
+			writer.write("                filepath = os.path.join(MODEL_PATH, f)\n");
+			writer.write("                try:\n");
+			writer.write("                    from tensorflow import keras\n");
+			writer.write("                    model = keras.models.load_model(filepath)\n");
+			writer.write("                    is_keras_model = True\n");
+			writer.write("                    print(f\"Loaded Keras model from {f}\")\n");
+			writer.write("                except ImportError:\n");
+			writer.write("                    print(\"TensorFlow not available for loading .keras/.h5 model\")\n");
+			writer.write("        \n");
+			writer.write("        for f in pkl_files:\n");
+			writer.write("            filepath = os.path.join(MODEL_PATH, f)\n");
+			writer.write("            if model is None and \"model\" in f.lower() and \"scaler\" not in f.lower():\n");
+			writer.write("                model = joblib.load(filepath)\n");
+			writer.write("                print(f\"Loaded model from {f}\")\n");
+			writer.write("            elif \"scaler\" in f.lower():\n");
+			writer.write("                scaler = joblib.load(filepath)\n");
+			writer.write("                print(f\"Loaded scaler from {f}\")\n");
+			writer.write("            elif \"feature_names\" in f.lower():\n");
+			writer.write("                feature_names = joblib.load(filepath)\n");
+			writer.write("                print(f\"Loaded feature names from {f}\")\n");
+			writer.write("        \n");
+			writer.write("        if model is not None:\n");
+			writer.write("            print(\"Model loaded successfully\")\n");
+			writer.write("        else:\n");
+			writer.write("            print(\"Warning: No model found in models directory\")\n");
+			writer.write("    \n");
+			writer.write("    except Exception as e:\n");
+			writer.write("        print(f\"Error loading model: {e}\")\n");
+			writer.write("\n");
+			writer.write("@app.route(\"/health\", methods=[\"GET\"])\n");
+			writer.write("def health():\n");
+			writer.write("    \"\"\"Health check endpoint\"\"\"\n");
+			writer.write("    return jsonify({\n");
+			writer.write("        \"status\": \"healthy\",\n");
+			writer.write("        \"model_loaded\": model is not None\n");
+			writer.write("    })\n");
+			writer.write("\n");
+			writer.write("@app.route(\"/predict\", methods=[\"POST\"])\n");
+			writer.write("def predict():\n");
+			writer.write("    \"\"\"\n");
+			writer.write("    Prediction endpoint\n");
+			writer.write("    Expects JSON input with features for prediction.\n");
+			writer.write("    Returns JSON with prediction results\n");
+			writer.write("    \n");
+			writer.write("    Example input:\n");
+			writer.write("    {\n");
+			writer.write("        \"features\": [[1.0, 2.0, 3.0, 4.0]]\n");
+			writer.write("    }\n");
+			writer.write("    \"\"\"\n");
+			writer.write("    try:\n");
+			writer.write("        if model is None:\n");
+			writer.write("            return jsonify({\"error\": \"Model not loaded\"}), 500\n");
+			writer.write("        \n");
+			writer.write("        data = request.get_json()\n");
+			writer.write("        if data is None:\n");
+			writer.write("            return jsonify({\"error\": \"No JSON data provided\"}), 400\n");
+			writer.write("        \n");
+			writer.write("        features = data.get(\"features\")\n");
+			writer.write("        if features is None:\n");
+			writer.write("            return jsonify({\"error\": \"No features provided\"}), 400\n");
+			writer.write("        \n");
+			writer.write("        # Convert to numpy array\n");
+			writer.write("        features_array = np.array(features)\n");
+			writer.write("        \n");
+			writer.write("        # Apply scaling if scaler is available\n");
+			writer.write("        if scaler is not None:\n");
+			writer.write("            features_array = scaler.transform(features_array)\n");
+			writer.write("        \n");
+			writer.write("        # Make prediction\n");
+			writer.write("        if is_keras_model:\n");
+			writer.write("            predictions = model.predict(features_array)\n");
+			writer.write("            predictions = predictions.tolist()\n");
+			writer.write("        else:\n");
+			writer.write("            predictions = model.predict(features_array)\n");
+			writer.write("            predictions = predictions.tolist()\n");
+			writer.write("        \n");
+			writer.write("        # Get prediction probabilities if available\n");
+			writer.write("        try:\n");
+			writer.write("            if hasattr(model, 'predict_proba'):\n");
+			writer.write("                probabilities = model.predict_proba(features_array)\n");
+			writer.write("                return jsonify({\n");
+			writer.write("                    \"predictions\": predictions,\n");
+			writer.write("                    \"probabilities\": probabilities.tolist()\n");
+			writer.write("                })\n");
+			writer.write("        except:\n");
+			writer.write("            pass\n");
+			writer.write("        \n");
+			writer.write("        return jsonify({\"predictions\": predictions})\n");
+			writer.write("    \n");
+			writer.write("    except Exception as e:\n");
+			writer.write("        return jsonify({\"error\": str(e)}), 500\n");
+			writer.write("\n");
+			writer.write("if __name__ == \"__main__\":\n");
+			writer.write("    load_models()\n");
+			writer.write("    app.run(host=\"0.0.0.0\", port=8080, debug=False)\n");
+		}
+	}
 
 }
