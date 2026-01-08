@@ -51,7 +51,7 @@ Load Smarket dataset
 
 
 csvFile = pd.read_csv("data/Smarket.csv", index_col=0)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -78,7 +78,7 @@ Print a statistic summary of the predictors and the response:
 
 print(csvFile.describe())
 print(csvFile['Direction'].value_counts())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -90,7 +90,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -115,7 +115,7 @@ Correlation Plot
 
 sns.heatmap(csvFile.drop(columns=['Direction']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -128,7 +128,7 @@ Here we can see that most values have very little to no correlation except for y
 
 sns.scatterplot(data=csvFile, x='Year', y='Volume', color="black")
 sns.regplot(data=csvFile, x="Year", y="Volume", color="black")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -172,7 +172,7 @@ probs = model.predict()
 
 for i in range(10):
     print(f"{i + 1}   {probs[i]}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -225,7 +225,7 @@ for i in probs:
 print(pd.crosstab(pred, csvFile["Direction"]))
 accuracy = np.mean(pred == csvFile['Direction'])
 print(f"Model Accuracy: {accuracy}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -261,7 +261,7 @@ axes[1].set_title(f"Group Down")
 plt.xlabel("LDA Projection")
 plt.tight_layout()
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -277,7 +277,7 @@ conf_matrix = pd.crosstab(lda_class, y)
 accuracy = accuracy_score(y, lda_class)
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -324,7 +324,7 @@ accuracy = accuracy_score(y, qda_class)
 # Print results
 print("\nConfusion Matrix:\n", conf_matrix)
 print("\nAccuracy:", accuracy)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -343,7 +343,7 @@ Use KNN clustering
 
 train = csvFile['Year'] < 2005
 print(csvFile[~train].shape)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -381,7 +381,7 @@ accuracy = accuracy_score(test_direction, knn_pred)
 
 print("Confusion Matrix:\n", conf_matrix)
 print("Accuracy:", accuracy)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

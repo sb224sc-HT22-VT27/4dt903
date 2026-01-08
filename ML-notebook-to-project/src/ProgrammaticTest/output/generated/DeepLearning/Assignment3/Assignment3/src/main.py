@@ -1,7 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -24,7 +24,7 @@ def mse(y_true, y_pred):
 
 def mse_derivative(y_true, y_pred):
     return (y_pred - y_true)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -42,7 +42,7 @@ X = np.array([
     [1, 1]
 ])
 Y = np.array([[0], [1], [1], [0]])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -92,7 +92,7 @@ for epoch_idx in range(epochs):
     biases_2 -= learning_rate * db_2
     weights_1 -= learning_rate * dW_1
     biases_1 -= learning_rate * db_1
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -137,7 +137,7 @@ ax.set_xlabel("W2[0,0]")
 ax.set_ylabel("W2[1,0]")
 ax.set_zlabel("Loss")
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 

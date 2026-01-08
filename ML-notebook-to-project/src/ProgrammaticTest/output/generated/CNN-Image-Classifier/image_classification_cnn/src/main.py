@@ -17,7 +17,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 import json
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -233,7 +233,7 @@ history = model.fit(
 )
 
 print("Training completed!")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -268,7 +268,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig('output/training_history.png')
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -294,7 +294,7 @@ y_true = test_generator.classes
 class_names = list(test_generator.class_indices.keys())
 print("\nClassification Report:")
 print(classification_report(y_true, y_pred, target_names=class_names))
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -354,7 +354,7 @@ with open('models/model_metadata.json', 'w') as f:
     json.dump(metadata, f, indent=2)
 
 print("Metadata saved!")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

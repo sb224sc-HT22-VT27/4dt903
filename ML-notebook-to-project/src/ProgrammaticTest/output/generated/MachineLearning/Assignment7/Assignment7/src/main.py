@@ -52,7 +52,7 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -127,7 +127,7 @@ print(cv_results)
 
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Accuracy:", grid_search.best_score_)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -150,7 +150,7 @@ xtest[ytest == 1] += 1
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -228,7 +228,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -244,7 +244,7 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -266,7 +266,7 @@ ytest = np.concatenate([-np.ones(75), np.ones(25)])
 ypred = svm.predict(xtest)
 conf_matrix = confusion_matrix(ytest, ypred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -320,7 +320,7 @@ plt.xlabel("X1")
 plt.ylabel("X2")
 plt.title("SVM Decision Boundaries for Multi-Class Classification")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -337,7 +337,7 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -383,7 +383,7 @@ svm_model.fit(xtrain, ytrain)
 
 print("Number of Support:", svm_model.n_support_)
 print("Number of classes:", svm_model.classes_)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -393,7 +393,7 @@ conf_matrix = confusion_matrix(ytrain, y_train_pred)
 conf_matrix_df = pd.DataFrame(conf_matrix, index=svm_model.classes_, columns=svm_model.classes_)
 
 print(conf_matrix_df)
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -403,7 +403,7 @@ conf_matrix_test = confusion_matrix(ytest, y_test_pred)
 
 conf_matrix_test_df = pd.DataFrame(conf_matrix_test, index=svm_model.classes_, columns=svm_model.classes_)
 print(conf_matrix_test_df)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

@@ -28,7 +28,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -40,7 +40,7 @@ Load Auto dataset
 
 
 csvFile = pd.read_csv("data/Auto.csv", index_col=0)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -54,7 +54,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -67,7 +67,7 @@ Print a statistic summary of the predictors and the response:
 
 print(csvFile.describe(), "\n")
 print(csvFile['name'].value_counts())
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -79,7 +79,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -104,7 +104,7 @@ Correlation Plot
 
 sns.heatmap(csvFile.drop(columns=['name']).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -122,13 +122,13 @@ def boot_fn(data, index):
     X = sm.add_constant(X)
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
 
 print(boot_fn(csvFile, range(392)))
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -152,7 +152,7 @@ for i in range(1000):
     boot_results[i, :] = boot_fn(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -163,7 +163,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -194,7 +194,7 @@ for i in range(1000):
     boot_results[i, :] = boot_fn_quadratic(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 

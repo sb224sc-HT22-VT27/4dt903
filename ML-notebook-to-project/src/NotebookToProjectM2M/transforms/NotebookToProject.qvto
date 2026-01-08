@@ -11,11 +11,11 @@ property MAIN_FILE_NAME : String = "main.py";
 property PREPROCESS_FILE_NAME : String = "preprocess.py";
 property TRAIN_FILE_NAME : String = "train.py";
 property PREDICT_FILE_NAME : String = "predict.py";
-property SERVER_FILE_NAME : String = "server.py";
+//property SERVER_FILE_NAME : String = "server.py";
 property DIR_NAMES : Sequence(String) = Sequence{"data", "src", "models", "outputs"};
 property REQUIREMENTS_FILE_NAME : String = "requirements.txt";
-property DOCKERFILE_NAME : String = "Dockerfile";
-property DOCKERIGNOREFILE_NAME : String = ".dockerignore";
+//property DOCKERFILE_NAME : String = "Dockerfile";
+//property DOCKERIGNOREFILE_NAME : String = ".dockerignore";
 	
 
 main() {
@@ -26,8 +26,8 @@ main() {
 mapping NotebookMM::NotebookModel::toProjectStructure() : ProjectStuctureMM::ProjectStructure {
 	result.name := self.name;
 	result.filesystemelement := DIR_NAMES->collect(dirName | self.map 
-	toDirectory(dirName))->union(Sequence{self.map toRequirementsFile(), self.map 
-	toDockerfile(), self.map toDockerignorefile()});
+	toDirectory(dirName))->union(Sequence{self.map toRequirementsFile()}); //, self.map 
+	//toDockerfile(), self.map toDockerignorefile()});
 }
 
 mapping NotebookMM::NotebookModel::toDirectory(dirName : String) : ProjectStuctureMM::Directory {
@@ -38,8 +38,10 @@ mapping NotebookMM::NotebookModel::toDirectory(dirName : String) : ProjectStuctu
 //        self.map toTrainFile(),
 //        self.map toPredictFile()
 //    } else OrderedSet{self.map toKeepFile()} endif;
-	result.filesystemelement := if dirName = 'src' then OrderedSet{self.map toMainFile(), self.map toServerFile()} else OrderedSet{self.map toKeepFile()} endif;
+	result.filesystemelement := if dirName = 'src' then OrderedSet{self.map toMainFile()} else OrderedSet{self.map toKeepFile()} endif;
+	//, self.map toServerFile() after toMainFile()
 }
+
 
 mapping NotebookMM::NotebookModel::toMainFile() : ProjectStuctureMM::File {
     result.name := MAIN_FILE_NAME;
@@ -67,22 +69,22 @@ mapping NotebookMM::NotebookModel::toRequirementsFile() : ProjectStuctureMM::Fil
 	result.content := extractPackageNames(self);
 }
 
-mapping NotebookMM::NotebookModel::toDockerfile() : ProjectStuctureMM::File {
-	result.name := DOCKERFILE_NAME;
-	result.content := generateDockerfileContent(self);
-}
+//mapping NotebookMM::NotebookModel::toDockerfile() : ProjectStuctureMM::File {
+//	result.name := DOCKERFILE_NAME;
+//	result.content := generateDockerfileContent(self);
+//}
 
-mapping NotebookMM::NotebookModel::toDockerignorefile() : ProjectStuctureMM::File {
-	result.name := DOCKERIGNOREFILE_NAME;
-	result.content := generateDockerIgnoreContent();
-}
+//mapping NotebookMM::NotebookModel::toDockerignorefile() : ProjectStuctureMM::File {
+//	result.name := DOCKERIGNOREFILE_NAME;
+//	result.content := generateDockerIgnoreContent();
+//}
 
 mapping NotebookMM::NotebookModel::toKeepFile() : ProjectStuctureMM::File {
 	result.name := ".keep";
 	result.content := OrderedSet{};
 }
 
-mapping NotebookMM::NotebookModel::toServerFile() : ProjectStuctureMM::File {
-	result.name := SERVER_FILE_NAME;
-	result.content := generateServerPyContent();
-}
+//mapping NotebookMM::NotebookModel::toServerFile() : ProjectStuctureMM::File {
+//	result.name := SERVER_FILE_NAME;
+//	result.content := generateServerPyContent();
+//}

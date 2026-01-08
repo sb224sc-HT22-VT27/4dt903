@@ -86,7 +86,7 @@ public class CodeBlockClassifier {
 	 * @return A comment string with the classification
 	 */
 	public static String getClassificationCommentJava(String code) {
-		return "\n# Classification: " + classifyCodeBlockJava(code) + "\n";
+		return "\n# Classification: " + classifyCodeBlockRandom() + "\n";
 	}
 
 	/**

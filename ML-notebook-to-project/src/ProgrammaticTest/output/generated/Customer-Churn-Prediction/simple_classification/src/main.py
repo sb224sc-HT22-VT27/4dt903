@@ -54,7 +54,7 @@ y = df['churned']
 
 # Encode categorical variables
 X = pd.get_dummies(X, columns=['contract_type'])
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -95,7 +95,7 @@ model = RandomForestClassifier(
 )
 model.fit(X_train_scaled, y_train)
 print("Model trained successfully!")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -179,7 +179,7 @@ new_customer = {
 pred, prob = predict_churn(new_customer)
 print(f"Churn prediction: {pred}")
 print(f"Churn probability: {prob[1]:.3f}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
