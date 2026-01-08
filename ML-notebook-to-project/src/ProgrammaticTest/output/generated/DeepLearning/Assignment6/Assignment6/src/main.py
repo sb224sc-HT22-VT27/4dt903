@@ -49,7 +49,7 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.callbacks import EarlyStopping 
 from tensorflow.keras import Input
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -74,7 +74,7 @@ print("Classes: {0}".format(n_classes))
 
 x_train = x_train.astype('float32') / 255.0
 x_test = x_test.astype('float32') / 255.0
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -88,7 +88,7 @@ early_stopping = EarlyStopping(
     mode='max', 
     restore_best_weights=True)
 it = round(60000/BATCH_SIZE)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -109,7 +109,7 @@ def plot_metrics(history):
         else:
             plt.ylim([-0.1,1.1])
         plt.legend()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -169,7 +169,7 @@ def make_model1(add_dense=False):
 
 model = make_model1(False)
 model.summary()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -190,7 +190,7 @@ plot_metrics(model_history)
 loss, acc = model.evaluate(x_test, y_test, verbose=0)
 print('Accuracy: %.3f' % acc)
 err = print_res(model)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -223,7 +223,7 @@ def make_model2(add_dense=False):
 # 32, 7, 4
 model = make_model2(True)
 model.summary()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -243,7 +243,7 @@ model_history = model.fit(
     callbacks = [early_stopping],
     validation_data=(x_test, y_test),
     batch_size=BATCH_SIZE)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -252,7 +252,7 @@ plot_metrics(model_history)
 loss, acc = model.evaluate(x_test, y_test, verbose=0)
 print('Accuracy: %.3f' % acc)
 err = print_res(model)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

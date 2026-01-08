@@ -106,7 +106,7 @@ ax.plot_surface(A, B, Z, cmap='viridis')
 ax.set_xlabel('X1')
 ax.set_ylabel('X2')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -147,7 +147,7 @@ def grad2(ws, x):
     return x[1]
 
 gradients1 = [grad1, grad2]
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -173,7 +173,7 @@ plt.ylim(ws[1] - 40, ws[1] + 40)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -314,7 +314,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

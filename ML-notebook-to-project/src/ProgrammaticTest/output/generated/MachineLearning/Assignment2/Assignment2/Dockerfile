@@ -11,8 +11,7 @@ RUN python -m venv /opt/venv
 ENV PATH='/opt/venv/bin:$PATH'
 
 # Install dependencies
-RUN pip install --upgrade pip && \\ 
-			pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy project files
 COPY src/ ./src/
@@ -24,5 +23,5 @@ COPY outputs/ ./outputs/
 EXPOSE 8080
 
 # Run the main script
-CMD ['python', 'src/main.py']
-CMD ['python', 'src/server.py']
+CMD ["python", "src/main.py"]
+CMD ["python", "src/server.py"]

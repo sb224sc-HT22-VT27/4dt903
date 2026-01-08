@@ -54,7 +54,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -79,7 +79,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -128,20 +128,20 @@ def boot_fn(data, index):
 
 
 print(boot_fn(csvFile, range(392)))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 
 np.random.seed(1)
 print(boot_fn(csvFile, np.random.choice(392, 392, replace=True)))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
 
 print(boot_fn(csvFile, np.random.choice(392, 392, replace=True)))
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -163,7 +163,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -182,7 +182,7 @@ def boot_fn_quadratic(data, index):
     y = sample['mpg']
     model = sm.OLS(y, X).fit()
     return model.params
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -194,7 +194,7 @@ for i in range(1000):
     boot_results[i, :] = boot_fn_quadratic(csvFile, indices)
 print(f"standard errors: {boot_results.std(axis=0)}")
 
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -206,7 +206,7 @@ X = sm.add_constant(X)
 model = sm.OLS(y, X).fit()
 print(model.params)
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

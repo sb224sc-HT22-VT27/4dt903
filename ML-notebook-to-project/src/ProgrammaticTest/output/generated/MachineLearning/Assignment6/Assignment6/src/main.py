@@ -60,7 +60,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns: {len(colNames)}")
 print(f"Column Names: {colNames}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -75,7 +75,7 @@ print(csvFile.describe(), "\n")
 print(csvFile['ShelveLoc'].value_counts())
 print(csvFile['Urban'].value_counts())
 print(csvFile['US'].value_counts())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -99,7 +99,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -112,7 +112,7 @@ Correlation Plot
 
 sns.heatmap(csvFile.drop(columns=['ShelveLoc', "Urban", "US"]).corr(), annot=True, fmt=".2f", linewidths=0.5)
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -125,7 +125,7 @@ Scatter plot of price to sales
 
 sns.regplot(x="Sales", y="Price", data=csvFile,  scatter_kws={'s': 5, 'color': 'black'}, line_kws={'color': 'black'})
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -146,7 +146,7 @@ tree = DecisionTreeClassifier()
 tree.fit(X, y)
 
 print(f"Number of terminal nodes: {tree.get_n_leaves()}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -178,7 +178,7 @@ y_pred = tree_model.predict(X_test)
 
 conf_matrix = confusion_matrix(y_test, y_pred)
 print(conf_matrix)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -221,7 +221,7 @@ plt.plot(ccpAlphas, cv_scores, marker='o', color='black')
 plt.xlabel("Alpha")
 plt.ylabel("Cross-Validation Accuracy")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -238,7 +238,7 @@ pruned_tree.fit(X_train, y_train)
 plot_tree(pruned_tree, filled=True, feature_names=X_train.columns, class_names=["No", "Yes"], impurity=False)
 plt.title("Pruned Decision Tree")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -247,7 +247,7 @@ y_pred = pruned_tree.predict(X_test)
 
 conf_matrix = confusion_matrix(y_test, y_pred)
 print(conf_matrix)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -315,7 +315,7 @@ tree.fit(X_train, y_train)
 print(f"Number of leaves: {tree.get_n_leaves()}")
 print(f"Depth of tree: {tree.get_depth()}")
 print(f"Residual mean deviance: {tree.tree_.impurity.mean():.4f}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -328,7 +328,7 @@ Plot the tree
 
 plot_tree(tree, feature_names=X.columns, filled=True, rounded=True, impurity=False, fontsize=5, label="none")
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -387,7 +387,7 @@ plt.show()
 
 mse = np.mean((yhat - y_test) ** 2)
 print(f"Mean Squared Error: {mse:.4f}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -420,7 +420,7 @@ plt.xlabel("Predicted MEDV")
 plt.ylabel("Actual MEDV")
 plt.title("Bagging Model")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -439,7 +439,7 @@ mse_bag = mean_squared_error(y_test, yhat_bag)
 r2_bag = r2_score(y_test, yhat_bag)
 print(f"MSE: {mse_bag:.4f}")
 print(f"R²: {100 * r2_bag:.2f}%")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -466,7 +466,7 @@ plt.xlabel("Predicted MEDV")
 plt.ylabel("Actual MEDV")
 plt.title("Bagging Model")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -532,7 +532,7 @@ Same thing here that lstat is the most influential parameter, but this time howe
 yhat = boost.predict(X_test) 
 mse_boost = mean_squared_error(y_test, yhat)
 print(f"MSE: {mse_boost:.4f}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -569,7 +569,7 @@ plt.plot([min(yhat), max(yhat)], [min(y_test), max(y_test)], color="red", linest
 plt.xlabel("Predicted MEDV")
 plt.ylabel("Actual MEDV")
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

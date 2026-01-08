@@ -47,7 +47,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -59,7 +59,7 @@ Load the Boston.csv file
 
 
 csvFile = pd.read_csv("data/Boston.csv", index_col=0)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -97,7 +97,7 @@ Display the number of datapoints
 
 
 print(f"Number of datapoints {len(csvFile)}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -110,7 +110,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -127,7 +127,7 @@ sns.scatterplot(x="rm", y="medv", data=csvFile, color="black")
 plt.show()
 sns.scatterplot(x="age", y="medv", data=csvFile, color="black")
 plt.show()
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -261,7 +261,7 @@ selected_predictor_values = sm.add_constant(selected_predictor_values)
 predictions = reg.get_prediction(selected_predictor_values)
 pred_summary = predictions.summary_frame(alpha=0.05)
 print(pred_summary[["mean", "obs_ci_lower", "obs_ci_upper"]])
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -284,7 +284,7 @@ X = sm.add_constant(X)
 model1 = sm.OLS(y, X).fit()
 
 print(model1.summary())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -295,7 +295,7 @@ X = sm.add_constant(X)
 model2 = sm.OLS(y, X).fit()
 
 print(model2.summary())
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -318,7 +318,7 @@ X = sm.add_constant(X)
 model3 = sm.OLS(y, X).fit()
 
 print(model3.summary())
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -331,7 +331,7 @@ Perform ANOVA
 
 anova_results = sm.stats.anova_lm(model2, model3)
 print(anova_results)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -363,7 +363,7 @@ print(model4.summary())
 
 anova_results = sm.stats.anova_lm(model2, model4)
 print(anova_results)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -382,7 +382,7 @@ model5 = sm.OLS(y, X).fit()
 
 print(model5.summary())
 
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -411,7 +411,7 @@ print(csvFile2.describe(), "\n")
 print(csvFile2['ShelveLoc'].value_counts(), "\n")
 print(csvFile2['Urban'].value_counts(), "\n")
 print(csvFile2['US'].value_counts())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -426,7 +426,7 @@ y = csvFile2["Sales"]
 model = sm.OLS(y, X).fit()
 
 print(model.summary())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 

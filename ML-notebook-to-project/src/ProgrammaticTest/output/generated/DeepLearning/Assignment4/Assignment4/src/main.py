@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sympy as sp
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -31,7 +31,7 @@ Y_pred = model.predict(X_with_const)
 
 plt.plot(X, Y_pred, color='b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -60,7 +60,7 @@ ax.set_xlabel('a')
 ax.set_ylabel('b')
 ax.set_zlabel('RSS')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -76,7 +76,7 @@ plt.plot(a0, b0, '+', markersize=10)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -124,7 +124,7 @@ plt.ylim(b_orig - 2, b_orig + 2)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -146,7 +146,7 @@ plt.xlabel('X')
 plt.ylabel('Y')
 plt.show()
 
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -264,7 +264,7 @@ plt.contour(A, B, Z, cmap='viridis')
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -284,6 +284,21 @@ plt.xlim(a_orig - 1, a_orig + 1)
 plt.ylim(b_orig - 2, b_orig + 2)
 plt.xlabel('a')
 plt.ylabel('b')
+plt.show()
+# Classification: TRAIN
+
+
+
+
+final_loss = fL2(a_orig, b_orig)
+
+print(f"Orig: a = {a_orig:.2f}, b = {b_orig:.2f}, loss = {final_loss:.2f}")
+
+plt.scatter(X, Y, marker='+', label='Data')
+plt.plot(X, a0 * X + b0, color='g')
+plt.plot(X, a_orig * X + b_orig, color='b')
+plt.xlabel('X')
+plt.ylabel('Y')
 plt.show()
 # Classification: PREDICT
 
@@ -311,7 +326,7 @@ def grad_rss3(a, b, alpha, s, c, X, Y):
     grad_alpha = a**2 + b**2 - c + s**2
     grad_s = 2 * alpha * s
     return np.array([grad_a, grad_b, grad_alpha, grad_s])
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -447,7 +462,7 @@ a_hat, b_hat, alpha_hat = sol
 print(f"a_hat = {a_hat.evalf():.4f}")
 print(f"b_hat = {b_hat.evalf():.4f}")
 print(f"alpha_hat = {alpha_hat.evalf():.4f}")
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -467,7 +482,7 @@ plt.scatter(X, Y, marker='+', label='Data')
 plt.plot(X, a0 * X + b0, color='g', label='Original line')
 plt.plot(X, a_hat * X + b_hat, color='b')
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 

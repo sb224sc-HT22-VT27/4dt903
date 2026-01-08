@@ -41,7 +41,7 @@ Display the number of features and their names:
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -56,7 +56,7 @@ csvFile = csvFile.drop("logwage", axis=1)
 colNames = csvFile.columns.tolist()
 print(f"Number of columns {len(colNames)}")
 print(f"Column Names {colNames}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -80,7 +80,7 @@ Display the data in a table
 
 
 print(csvFile.head(20))
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -101,7 +101,7 @@ print(csvFile['jobclass'].value_counts(), "\n")
 print(csvFile['health'].value_counts(), "\n")
 print(csvFile['health_ins'].value_counts(), "\n")
 print("wage\n", csvFile['wage'].describe())
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -135,7 +135,7 @@ plt.ylabel("Age")
 plt.show()
 stats.probplot(csvFile['wage'], dist="norm", plot=plt)
 plt.ylabel("Wage")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -149,7 +149,7 @@ Pearson correlation test
 corr_coef, p_value = stats.pearsonr(csvFile['age'], csvFile['wage'])
 print(f"Correlation Coefficient: {corr_coef}")
 print(f"p-value: {p_value}")
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -171,7 +171,7 @@ for metric in colNames:
     if metric == "year" or metric == "age" or metric == "wage":
         continue
     print(metric + ":", csvFile[metric].unique().tolist())
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -191,7 +191,7 @@ for metric in colNames:
     plt.show()
 
 
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
