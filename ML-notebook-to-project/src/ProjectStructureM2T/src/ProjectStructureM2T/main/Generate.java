@@ -11,11 +11,7 @@
 package ProjectStructureM2T.main;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +23,6 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-
-import projectStructureMM.ProjectStructure;
 
 /**
  * Entry point of the 'Generate' generation module.
@@ -182,7 +176,7 @@ public class Generate extends AbstractAcceleoGenerator {
 	 * @param monitor This will be used to display progress information to the user.
 	 * @throws IOException This will be thrown if any of the output files cannot be
 	 *                     saved to disk.
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public void doGenerate(Monitor monitor) throws IOException {
@@ -211,9 +205,6 @@ public class Generate extends AbstractAcceleoGenerator {
         //}
 
         super.doGenerate(monitor);
-        
-        // Generate additional files in M2T (Docker, .dockerignore, server)
-        generateDockerFiles();
     }
 
 	/**
@@ -429,77 +420,4 @@ public class Generate extends AbstractAcceleoGenerator {
          */ 
         // UMLResourcesUtil.init(resourceSet)
     }
-	
-	/**
-	 * Generate Docker related files such as Dockerfile and .Dockerignore in the M2T instead of M2M
-	 * 
-	 */
-	
-	private void generateDockerFiles() throws IOException {
-		if (model == null || !(model instanceof ProjectStructure)) {
-			return;
-		}
-		
-		ProjectStructure project = (ProjectStructure) model;
-		String projectName = project.getName();
-
-		// Determine the base path for file generation
-		File baseDir = targetFolder;
-		File projectDir = new File(baseDir, projectName);
-		
-		generateDockerfile(projectDir);
-		
-		generateDockerignore(projectDir);
-		
-		generateServerFile(projectDir);
-	}
-	
-	private void generateDockerfile(File projectDir) throws IOException {
-		File dockerfile = new File(projectDir, "Dockerfile");
-		try(FileWriter writer = new FileWriter(dockerfile)) {
-			writer.write("FROM python:3.13-slim\n");
-			writer.write("\nWORKDIR /app\n");
-			writer.write("\n# Copy requirements first (for better caching)");
-			writer.write("\nCOPY requirements.txt .\n");
-			writer.write("\n# Set up virtual environment and install dependencies");
-			writer.write("\nRUN python -m venv /opt/venv\n");
-			writer.write("\nENV PATH='/opt/venv/bin:$PATH'\n");
-			writer.write("\n# Install dependencies");
-			writer.write("\nRUN pip install --upgrade pip && \\\\ \n"
-					+ "			pip install -r requirements.txt\n");
-			writer.write("\n# Copy project files");
-			writer.write("\nCOPY src/ ./src/");
-			writer.write("\nCOPY data/ ./data/");
-			writer.write("\nCOPY models/ ./models/");
-			writer.write("\nCOPY outputs/ ./outputs/\n");
-			writer.write("\n# Expose the port for prediction service");
-			writer.write("\nEXPOSE 8080\n");
-			writer.write("\n# Run the main script");
-			writer.write("\nCMD ['python', 'src/main.py']");
-			writer.write("\nCMD ['python', 'src/server.py']");
-		}
-	}
-	
-	private void generateDockerignore(File projectDir) throws IOException{
-		File dockerignore = new File(projectDir, ".dockerignore");
-		try (FileWriter writer = new FileWriter(dockerignore)) {
-			writer.write("__pycache__\n");
-			writer.write("*.pyc\n");
-			writer.write(".git\n");
-			writer.write(".env\n");
-		}
-	}
-	
-	private void generateServerFile(File projectDir) throws IOException{
-		File srcDir = new File(projectDir, "src");
-		if (!srcDir.exists()) {
-			return;
-		}
-		
-		File serverPy = new File(srcDir, "server.py");
-		try (FileWriter writer = new FileWriter(serverPy)) {
-			writer.write("Test");
-		}
-	}
-
 }
