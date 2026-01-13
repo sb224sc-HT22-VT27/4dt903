@@ -464,10 +464,9 @@ public class FullPipeline {
 			inputDir = args[0];
 		}
 
-		try {
-			pipeline.executeAll(inputDir, outputDir);
-			// pipeline.execute(inputDir +
-			// "Customer-Churn-Prediction/simple_classification.ipynb", outputDir);
+		try { // TODO: Choose all inputs or single input example
+				// pipeline.executeAll(inputDir, outputDir);
+			pipeline.execute(inputDir + "Customer-Churn-Prediction/simple_classification.ipynb", outputDir);
 		} catch (IOException e) {
 			System.err.println("Pipeline execution failed: " + e.getMessage());
 			e.printStackTrace();

@@ -8,7 +8,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -56,7 +56,7 @@ def grad_desc_mse(K, ws, learning_eps, loss, grad_loss):
         history.append(ws)
     
     return ws, np.array(history)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -129,7 +129,7 @@ limit = (6 / (in_ + out))**0.5
 ws0 = np.random.rand(2) * 2 * limit - limit
 print(f"initial weights: {ws0}")
 print(f"Initial mse: {mse1(ws0)}")
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -147,7 +147,7 @@ def grad2(ws, x):
     return x[1]
 
 gradients1 = [grad1, grad2]
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -173,7 +173,7 @@ plt.ylim(ws[1] - 40, ws[1] + 40)
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -217,7 +217,7 @@ def stochastic_grad_desc_mse(K, ws, learning_eps, loss, grad_loss, N):
         history.append(ws)
 
     return ws, np.array(history)
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -246,7 +246,7 @@ plt.plot(history[:, 0], history[:, 1])
 plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -258,7 +258,7 @@ for i in history:
 
 plt.plot(range(len(mseHistory)), mseHistory)
 plt.show()
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
@@ -373,6 +373,18 @@ plt.xlabel('a')
 plt.ylabel('b')
 plt.show()
 # Classification: PREPROCESS
+
+
+
+
+mseHistory = []
+
+for i in history:
+    mseHistory.append(mse1(i))
+
+plt.plot(range(len(mseHistory)), mseHistory)
+plt.show()
+# Classification: PREDICT
 
 
 

@@ -17,7 +17,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 import json
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -44,7 +44,7 @@ HISTORY_PATH = 'output/training_history.json'
 
 print(f"Using TensorFlow version: {tf.__version__}")
 print(f"GPU Available: {tf.config.list_physical_devices('GPU')}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -98,7 +98,7 @@ print(f"Training samples: {train_generator.samples}")
 print(f"Validation samples: {val_generator.samples}")
 print(f"Test samples: {test_generator.samples}")
 print(f"Class labels: {train_generator.class_indices}")
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -178,7 +178,7 @@ model.compile(
 )
 
 print("Model compiled successfully!")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -212,7 +212,7 @@ checkpoint = keras.callbacks.ModelCheckpoint(
 )
 
 callbacks = [early_stopping, reduce_lr, checkpoint]
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -268,7 +268,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig('output/training_history.png')
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -318,7 +318,7 @@ plt.xlabel('Predicted Label')
 plt.tight_layout()
 plt.savefig('output/confusion_matrix.png')
 plt.show()
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -402,7 +402,7 @@ label, conf, probs = predict_image(test_image)
 print(f"\nPredicted class: {label}")
 print(f"Confidence: {conf:.4f}")
 # print(f"Probs: {probs}")
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 

@@ -31,7 +31,7 @@ import pandas as pd
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -77,14 +77,14 @@ Z = svm.decision_function(xy).reshape(xx.shape)
 ax.contour(xx, yy, Z, levels=[-1, 0, 1], linestyles=['dashed', 'solid', 'dashed'], colors='black')
 
 plt.show()
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
 
 support_vector_indices = svm.support_
 print(support_vector_indices)
-# Classification: PREPROCESS
+# Classification: PREDICT
 
 
 
@@ -127,7 +127,7 @@ print(cv_results)
 
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Accuracy:", grid_search.best_score_)
-# Classification: TRAIN
+# Classification: PREDICT
 
 
 
@@ -177,7 +177,7 @@ plt.show()
 
 print(x)
 print(y)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -203,7 +203,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -228,7 +228,7 @@ plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'], colors='black')
 plt.xlabel("X1")
 plt.ylabel("X2")
 plt.show()
-# Classification: PREPROCESS
+# Classification: TRAIN
 
 
 
@@ -244,7 +244,7 @@ print(cv_results)
 print("\nBest C:", grid_search.best_params_['C'])
 print("Best Gamma:", grid_search.best_params_['gamma'])
 print(f"Best Accuracy: {grid_search.best_score_:.2f}")
-# Classification: TRAIN
+# Classification: PREPROCESS
 
 
 
@@ -291,7 +291,7 @@ plt.ylabel("X2")
 plt.show()
 
 print(dat)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -347,7 +347,7 @@ svm.fit(train_data[['X1', 'X2']], train_data['y'])
 y_pred = svm.predict(test_data[['X1', 'X2']])
 cm = confusion_matrix(test_data['y'], y_pred)
 print("Confusion Matrix:\n", conf_matrix)
-# Classification: PREDICT
+# Classification: PREPROCESS
 
 
 
@@ -403,7 +403,7 @@ conf_matrix_test = confusion_matrix(ytest, y_test_pred)
 
 conf_matrix_test_df = pd.DataFrame(conf_matrix_test, index=svm_model.classes_, columns=svm_model.classes_)
 print(conf_matrix_test_df)
-# Classification: PREDICT
+# Classification: TRAIN
 
 
 
