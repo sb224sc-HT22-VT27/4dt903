@@ -1,0 +1,107 @@
+
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+citecolor=black]{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage[nottoc]{tocbibind}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{enumitem}
+
+\tolerance=1413
+\hfuzz=1.5pt
+
+\title{4DT903 Individual Report \\
+\large{Reflections on Model-Driven Software Engineering}}
+\author{Samuel Fredric Berg (sb224sc)}
+\date{January 2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+\section{Core Components and Responsibilities}
+Model-Driven Software Engineering (MDSE) systems are built upon three primary pillars:
+\begin{itemize}
+  \item \textbf{Models:} High-level abstractions of software that focus on what the system does rather than how it is implemented. They represent specific system instances, such as notebook models containing code and markdown objects.
+
+  \item \textbf{Metamodels (MM):} These define the language of the system by specifying rules, constraints, and elements. They act as the ``schema'' for models, defining components like folders, files, or notebook elements.
+
+  \item \textbf{Transformations:} These handle the conversion between different levels of abstraction:
+    \begin{itemize}
+      \item \textbf{Text to Model (T2M):} Parses source information (like notebook files) into a structured model.
+
+      \item \textbf{Model to Model (M2M):} Combines or transforms models into new models based on specific logic.
+
+      \item \textbf{Model to Text (M2T):} Generates final artifacts like source code or documentation from a model.
+    \end{itemize}
+\end{itemize}
+
+\section{Core Benefits of MDSE}
+The implementation of MDSE offers several technical and industrial advantages:
+\begin{itemize}
+  \item \textbf{Increased Productivity:} Automation of code generation for repetitive or high-volume tasks saves significant time.
+
+  \item \textbf{Improved Quality:} Code follows a standardized pipeline, ensuring consistency across the project.
+
+  \item \textbf{Platform Independence:} Models are abstract enough to be deployed across different platforms as needed.
+
+  \item \textbf{Maintainability:} System updates are easier because rebuilding the system from models ensures the pipeline remains consistent.
+
+  \item \textbf{Error Reduction:} Automated processes eliminate the risk of manual errors during repetitive coding tasks.
+\end{itemize}
+
+\section{Challenges and Limitations}
+Despite its strengths, MDSE presents several challenges:
+\begin{itemize}
+  \item \textbf{Development Time:} Creating robust metamodels and transformations is time-consuming and requires specialized expertise.
+
+  \item \textbf{Tool Complexity:} Sophisticated tools like QvTo or Acceleo have steep learning curves; without deep knowledge, developers may use them inefficiently.
+
+  \item \textbf{Pipeline Debugging:} As a pipeline grows, identifying and fixing bugs becomes increasingly difficult.
+
+  \item \textbf{Overhead:} There is a risk that the complexity of building the MDSE infrastructure exceeds the complexity of the task it is meant to solve.
+\end{itemize}
+
+\section{Problem Solving and Design Approach}
+Approaching a problem with MDSE involves shifting focus toward patterns and abstraction:
+\begin{itemize}
+  \item \textbf{Pattern Analysis:} Analyze the domain to find recurring concepts (e.g., identifying code, comments, and imports in a file) that can be modeled.
+
+  \item \textbf{Metamodel Definition:} Create a Domain Specific Language (DSL) that captures these core concepts.
+
+  \item \textbf{Transformation Rules:} Develop logic to map data into model objects, utilizing tool-specific features like mappings to keep logic simple.
+
+  \item \textbf{Sequential Implementation:} Build and test transformations separately (T2M, M2M, M2T) before integrating them into a full automated pipeline.
+\end{itemize}
+
+\section{Adaptation of Software Engineering Practices}
+Standard engineering practices must be modified to suit an MDSE environment:
+\begin{itemize}
+  \item \textbf{Version Control:} Git must be managed carefully to track changes within models rather than just raw source code, often requiring customized ignore files.
+
+  \item \textbf{Testing and Validation:} Testing shifts from line-by-line code reviews to model validation, ensuring all models adhere to the constraints defined in the metamodel.
+
+  \item \textbf{CI/CD Integration:} Automated pipelines must handle transformations in a strict sequential order, which can be difficult to integrate into containerized environments like Docker.
+\end{itemize}
+
+\section{Points Section}
+\begin{itemize}
+  \item Samuel Berg (sb224sc): 4
+  \item Emil Ulvagården (eu222dq): 3
+  \item Jesper Wingren (jw223rn): 3
+\end{itemize}
+\end{document}
