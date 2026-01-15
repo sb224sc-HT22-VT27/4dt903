@@ -21,8 +21,6 @@ citecolor=black]{hyperref}
 \tolerance=1413
 \hfuzz=1.5pt
 
-\newcommand{\gitrepo}{\href{https://github.com/sb224sc-HT22-VT27/4dt903/tree/main/ML-notebook-to-project}{GitHub Repository}}
-
 \title{4DT903 Individual Report \\
 \large{Reflections on Model-Driven Software Engineering}}
 \author{Samuel Fredric Berg (sb224sc)}
@@ -32,10 +30,6 @@ citecolor=black]{hyperref}
 
 \maketitle
 
-{\centering
-\gitrepo\\[0.5cm]
-\par}
-
 \tableofcontents
 
 \newpage
@@ -44,7 +38,7 @@ Model-Driven Software Engineering (MDSE) systems are built upon three primary pi
 
 The second pillar comprises \textbf{metamodels}, which define the language of the system by specifying rules, constraints, and structural elements. They act as the ``schema'' for models, defining the vocabulary and grammar of the domain. Our project uses two metamodels: the Notebook Metamodel, which defines elements like CodeCell, MarkdownCell, and Import statements, and the Project Structure Metamodel, which defines elements like PythonFile, Folder, and dependencies. These metamodels establish the structural foundation upon which all transformations operate.
 
-The third pillar encompasses \textbf{transformations}, which handle the conversion between different levels of abstraction and form the operational backbone of MDSE. Text-to-Model (T2M) transformations parse source artifacts, such as .ipynb files, into structured models conforming to a metamodel. In our implementation, this transformation reads JSON-formatted notebook files and instantiates model objects. Model-to-Model (M2M) transformations convert one model into another, potentially using different metamodels. Our QVTo-based M2M transformation maps notebook model elements into project structure elements, organizing code cells into appropriate Python modules. Finally, Model-to-Text (M2T) transformations generate final artifacts like source code or documentation from a model. Our Acceleo-based M2T transformation produces Python files, requirements.txt, and Dockerfiles from the project structure model.
+The third pillar encompasses \textbf{transformations}, which handle the conversion between different levels of abstraction and form the operational backbone of MDSE\@. Text-to-Model (T2M) transformations parse source artifacts, such as \text{.ipynb} files, into structured models conforming to a metamodel. In our implementation, this transformation reads JSON-formatted notebook files and instantiates model objects. Model-to-Model (M2M) transformations convert one model into another, potentially using different metamodels. Our QVTo-based M2M transformation maps notebook model elements into project structure elements, organizing code cells into appropriate Python modules. Finally, Model-to-Text (M2T) transformations generate final artifacts like source code or documentation from a model. Our Acceleo-based M2T transformation produces Python files, requirements.txt, and Dockerfiles from the project structure model.
 
 \section{Core Benefits of MDSE}
 The implementation of MDSE offers several technical and industrial advantages, demonstrated through our notebook transformation project. One of the most significant benefits is increased productivity through automation of code generation for repetitive or high-volume tasks, which saves significant time. Our system automatically generates project structure, boilerplate code, and configuration files from notebooks, eliminating hours of manual restructuring work that would otherwise be required.
@@ -72,7 +66,7 @@ With metamodels in place, we develop transformation rules to map data into model
 The implementation follows a sequential approach where we build and test transformations separately (T2M, M2M, M2T) before integrating them into a full automated pipeline. We first validated that T2M correctly parsed notebooks, then ensured M2M produced valid project models, and finally verified M2T generated syntactically correct Python code. Only after each stage worked independently did we connect them. This incremental approach reduces debugging complexity and allows for faster identification of issues. Throughout this process, iterative refinement is essential—metamodels should not be considered final until several iterations have been completed. We discovered through testing that our initial metamodels were too rigid and had to be enhanced to handle edge cases like notebooks with no imports or cells with mixed code types.
 
 \section{Adaptation of Software Engineering Practices}
-Standard engineering practices must be modified to suit an MDSE environment, as we learned through our project. Version control in MDSE requires careful management to track changes within models and metamodels, not just traditional source code. We had to add .ecore, .genmodel, .qvto, and .mtl files to version control, while excluding generated artifacts and Eclipse workspace files using .gitignore. Binary model files (.aird) posed challenges as they cannot be easily diff'd or merged, requiring more careful coordination when multiple developers work on metamodels. This is a significant departure from traditional software development where text-based source code files are easily managed with standard version control workflows.
+Standard engineering practices must be modified to suit an MDSE environment, as we learned through our project. Version control in MDSE requires careful management to track changes within models and metamodels, not just traditional source code. We had to add \text{.ecore}, \text{.genmodel}, \text{.qvto}, and \text{.mtl} files to version control, while excluding generated artifacts and Eclipse workspace files using \text{.gitignore}. Binary model files (.aird) posed challenges as they cannot be easily diff'd or merged, requiring more careful coordination when multiple developers work on metamodels. This is a significant departure from traditional software development where text-based source code files are easily managed with standard version control workflows.
 
 Testing and validation practices also undergo a fundamental shift in MDSE environments. Rather than line-by-line code reviews, testing focuses on model validation and transformation testing. We needed to ensure models conformed to metamodel constraints, validate transformation logic independently of generated code, and verify that generated code met functional requirements. Unit testing QVTo transformations and Acceleo templates required different approaches than testing traditional imperative code, as the logic is often declarative rather than procedural.
 
@@ -80,7 +74,7 @@ CI/CD integration presents unique challenges in MDSE projects, as automated pipe
 
 Documentation practices also shift significantly in MDSE projects. Rather than explaining code implementation details, documentation must focus on metamodel design decisions, transformation logic, and the relationships between models. We documented not just what the code does, but why we chose certain metamodel structures, what design patterns influenced our transformations, and how the different components interact. Understanding the ``why'' behind metamodel design is crucial for future maintenance, as changes to metamodels can have cascading effects throughout the entire transformation pipeline.
 
-Finally, code reviews in MDSE projects must cover metamodel design, transformation correctness, and template quality—not just generated code. Reviewers need to understand Ecore metamodeling, QVTo semantics, and Acceleo template syntax, which requires specialized knowledge beyond traditional programming language expertise. This places higher demands on team members and makes the onboarding process more challenging for developers new to MDSE.
+Finally, code reviews in MDSE projects must cover metamodel design, transformation correctness, and template quality—not just generated code. Reviewers need to understand Ecore metamodeling, QVTo semantics, and Acceleo template syntax, which requires specialized knowledge beyond traditional programming language expertise. This places higher demands on team members and makes the onboarding process more challenging for developers new to MDSE.\@
 
 \section{Specific MDSE Problems and Solutions}
 Throughout our notebook-to-project transformation development, we encountered several significant challenges that required MDSE-specific solutions:
