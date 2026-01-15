@@ -1,0 +1,173 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+citecolor=black]{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage[nottoc]{tocbibind}
+\usepackage[english]{babel}
+
+\tolerance=1413
+\hfuzz=1.5pt
+
+% \title{4DT903 Group Report \\
+% \large{Model-Driven Development of Notebook-to-Project Transformation System}}
+% \author{Samuel Berg, Jesper Wingren \& Emil Ulvagården}
+% \date{January 2025}
+
+\newcommand{\gitrepo}{\href{https://github.com/sb224sc-HT22-VT27/4dt903/tree/main/ML-notebook-to-project}{GitHub Repository}}
+
+\begin{document}
+
+% Custom title command that includes the repo
+\begingroup
+\centering
+{\LARGE \bfseries 4DT903 Group Report}\\[0.5cm]
+{\large Model-Driven Development of Notebook-to-Project Transformation System}\\[1.5cm]
+
+{\large Samuel Berg, Jesper Wingren \& Emil Ulvagården}\\[0.5cm]
+{\large January 2026}\\[1.5cm]
+
+{\large \gitrepo}\\[1cm] % Repository link
+
+\par
+\endgroup
+
+% \maketitle
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Introduction}
+
+This report presents the collaborative work of our group on developing a model-driven engineering (MDE) solution for transforming Jupyter notebooks into structured project artifacts. The project addresses the challenge of converting exploratory data science notebooks into maintainable, production-ready code structures.
+
+\subsection{Background and Problem Description}
+
+Jupyter notebooks are widely used in data science for exploratory analysis, prototyping, and documentation. However, transitioning from notebooks to production-ready projects presents several challenges including code organization, modularity, testing, and maintainability.
+
+Jupyter notebooks can in general be messy and lack structure if not properly created and maintained. Therefore this project aims to take those messy notebooks and structure them into a python project which is both easier to maintain and use in production.
+
+\subsection{Project Objectives}
+
+The main objectives of this project are:
+\begin{itemize}
+  \item Design metamodels for representing notebook structures and project architectures
+  \item Implement text-to-model (T2M) transformation form notebook files to notebook models
+  \item Implement model-to-model (M2M) transformations from notebook models to project structure models
+  \item Develop model-to-text (M2T) transformations to generate project artifacts
+  \item Usage of some sort of AI to classify code blocks into different files
+  \item Create a comprehensive pipeline demonstrating the full system flow from notebooks to python
+  \item Show a proof of concept that it this kind of pipeline works and could be useful fo use in production
+\end{itemize}
+
+\newpage
+\section{Application Overview}
+The applications objective is to turn a jupyter notebook into a python project. It begins by taking input files.
+
+\noindent \textbf{Input:}
+\begin{itemize}
+  \item .ipynb file (source code)
+  \item Data
+  \item Models
+\end{itemize}
+
+With the inputs the pipeline which consists of 2 models, 2 MetaModels and 3 transformations turns the notebook project into a python project which is further explained in section \ref{Architecture:Label}. The application uses docker to copy over data files from the input to output. It begins by turning the source code to objects inside our notebook model using a text-to-model transformation. Separating imports, code and comments into different objects. This notebook model is then transformed using model-to-model to a project model which comes from the project MM. This project model is then transformed using model-to-text into a python project containing folders and files. The output of the project pipeline is:
+
+\noindent \textbf{Output:}
+\begin{itemize}
+  \item main.py
+  \item Folder structure
+  \item requirements.txt
+  \item Docker file
+\end{itemize}
+\begin{figure}
+  \centering
+  \includegraphics[width=1\linewidth]{img/4DT903-project-pipeline.drawio.png}
+  \caption{Application Pipeline}
+  \label{fig:pipeline}
+\end{figure}
+
+\newpage
+\section{Architecture} \label{Architecture:Label}
+\subsection{Notebook Metamodel}
+The Notebook Metamodel serves as the foundation for the abstract representation of input data. It is designed to capture the different parts of a Jupyter Notebook.
+
+\subsection{Project Metamodel}
+In contrast to the source, the Project Structure Metamodel defines the target state of a python project.
+
+\subsection{Text-to-Model Transformation}
+The first stage is transforming the notebook code into a model object.
+
+\subsection{Model-to-Model Transformation}
+The transition from a notebook model to a project model is handled by the Model-to-Model (M2M) transformation using QvTo. This component is responsible for the mapping of flat notebook elements into the project structure.
+
+\subsection{Model-to-Text Transformation}
+The final stage of the pipeline is the Model-to-Text (M2T) transformation using Acceleo, which serializes the project model into concrete file system artifacts. Using template-driven generation, this layer produces Python source files. Beyond source code, the model-to-text transformation generates the necessary infrastructure for a project, including dependency information like \texttt{requirements.txt}, installation scripts such as \texttt{setup.py}.
+
+\newpage
+\section{MDSE Problems and Solutions}
+We encountered challenges ranged from tool-specific instabilities to architectural decisions regarding where logic should reside within the transformation chain.
+
+\subsection{The Integration and Pipeline Challenge}
+Our initial development strategy involved building and testing the Text-to-Model (T2M), Model-to-Model (M2M), and Model-to-Text (M2T) transformations as isolated units. While these units functioned correctly in a standalone environment, integrating them into a continuous, automated pipeline proved difficult. The primary challenge was ensuring that the output of one transformation was perfectly compatible with the input requirements of the next stage. With guidance from our supervisor, we resolved this by formalizing the execution order, ensuring that the project-specific model was fully instantiated before the code generation templates were invoked.
+
+\subsection{Tooling Instability}
+A significant technical hurdle was the instability of the Eclipse Metamodel Graphical Editor. Frequent crashes during the visual design of our Ecore metamodels. To mitigate this and maintain project momentum, we bypassed the GUI and worked directly with the XMI. While this made the visual representation of our architecture less intuitive, it provided a more stable and precise environment for defining the constraints and attributes of our Notebook and Project metamodels.
+
+\subsection{Architectural Mapping: M2M vs. M2T Responsibility}
+Later in the work, we encountered a conceptual problem regarding the "Separation of Concerns" within our transformations. We initially generated static infrastructure files—such as the \texttt{Dockerfile} and \texttt{Server.py} within the Model-to-Model layer. This resulted in an over-complicated M2M transformation. This violated the core of MDSE where the M2M layer should focus on structural mapping, while the M2T layer should handle syntax and file generation. By refactoring the system and moving these responsibilities to the Acceleo-based M2T templates, we simplified the QVTo logic and made the overall system more maintainable and easier to debug.
+
+\newpage
+\section{Discussion}
+
+\subsection{Strengths}
+The primary strength of this system lies in the separation of concerns achieved through the use of metamodels. This modularity results in reusable transformation logic, for instance, the Notebook metamodel and its corresponding T2M parser could be utilized in different projects using notebooks. Furthermore, the use of mappings and ecore models makes changing and managing the code easier as well as utilizing the strengths of MDSE.
+
+\subsection{Limitations}
+Despite its successes in testing, the current implementation has certain limitations, particularly regarding the support for different notebook patterns. Furthermore, the scope of the project was limited to the most common notebooks containing standard python environments.
+
+\subsection{Challenges Encountered}
+Throughout the development process, the most significant challenge was connecting the notebook model to our project model using QvTo as it proved to be difficult.  We also encountered problems finding a way to classify the different code blocks to separate into different files with later deciding that it would be future work.
+On a technical level, the integration and setup of the Eclipse Modeling Framework and its associated transformation plugins proved to be quite hard, highlighting the steep entry barrier often associated with professional MDE tooling.
+
+\subsection{Lessons Learned}
+The project provided valuable insights into the importance of an iterative design process, particularly regarding metamodels. We learned that metamodels should not be considered finished until several cycles have been completed. The development also highlighted the value of testing transformations early in the lifecycle and catching a logic error in a smaller script is far more efficient than debugging the final generated source code.
+
+\subsection{Improvements}
+One improvement that could be made is to try classifying the code better and creating several python files such as training.py and preprocessing.py which would make the python project even better and more organized. This would although imply on even more work to make the python project run.
+
+\subsection{Extensions}
+One possible extension is that for a larger project a static analysis could also be integrated to perform automated refactoring, such as identifying duplicate code across cells and consolidating them into a single utility module. From an operational perspective, integrating the transformation pipeline into standard CI/CD workflows or developing a dedicated GUI for configuration would make the system more accessible to data scientists.
+
+% \newpage
+% \section{References}
+
+% % Bibliography will be generated here if using BibTeX
+% % For now, add references manually as needed
+
+% \begin{thebibliography}{9}
+
+% \bibitem{emf}
+% Eclipse Modeling Framework (EMF),
+% \url{https://www.eclipse.org/modeling/emf/}
+
+% \bibitem{jupyter}
+% Project Jupyter,
+% \url{https://jupyter.org/}
+
+% \bibitem{mde}
+% Brambilla, M., Cabot, J., \& Wimmer, M. (2017).
+% \textit{Model-Driven Software Engineering in Practice}.
+% Morgan \& Claypool Publishers.
+
+% \end{thebibliography}
+
+\end{document}
